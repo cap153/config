@@ -1,0 +1,60 @@
+{
+  "inbounds": [
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "::",
+      "listen_port": 7890,
+      "tcp_fast_open": true,
+      "tcp_multi_path": false,
+      "udp_fragment": true,
+      "sniff": false,
+      "sniff_override_destination": false,
+      "sniff_timeout": "300ms",
+      "udp_timeout": 300
+    }
+  ],
+  "outbounds": [
+    {
+      "default": "cloudcone",
+      "outbounds": [
+				"cloudcone",
+				"racknerd"
+      ],
+      "tag": "select",
+      "type": "selector"
+    },
+    {
+      "type": "hysteria2",
+      "tag": "cloudcone",
+      "server": "74.48.86.244",
+      "server_port": 443,
+      "up_mbps": 50,
+      "down_mbps": 50,
+      "password": "pK-w9Kf7",
+      "tls": {
+        "enabled": true,
+        "server_name": "nastone.buzz",
+        "insecure": false
+      }
+    },
+    {
+      "type": "hysteria2",
+      "tag": "racknerd",
+      "server": "23.94.108.247",
+      "server_port": 443,
+      "up_mbps": 50,
+      "down_mbps": 50,
+      "password": "pK-w9Kf7",
+      "tls": {
+        "enabled": true,
+        "server_name": "bu.nastone.buzz",
+        "insecure": false
+      }
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "final": "cloudcone"
+  }
+}

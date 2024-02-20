@@ -1,0 +1,41 @@
+desktop-image: "background.png"
+title-text: ""
+terminal-box: "terminal_*.png"
+#terminal-font: "Gnu Unifont Mono Regular 16"
+
++ boot_menu {
+  left = 5%-5
+  #width = 65%+21
+  width = 250
+  top = 5%-5
+  #height = 45%+21
+  height = 350
+  menu_pixmap_style = "boot_menu_*.png"
+  item_font = "DejaVu Sans Bold 14"
+  item_color = "#93b4ab"
+  item_height = 52
+  item_icon_space = 12
+  item_spacing = 5
+  selected_item_font = "DejaVu Sans Bold 14"
+  selected_item_color= "#fd033b"
+  selected_item_pixmap_style = "select_*.png"
+  icon_height = 48
+  icon_width = 48
+  icon_spacing = 25
+  scrollbar = true
+  scrollbar_width = 9
+  scrollbar_thumb = "slider_*.png"
+}
+
++ progress_bar {
+  id = "__timeout__"
+  left = 5%-5
+  top = 100%-50
+  height = 20
+  width = 50%
+  font = "DejaVu Sans Regular 14"
+  text_color = "#96c4b8"
+  text = "Booting in %d seconds..."
+  bar_style = "progress_*.png"
+  highlight_style = "progress_highlight_*.png"
+}

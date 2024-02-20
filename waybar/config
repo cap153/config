@@ -1,0 +1,84 @@
+//可能要安装字体noto-fonts-emoji
+{
+	"layer": "top", // Waybar at top layer
+	"position": "bottom", // Waybar at the bottom of your screen
+	"height": 29, // Waybar height
+	// "width": 1366, // Waybar width
+	// Choose the order of the modules
+	"modules-left": ["sway/workspaces", "sway/mode", "custom/spotify"],
+	"modules-right": ["network","pulseaudio", "disk", "cpu", "memory", "battery", "clock", "tray"],
+	"sway/workspaces": {
+			"disable-scroll": true,
+			"all-outputs": false,
+			"format": "{icon}",
+			"format-icons": {
+					"1:web": "",
+					"2:code": "",
+					"3:term": "",
+					"4:work": "",
+					"5:music": "",
+					"6:docs": "",
+			}
+	},
+	"disk":{
+			"format": "  {percentage_free}%",
+	},
+	"sway/mode": {
+			"format": "<span style=\"italic\">{}</span>"
+	},
+	"tray": {
+			// "icon-size": 21,
+			"spacing": 10
+	},
+	"clock": {
+			"format": "📅 {:%Y-%m-%d  🕑%H:%M}",
+			// "format-alt": "{:%Y-%m-%d}"
+	},
+	"cpu": {
+			"format": "  {usage}%"
+	},
+	"memory": {
+			"format": "  {}%"
+	},
+	"battery": {
+		"states": {
+			// "good": 95,
+			"warning": 20,
+			"critical": 10
+		},
+		"format": "<span color='#ffffff'>{icon}</span>   {capacity}%",
+		"format-charging": "<span color='#e88939'> </span> {capacity}%{time}",
+		"format-plugged":  "<span color='#e88939'>{icon}  </span>   {capacity}%",
+//		"format-good": "", // An empty format will hide the module
+		"format-discharging": "<span color='#e88939'>{icon}</span>   {capacity}% ({time})",
+		"format-icons": ["", "", "", "", ""]
+	},
+	"network": {
+			// "interface": "wlp2s0", // (Optional) To force the use of this interface
+			"format-wifi": "   {essid}: {ipaddr}/{cidr}",
+			"format-ethernet": "  {ifname}: {ipaddr}/{cidr}",
+			"format-disconnected": "⚠ Disconnected "
+	},
+	"pulseaudio": {
+			//"scroll-step": 1,
+			"format": "{icon}  {volume}%",
+			"format-bluetooth": " {volume}%",
+			"format-muted": "",
+			"format-icons": {
+					"headphones": "",
+					"handsfree": "",
+					"headset": "",
+					"phone": "",
+					"portable": "",
+					"car": "",
+					"default": ["", ""]
+			},
+			"on-click": "pavucontrol"
+	},
+	"custom/spotify": {
+			"format": " {}",
+			"max-length": 40,
+			"interval": 30, // Remove this if your script is endless and write in loop
+			"exec-if": "pgrep spotify"
+	}
+}

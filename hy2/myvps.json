@@ -1,0 +1,229 @@
+{
+  "dns": {
+    "servers": [
+      {
+        "tag": "alidns",
+        "address": "https://223.5.5.5/dns-query",
+        "strategy": "ipv4_only",
+        "detour": "direct"
+      },
+      {
+        "tag": "cloudflare",
+        "address": "https://1.1.1.1/dns-query",
+        "strategy": "ipv4_only",
+        "detour": "select"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "outbound": [
+          "any"
+        ],
+        "server": "alidns"
+      },
+      {
+        "domain_suffix": [
+          ".cn"
+        ],
+        "server": "alidns"
+      },
+      {
+        "rule_set": [
+          "geosite-cn"
+        ],
+        "server": "alidns"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all"
+        ],
+        "server": "block"
+      }
+    ],
+    "final": "cloudflare",
+    "strategy": "",
+    "disable_cache": false,
+    "disable_expire": false
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "inet4_address": "172.19.0.1/30",
+      "auto_route": true,
+      "strict_route": false,
+      "sniff": true
+    },
+		{
+			"type": "mixed",
+			"listen": "::",
+			"listen_port": 7890
+		}
+  ],
+  "outbounds": [
+    {
+      "default": "ducky trojan",
+      "outbounds": [
+				"ducky trojan",
+				"cloudcone",
+				"racknerd"
+      ],
+      "tag": "select",
+      "type": "selector"
+    },
+		{
+			"type": "trojan",
+			"tag": "ducky trojan",
+			"server": "kr-chuncheon-oracle-6bdd55.ip1.shop",
+			"server_port": 59250,
+			"password": "8a28b3c8-48fe-4497-9e0b-fb985b20d713",
+			"tls": {
+				"enabled":true,
+				"insecure": true,
+				"server_name":"",
+				"utls": {
+					"enabled":true,
+					"fingerprint":"chrome"
+				}
+			},
+			"multiplex": {
+				"enabled":true,
+				"protocol":"h2mux",
+				"max_connections": 8,
+				"min_streams": 16,
+				"padding": true
+			}
+		},
+    {
+      "type": "hysteria2",
+      "tag": "cloudcone",
+      "server": "74.48.86.244",
+      "server_port": 44344,
+      "up_mbps": 50,
+      "down_mbps": 50,
+      "password": "pK-w9$f7",
+			"obfs": {
+				"type": "salamander",
+				"password": "pK-w9$f7"
+			},
+      "tls": {
+        "enabled": true,
+        "server_name": "nastone.buzz",
+        "insecure": false
+      }
+    },
+    {
+      "type": "hysteria2",
+      "tag": "racknerd",
+      "server": "23.94.108.247",
+      "server_port": 44344,
+      "up_mbps": 50,
+      "down_mbps": 50,
+      "password": "pK-w9$f7",
+			"obfs": {
+				"type": "salamander",
+				"password": "pK-w9$f7"
+			},
+      "tls": {
+        "enabled": true,
+        "server_name": "bu.nastone.buzz",
+        "insecure": false
+      }
+    },
+		{
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "direct"
+      },
+      {
+        "domain_suffix": [
+          ".cn"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "geoip-cn",
+          "geosite-cn",
+          "geosite-private"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all"
+        ],
+        "outbound": "block"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+        "download_detour": "select"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "select"
+      },
+      {
+        "tag": "geosite-private",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-private.srs",
+        "download_detour": "select"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
+        "download_detour": "select"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "select"
+  },  
+	"experimental"  : {
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui_download_url": "",
+      "secret": "22e694e4-093d-44bb-8ed2-b0e548c87a2e",
+      "default_mode": "",
+      "external_ui_download_detour": "",
+      "external_ui": "ui"
+    },
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "cache_id": "mycacheid",
+      "store_fakeip": true
+    }
+  }
+}

@@ -1,0 +1,59 @@
+confirmonquit: false
+git:
+  autofetch: true
+  merging:
+    manualcommit: false
+  skiphookprefix: WIP
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never --24-bit-color=never --theme="OneHalfDark"
+gui:
+  commitlength:
+    show: true
+  mouseevents: false
+  scrollheight: 2
+  scrollpastbottom: true
+  theme:
+    lightTheme: false
+    activeBorderColor:
+      - cyan
+      - bold
+    inactiveBorderColor:
+      - white
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - default
+    selectedRangeBgColor:
+      - blue
+reporting: "off"
+splashupdatesindex: 0
+startuppopupversion: 1
+keybinding:
+  universal:
+    quit-alt1: '<esc>'
+    prevItem-alt: 'u'
+    nextItem-alt: 'e'
+    prevBlock-alt: 'n'
+    nextBlock-alt: 'i'
+    nextMatch: '='
+    prevMatch: '-'
+    new: 'k'
+    edit: 'o'
+    openFile: 'O'
+    scrollUpMain-alt1: 'U'
+    scrollDownMain-alt1: 'E'
+    scrollUpMain-alt2: '<c-u>'
+    scrollDownMain-alt2: '<c-e>'
+    undo: 'l'
+    redo: '<c-r>'
+    diffingMenu: 'M'
+    filteringMenu: '<c-f>'
+  files:
+    ignoreFile: 'I'
+  commits:
+    moveDownCommit: '<c-e>'
+    moveUpCommit: '<c-u>'
+  branches:
+    viewGitFlowOptions: 'I'
+    setUpstream: 'U'

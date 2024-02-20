@@ -1,0 +1,11 @@
+source ~/.config/zsh/env.zsh
+source ~/.config/zsh/plugins.zsh
+source $ZSH/oh-my-zsh.sh
+source ~/.config/zsh/aliases.zsh
+source ~/.config/zsh/vi.zsh
+source ~/.config/zsh/fzf.zsh
+source ~/.config/zsh/mappings.zsh
+
+# omz安装命令如下
+# zsh -c "$(curl -fsSL 'https://api.host.mintimate.cn/fileHost/public/download/1P0R')"
+# chsh -s /bin/zsh

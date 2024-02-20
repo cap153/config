@@ -1,0 +1,767 @@
+" __  ____   __  _   ___     _____ __  __ ____   ____
+"|  \/  \ \ / / | \ | \ \   / /_ _|  \/  |  _ \ / ___|
+"| |\/| |\ V /  |  \| |\ \ / / | || |\/| | |_) | |
+"| |  | | | |   | |\  | \ V /  | || |  | |  _ <| |___
+"|_|  |_| |_|   |_| \_|  \_/  |___|_|  |_|_| \_\\____|
+"
+
+" ===
+" === Editor behavior
+" ===
+set number " display the number in the left
+set relativenumber " use relativenumber
+set cursorline " Highlight the current line
+set hidden " auto save
+set wrap " make the word will not beyond the window
+set showcmd " show what you type
+set wildmenu " when try completion will show a menu
+set ignorecase " ignore case when search
+set smartcase
+set clipboard=unnamedplus " share clipboard with system
+set tabstop=2 " make indent equal to two space
+set shiftwidth=2
+set softtabstop=2
+set list
+set listchars=tab:\|\ ,trail:▫
+set scrolloff=4
+set indentexpr=
+set foldmethod=indent
+set foldmethod=manual " 启动手动折叠
+set foldlevel=99
+set foldenable
+set autochdir " when execute will at current directory
+set ttyfast "should make scrolling faster
+set lazyredraw "same as above
+set updatetime=100 " make vim faster
+set shortmess+=c " less information when yon type
+set mouse=a
+
+" set code format
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
+set enc=utf8
+set fencs=utf8,gbk,gb2312,gb18030
+
+" save the modify history
+silent !mkdir -p ~/.config/nvim/tmp/backup
+silent !mkdir -p ~/.config/nvim/tmp/undo
+"silent !mkdir -p ~/.config/nvim/tmp/sessions
+set backupdir=~/.config/nvim/tmp/backup,.
+set directory=~/.config/nvim/tmp/backup,.
+if has('persistent_undo')
+	set undofile
+	set undodir=~/.config/nvim/tmp/undo,.
+endif
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+" ===
+" === Terminal Behaviors
+" ===
+" let g:neoterm_autoscroll = 1
+" autocmd TermOpen term://* startinsert
+" tnoremap <C-N> <C-\><C-N>
+" tnoremap <C-O> <C-\><C-N><C-O>
+" let g:terminal_color_0  = '#000000'
+" let g:terminal_color_1  = '#FF5555'
+" let g:terminal_color_2  = '#50FA7B'
+" let g:terminal_color_3  = '#F1FA8C'
+" let g:terminal_color_4  = '#BD93F9'
+" let g:terminal_color_5  = '#FF79C6'
+" let g:terminal_color_6  = '#8BE9FD'
+" let g:terminal_color_7  = '#BFBFBF'
+" let g:terminal_color_8  = '#4D4D4D'
+" let g:terminal_color_9  = '#FF6E67'
+" let g:terminal_color_10 = '#5AF78E'
+" let g:terminal_color_11 = '#F4F99D'
+" let g:terminal_color_12 = '#CAA9FA'
+" let g:terminal_color_13 = '#FF92D0'
+" let g:terminal_color_14 = '#9AEDFE'
+"
+
+" ===
+" === Basic Mappings
+" ===
+" Set <LEADER> as <SPACE>, ; as :
+let mapleader=" "
+noremap ; :
+ 
+" previous/next search result and cancle high light
+noremap = nzz
+noremap - Nzz
+noremap <LEADER><CR> :nohlsearch<CR>
+
+" Save & quit
+noremap S :w<CR>
+noremap Q :q<CR>
+
+" Open the vimrc file anytime
+noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
+
+" reload vimrc
+" noremap R :source $MYVIMRC<CR>
+
+" Undo operations
+noremap l u
+noremap L <c-r>
+
+" Insert Key
+noremap k i
+noremap K I
+
+" make Y to copy till the end of the line
+nnoremap Y y$
+
+" make D to delete till the end of the line
+nnoremap D d$
+nnoremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
+
+" Folding
+noremap <silent> <LEADER>o za
+xnoremap <silent> <LEADER>o zf
+
+" ===
+" === Cursor Movement
+" ===
+" New cursor movement (the default arrow keys are used for resizing windows)
+"     ^
+"     u
+" < n   i >
+"     e
+"     v
+noremap <silent> n h
+noremap <silent> u k
+noremap <silent> e j
+noremap <silent> i l
+
+" faster navigation
+noremap U 5k
+noremap E 5j
+" noremap N 7h
+" noremap I 7l
+" N key: go to the start of the line
+noremap <silent> N 0
+" I key: go to the end of the line
+noremap <silent> I $
+
+" " most move
+" noremap <c-u> gg
+" noremap <c-e> G
+" noremap <c-n> 0
+" noremap <c-i> $
+
+" Faster in-line navigation
+noremap W 5w
+noremap B 5b
+
+
+" ===
+" === Window management
+" ===
+" Use <space> + new arrow keys for moving the cursor around windows
+noremap <LEADER>w <C-w>w
+noremap <LEADER>u <C-w>k
+noremap <LEADER>e <C-w>j
+noremap <LEADER>n <C-w>h
+noremap <LEADER>i <C-w>l
+
+" Disable the default s key
+" noremap s <nop>
+
+" split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
+noremap su :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+noremap se :set splitbelow<CR>:split<CR>
+noremap sn :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+noremap si :set splitright<CR>:vsplit<CR>
+
+" Resize splits with arrow keys
+noremap <up> :res +5<CR>
+noremap <down> :res -5<CR>
+noremap <left> :vertical resize-5<CR>
+noremap <right> :vertical resize+5<CR>
+
+" Place the two screens up and down
+noremap sh <C-w>t<C-w>K
+" Place the two screens side by side
+noremap sv <C-w>t<C-w>H
+
+" Press <SPACE> + q to close the window below the current window
+noremap <LEADER>q <C-w>j:q<CR>
+
+
+" ===
+" === Tab management
+" ===
+" Create a new tab with tu
+noremap tu :tabe<CR>
+" Move around tabs with tn and ti
+noremap tn :-tabnext<CR>
+noremap ti :+tabnext<CR>
+" Move the tabs with tmn and tmi
+noremap tmn :-tabmove<CR>
+noremap tmi :+tabmove<CR>
+" close all windows in current tab
+noremap tq :tabc<cr>
+
+
+" ===
+" === Markdown Settings
+" ===
+" Snippets
+" source ~/.config/nvim/md-snippets.vim
+
+
+
+" ===
+" === vim automatically completes parentheses 
+" ===
+
+" inoremap ( ()<LEFT>
+" inoremap [ []<LEFT>
+" inoremap { {}<LEFT>
+" inoremap " ""<LEFT>
+" inoremap ' ''<LEFT>
+" " inoremap < <><LEFT>
+"
+" function! RemovePairs()
+"     let s:line = getline(".")
+"     let s:previous_char = s:line[col(".")-1]
+"
+"     if index(["(","[","{"],s:previous_char) != -1
+"         let l:original_pos = getpos(".")
+"         execute "normal %"
+"         let l:new_pos = getpos(".")
+"         " only right (
+"         if l:original_pos == l:new_pos
+"             execute "normal! a\<BS>"
+"             return
+"         end
+"
+"         let l:line2 = getline(".")
+"         if len(l:line2) == col(".")
+"             execute "normal! v%xa"
+"         else
+"             execute "normal! v%xi"
+"         end
+"     else
+"         execute "normal! a\<BS>"
+"     end
+" endfunction
+"
+" function! RemoveNextDoubleChar(char)
+"     let l:line = getline(".")
+"     let l:next_char = l:line[col(".")]
+"
+"     if a:char == l:next_char
+"         execute "normal! l"
+"     else
+"         execute "normal! i" . a:char . ""
+"     end
+" endfunction
+"
+" inoremap <BS> <ESC>:call RemovePairs()<CR>a
+" inoremap ) <ESC>:call RemoveNextDoubleChar(')')<CR>a
+" inoremap ] <ESC>:call RemoveNextDoubleChar(']')<CR>a
+" inoremap } <ESC>:call RemoveNextDoubleChar('}')<CR>a
+" " inoremap > <ESC>:call RemoveNextDoubleChar('>')<CR>a
+
+
+" ===
+" === 批量缩进方法
+" ===
+" 操作为，esc从编辑模式退到命令模式，将光标移到需要缩进的行的行首，然后按shift+v，可以看到该行已被选中，且左下角提示为“可视”
+" 按键盘上的上下方向键，如这里按向下的箭头，选中所有需要批量缩进的行
+" 按shift+>,是向前缩进一个tab值，按shift+<，则是缩回一个tab值，
+xnoremap < <gv
+xnoremap > >gv
+xnoremap <tab> >gv
+
+
+" ===
+" === Other useful stuff
+" ===
+" open terminal by T
+" noremap T :term<CR>
+
+" Open a new instance of st with the cwd
+nnoremap T :tabe<CR>:-tabmove<CR>:term sh -c 'GLFW_IM_MODULE=ibus kitty'<CR><C-\><C-N>:q<CR>
+
+" Opening a terminal window
+noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
+
+" Press space twice to jump to the next '<++>' and edit it
+noremap <space><space> /++><CR>hc4l
+
+" Spelling Check with <space>sc
+noremap <LEADER>sc :set spell!<CR>
+
+" Call figlet
+noremap tx :r !figlet 
+
+" find and replace
+noremap \s :%s//g<left><left>
+
+" Compile function
+noremap r :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "wall"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!./%<"
+		" set splitbelow
+		" :sp
+		" :term ./%<
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		:w ++enc=utf-8 %
+		" silent! exec "!javac %"
+		set splitbelow
+		:sp
+		:term runjavaproject %<
+		" :term java %
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!chrome"
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "!marktext %"
+		" silent! exec "!chrome"
+		" exec "MarkdownPreview"
+		" exec "InstantMarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'dart'
+		exec "CocCommand flutter.run -d ".g:flutter_default_device." ".g:flutter_run_args
+		silent! exec "CocCommand flutter.dev.openDevLog"
+	elseif &filetype == 'javascript'
+		set splitbelow
+		:sp
+		:term electron .
+		" :term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run .
+	endif
+endfunc
+set clipboard+=ideaput
+
+" 自动切换中英文输入法,要安装IdeaVimExtension插件
+set keep-english-in-normal
+
+" autocmd InsertLeave * :silent !fcitx5-remote -c
+" autocmd BufCreate *  :silent !fcitx5-remote -c 
+" autocmd BufEnter *  :silent !fcitx5-remote -c 
+" autocmd BufLeave *  :silent !fcitx5-remote -c
+
+" interestind stess
+noremap   [a<LEADER>   1k
+noremap   [r<LEADER>   2k
+noremap   [s<LEADER>   3k
+noremap   [t<LEADER>   4k
+noremap   [d<LEADER>   5k
+noremap   [h<LEADER>   6k
+noremap   [n<LEADER>   7k
+noremap   [e<LEADER>   8k
+noremap   [i<LEADER>   9k
+noremap  [ao<LEADER>  10k
+noremap  [aa<LEADER>  11k
+noremap  [ar<LEADER>  12k
+noremap  [as<LEADER>  13k
+noremap  [at<LEADER>  14k
+noremap  [ad<LEADER>  15k
+noremap  [ah<LEADER>  16k
+noremap  [an<LEADER>  17k
+noremap  [ae<LEADER>  18k
+noremap  [ai<LEADER>  19k
+noremap  [ro<LEADER>  20k
+noremap  [ra<LEADER>  21k
+noremap  [rr<LEADER>  22k
+noremap  [rs<LEADER>  23k
+noremap  [rt<LEADER>  24k
+noremap  [rd<LEADER>  25k
+noremap  [rh<LEADER>  26k
+noremap  [rn<LEADER>  27k
+noremap  [re<LEADER>  28k
+noremap  [ri<LEADER>  29k
+noremap  [so<LEADER>  30k
+noremap  [sa<LEADER>  31k
+noremap  [sr<LEADER>  32k
+noremap  [ss<LEADER>  33k
+noremap  [st<LEADER>  34k
+noremap  [sd<LEADER>  35k
+noremap  [sh<LEADER>  36k
+noremap  [sn<LEADER>  37k
+noremap  [se<LEADER>  38k
+noremap  [si<LEADER>  39k
+noremap  [to<LEADER>  40k
+noremap  [ta<LEADER>  41k
+noremap  [tr<LEADER>  42k
+noremap  [ts<LEADER>  43k
+noremap  [tt<LEADER>  44k
+noremap  [td<LEADER>  45k
+noremap  [th<LEADER>  46k
+noremap  [tn<LEADER>  47k
+noremap  [te<LEADER>  48k
+noremap  [ti<LEADER>  49k
+noremap  [do<LEADER>  50k
+noremap  [da<LEADER>  51k
+noremap  [dr<LEADER>  52k
+noremap  [ds<LEADER>  53k
+noremap  [dt<LEADER>  54k
+noremap  [dd<LEADER>  55k
+noremap  [dh<LEADER>  56k
+noremap  [dn<LEADER>  57k
+noremap  [de<LEADER>  58k
+noremap  [di<LEADER>  59k
+noremap  [ho<LEADER>  60k
+noremap  [ha<LEADER>  61k
+noremap  [hr<LEADER>  62k
+noremap  [hs<LEADER>  63k
+noremap  [ht<LEADER>  64k
+noremap  [hd<LEADER>  65k
+noremap  [hh<LEADER>  66k
+noremap  [hn<LEADER>  67k
+noremap  [he<LEADER>  68k
+noremap  [hi<LEADER>  69k
+noremap  [no<LEADER>  70k
+noremap  [na<LEADER>  71k
+noremap  [nr<LEADER>  72k
+noremap  [ns<LEADER>  73k
+noremap  [nt<LEADER>  74k
+noremap  [nd<LEADER>  75k
+noremap  [nh<LEADER>  76k
+noremap  [nn<LEADER>  77k
+noremap  [ne<LEADER>  78k
+noremap  [ni<LEADER>  79k
+noremap  [eo<LEADER>  80k
+noremap  [ea<LEADER>  81k
+noremap  [er<LEADER>  82k
+noremap  [es<LEADER>  83k
+noremap  [et<LEADER>  84k
+noremap  [ed<LEADER>  85k
+noremap  [eh<LEADER>  86k
+noremap  [en<LEADER>  87k
+noremap  [ee<LEADER>  88k
+noremap  [ei<LEADER>  89k
+noremap  [io<LEADER>  90k
+noremap  [ia<LEADER>  91k
+noremap  [ir<LEADER>  92k
+noremap  [is<LEADER>  93k
+noremap  [it<LEADER>  94k
+noremap  [id<LEADER>  95k
+noremap  [ih<LEADER>  96k
+noremap  [in<LEADER>  97k
+noremap  [ie<LEADER>  98k
+noremap  [ii<LEADER>  99k
+noremap [aoo<LEADER> 100k
+noremap [aoa<LEADER> 101k
+noremap [aor<LEADER> 102k
+noremap [aos<LEADER> 103k
+noremap [aot<LEADER> 104k
+noremap [aod<LEADER> 105k
+noremap [aoh<LEADER> 106k
+noremap [aon<LEADER> 107k
+noremap [aoe<LEADER> 108k
+noremap [aoi<LEADER> 109k
+noremap [aao<LEADER> 110k
+noremap [aaa<LEADER> 111k
+noremap [aar<LEADER> 112k
+noremap [aas<LEADER> 113k
+noremap [aat<LEADER> 114k
+noremap [aad<LEADER> 115k
+noremap [aah<LEADER> 116k
+noremap [aan<LEADER> 117k
+noremap [aae<LEADER> 118k
+noremap [aai<LEADER> 119k
+noremap [aro<LEADER> 120k
+noremap [ara<LEADER> 121k
+noremap [arr<LEADER> 122k
+noremap [ars<LEADER> 123k
+noremap [art<LEADER> 124k
+noremap [ard<LEADER> 125k
+noremap [arh<LEADER> 126k
+noremap [arn<LEADER> 127k
+noremap [are<LEADER> 128k
+noremap [ari<LEADER> 129k
+noremap [aso<LEADER> 130k
+noremap [asa<LEADER> 131k
+noremap [asr<LEADER> 132k
+noremap [ass<LEADER> 133k
+noremap [ast<LEADER> 134k
+noremap [asd<LEADER> 135k
+noremap [ash<LEADER> 136k
+noremap [asn<LEADER> 137k
+noremap [ase<LEADER> 138k
+noremap [asi<LEADER> 139k
+noremap [ato<LEADER> 140k
+noremap [ata<LEADER> 141k
+noremap [atr<LEADER> 142k
+noremap [ats<LEADER> 143k
+noremap [att<LEADER> 144k
+noremap [atd<LEADER> 145k
+noremap [ath<LEADER> 146k
+noremap [atn<LEADER> 147k
+noremap [ate<LEADER> 148k
+noremap [ati<LEADER> 149k
+noremap [ado<LEADER> 150k
+noremap [ada<LEADER> 151k
+noremap [adr<LEADER> 152k
+noremap [ads<LEADER> 153k
+noremap [adt<LEADER> 154k
+noremap [add<LEADER> 155k
+noremap [adh<LEADER> 156k
+noremap [adn<LEADER> 157k
+noremap [ade<LEADER> 158k
+noremap [adi<LEADER> 159k
+noremap [aho<LEADER> 160k
+noremap [aha<LEADER> 161k
+noremap [ahr<LEADER> 162k
+noremap [ahs<LEADER> 163k
+noremap [aht<LEADER> 164k
+noremap [ahd<LEADER> 165k
+noremap [ahh<LEADER> 166k
+noremap [ahn<LEADER> 167k
+noremap [ahe<LEADER> 168k
+noremap [ahi<LEADER> 169k
+noremap [ano<LEADER> 170k
+noremap [ana<LEADER> 171k
+noremap [anr<LEADER> 172k
+noremap [ans<LEADER> 173k
+noremap [ant<LEADER> 174k
+noremap [and<LEADER> 175k
+noremap [anh<LEADER> 176k
+noremap [ann<LEADER> 177k
+noremap [ane<LEADER> 178k
+noremap [ani<LEADER> 179k
+noremap [aeo<LEADER> 180k
+noremap [aea<LEADER> 181k
+noremap [aer<LEADER> 182k
+noremap [aes<LEADER> 183k
+noremap [aet<LEADER> 184k
+noremap [aed<LEADER> 185k
+noremap [aeh<LEADER> 186k
+noremap [aen<LEADER> 187k
+noremap [aee<LEADER> 188k
+noremap [aei<LEADER> 189k
+noremap [aio<LEADER> 190k
+noremap [aia<LEADER> 191k
+noremap [air<LEADER> 192k
+noremap [ais<LEADER> 193k
+noremap [ait<LEADER> 194k
+noremap [aid<LEADER> 195k
+noremap [aih<LEADER> 196k
+noremap [ain<LEADER> 197k
+noremap [aie<LEADER> 198k
+noremap [aii<LEADER> 199k
+
+noremap   'a<LEADER>   1j
+noremap   'r<LEADER>   2j
+noremap   's<LEADER>   3j
+noremap   't<LEADER>   4j
+noremap   'd<LEADER>   5j
+noremap   'h<LEADER>   6j
+noremap   'n<LEADER>   7j
+noremap   'e<LEADER>   8j
+noremap   'i<LEADER>   9j
+noremap  'ao<LEADER>  10j
+noremap  'aa<LEADER>  11j
+noremap  'ar<LEADER>  12j
+noremap  'as<LEADER>  13j
+noremap  'at<LEADER>  14j
+noremap  'ad<LEADER>  15j
+noremap  'ah<LEADER>  16j
+noremap  'an<LEADER>  17j
+noremap  'ae<LEADER>  18j
+noremap  'ai<LEADER>  19j
+noremap  'ro<LEADER>  20j
+noremap  'ra<LEADER>  21j
+noremap  'rr<LEADER>  22j
+noremap  'rs<LEADER>  23j
+noremap  'rt<LEADER>  24j
+noremap  'rd<LEADER>  25j
+noremap  'rh<LEADER>  26j
+noremap  'rn<LEADER>  27j
+noremap  're<LEADER>  28j
+noremap  'ri<LEADER>  29j
+noremap  'so<LEADER>  30j
+noremap  'sa<LEADER>  31j
+noremap  'sr<LEADER>  32j
+noremap  'ss<LEADER>  33j
+noremap  'st<LEADER>  34j
+noremap  'sd<LEADER>  35j
+noremap  'sh<LEADER>  36j
+noremap  'sn<LEADER>  37j
+noremap  'se<LEADER>  38j
+noremap  'si<LEADER>  39j
+noremap  'to<LEADER>  40j
+noremap  'ta<LEADER>  41j
+noremap  'tr<LEADER>  42j
+noremap  'ts<LEADER>  43j
+noremap  'tt<LEADER>  44j
+noremap  'td<LEADER>  45j
+noremap  'th<LEADER>  46j
+noremap  'tn<LEADER>  47j
+noremap  'te<LEADER>  48j
+noremap  'ti<LEADER>  49j
+noremap  'do<LEADER>  50j
+noremap  'da<LEADER>  51j
+noremap  'dr<LEADER>  52j
+noremap  'ds<LEADER>  53j
+noremap  'dt<LEADER>  54j
+noremap  'dd<LEADER>  55j
+noremap  'dh<LEADER>  56j
+noremap  'dn<LEADER>  57j
+noremap  'de<LEADER>  58j
+noremap  'di<LEADER>  59j
+noremap  'ho<LEADER>  60j
+noremap  'ha<LEADER>  61j
+noremap  'hr<LEADER>  62j
+noremap  'hs<LEADER>  63j
+noremap  'ht<LEADER>  64j
+noremap  'hd<LEADER>  65j
+noremap  'hh<LEADER>  66j
+noremap  'hn<LEADER>  67j
+noremap  'he<LEADER>  68j
+noremap  'hi<LEADER>  69j
+noremap  'no<LEADER>  70j
+noremap  'na<LEADER>  71j
+noremap  'nr<LEADER>  72j
+noremap  'ns<LEADER>  73j
+noremap  'nt<LEADER>  74j
+noremap  'nd<LEADER>  75j
+noremap  'nh<LEADER>  76j
+noremap  'nn<LEADER>  77j
+noremap  'ne<LEADER>  78j
+noremap  'ni<LEADER>  79j
+noremap  'eo<LEADER>  80j
+noremap  'ea<LEADER>  81j
+noremap  'er<LEADER>  82j
+noremap  'es<LEADER>  83j
+noremap  'et<LEADER>  84j
+noremap  'ed<LEADER>  85j
+noremap  'eh<LEADER>  86j
+noremap  'en<LEADER>  87j
+noremap  'ee<LEADER>  88j
+noremap  'ei<LEADER>  89j
+noremap  'io<LEADER>  90j
+noremap  'ia<LEADER>  91j
+noremap  'ir<LEADER>  92j
+noremap  'is<LEADER>  93j
+noremap  'it<LEADER>  94j
+noremap  'id<LEADER>  95j
+noremap  'ih<LEADER>  96j
+noremap  'in<LEADER>  97j
+noremap  'ie<LEADER>  98j
+noremap  'ii<LEADER>  99j
+noremap 'aoo<LEADER> 100j
+noremap 'aoa<LEADER> 101j
+noremap 'aor<LEADER> 102j
+noremap 'aos<LEADER> 103j
+noremap 'aot<LEADER> 104j
+noremap 'aod<LEADER> 105j
+noremap 'aoh<LEADER> 106j
+noremap 'aon<LEADER> 107j
+noremap 'aoe<LEADER> 108j
+noremap 'aoi<LEADER> 109j
+noremap 'aao<LEADER> 110j
+noremap 'aaa<LEADER> 111j
+noremap 'aar<LEADER> 112j
+noremap 'aas<LEADER> 113j
+noremap 'aat<LEADER> 114j
+noremap 'aad<LEADER> 115j
+noremap 'aah<LEADER> 116j
+noremap 'aan<LEADER> 117j
+noremap 'aae<LEADER> 118j
+noremap 'aai<LEADER> 119j
+noremap 'aro<LEADER> 120j
+noremap 'ara<LEADER> 121j
+noremap 'arr<LEADER> 122j
+noremap 'ars<LEADER> 123j
+noremap 'art<LEADER> 124j
+noremap 'ard<LEADER> 125j
+noremap 'arh<LEADER> 126j
+noremap 'arn<LEADER> 127j
+noremap 'are<LEADER> 128j
+noremap 'ari<LEADER> 129j
+noremap 'aso<LEADER> 130j
+noremap 'asa<LEADER> 131j
+noremap 'asr<LEADER> 132j
+noremap 'ass<LEADER> 133j
+noremap 'ast<LEADER> 134j
+noremap 'asd<LEADER> 135j
+noremap 'ash<LEADER> 136j
+noremap 'asn<LEADER> 137j
+noremap 'ase<LEADER> 138j
+noremap 'asi<LEADER> 139j
+noremap 'ato<LEADER> 140j
+noremap 'ata<LEADER> 141j
+noremap 'atr<LEADER> 142j
+noremap 'ats<LEADER> 143j
+noremap 'att<LEADER> 144j
+noremap 'atd<LEADER> 145j
+noremap 'ath<LEADER> 146j
+noremap 'atn<LEADER> 147j
+noremap 'ate<LEADER> 148j
+noremap 'ati<LEADER> 149j
+noremap 'ado<LEADER> 150j
+noremap 'ada<LEADER> 151j
+noremap 'adr<LEADER> 152j
+noremap 'ads<LEADER> 153j
+noremap 'adt<LEADER> 154j
+noremap 'add<LEADER> 155j
+noremap 'adh<LEADER> 156j
+noremap 'adn<LEADER> 157j
+noremap 'ade<LEADER> 158j
+noremap 'adi<LEADER> 159j
+noremap 'aho<LEADER> 160j
+noremap 'aha<LEADER> 161j
+noremap 'ahr<LEADER> 162j
+noremap 'ahs<LEADER> 163j
+noremap 'aht<LEADER> 164j
+noremap 'ahd<LEADER> 165j
+noremap 'ahh<LEADER> 166j
+noremap 'ahn<LEADER> 167j
+noremap 'ahe<LEADER> 168j
+noremap 'ahi<LEADER> 169j
+noremap 'ano<LEADER> 170j
+noremap 'ana<LEADER> 171j
+noremap 'anr<LEADER> 172j
+noremap 'ans<LEADER> 173j
+noremap 'ant<LEADER> 174j
+noremap 'and<LEADER> 175j
+noremap 'anh<LEADER> 176j
+noremap 'ann<LEADER> 177j
+noremap 'ane<LEADER> 178j
+noremap 'ani<LEADER> 179j
+noremap 'aeo<LEADER> 180j
+noremap 'aea<LEADER> 181j
+noremap 'aer<LEADER> 182j
+noremap 'aes<LEADER> 183j
+noremap 'aet<LEADER> 184j
+noremap 'aed<LEADER> 185j
+noremap 'aeh<LEADER> 186j
+noremap 'aen<LEADER> 187j
+noremap 'aee<LEADER> 188j
+noremap 'aei<LEADER> 189j
+noremap 'aio<LEADER> 190j
+noremap 'aia<LEADER> 191j
+noremap 'air<LEADER> 192j
+noremap 'ais<LEADER> 193j
+noremap 'ait<LEADER> 194j
+noremap 'aid<LEADER> 195j
+noremap 'aih<LEADER> 196j
+noremap 'ain<LEADER> 197j
+noremap 'aie<LEADER> 198j
+noremap 'aii<LEADER> 199j

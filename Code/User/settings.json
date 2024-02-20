@@ -1,0 +1,12 @@
+{
+    "vim.vimrc.path": "/home/stone/.config/ideavimrc",
+    "vim.vimrc.enable": true,
+    "vim.useSystemClipboard": true,
+    "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/bin/fcitx5-remote",
+    "vim.autoSwitchInputMethod.switchIMCmd": "/usr/bin/fcitx5-remote -t {im}",
+    "vim.autoSwitchInputMethod.enable": true,
+    "vim.autoSwitchInputMethod.defaultIM": "1",
+    "window.zoomLevel": 2,
+    // 在vscode中切换escape和caps,在keybindings中设置所以这里注释
+    // "keyboard.dispatch": "keyCode"
+}
