@@ -1,0 +1,155 @@
+#autoload
+
+_autocomplete__history_lines() {
+
+  # Don't run more than once.
+  (( _matcher_num > 1 )) &&
+      return 1
+
+  local -P lbuffer='' rbuffer=''
+
+  (( CURRENT > 1 )) &&
+      lbuffer="${(j.[[:blank:]]##.)${(@b)words[1,CURRENT-1]}}[[:blank:]]##"
+  (( CURRENT < $#words[@] )) &&
+      rbuffer="[[:blank:]]##${(j.[[:blank:]]##.)${(@b)words[CURRENT+1,-1]}}"
+  lbuffer="$lbuffer${(b)QIPREFIX}"
+  rbuffer="${(b)QISUFFIX}$rbuffer"
+
+  local -P query=''
+  if [[ -n $words[CURRENT] ]]; then
+    local -Pa includes=( "${(@s..b)^words[CURRENT]}" )
+    local -Pa excludes=( "(|[^${(@s..b)^words[CURRENT]}\n;]#)" )
+    local -Pa tokens=( ${(@)excludes:^includes} )
+    query="((#l)$tokens[2]${(j..)tokens[3,-1]})"
+
+    local -P no_delim='[^\n;]#' pre='' post=''
+    if [[ -z $lbuffer ]]; then
+      pre='*'
+    else
+      pre=$no_delim
+    fi
+    if [[ -z $rbuffer ]]; then
+      post='*'
+    else
+      post=$no_delim
+    fi
+    query="(|$pre)$query$post"
+  else
+    query='()*'
+  fi
+
+  [[ $curcontext == *-incremental-* ]]
+  local -Pi is_incremental=$(( ! ? ))
+
+  # Non-incremental search potentially adds a lot of completions, which can be quite slow.
+  (( is_incremental )) ||
+      zle -R 'Loading...'
+
+  # Using fc is way faster than using $history.
+  local -P output="$( fc -lrm "$lbuffer$query$rbuffer" -1 1 2> /dev/null )"
+
+  # No results
+  [[ -z $output ]] &&
+      return 1
+
+  local -aU displays=( "${(f)output}" )
+  local -P numpat='[[:blank:]]#(<->)[*[:blank:]][[:blank:]]'
+
+  local -P groups="${(l:$(( 2 * $#words[CURRENT] ))::=0:):-}"
+  _comp_colors=(
+      "=(#b)${numpat}${lbuffer}(${query})${rbuffer}${rbuffer:+[[:blank:]]#}=2=2=0=0=30;103$groups"
+      "=(#b)${numpat}${lbuffer}(${query})*=2=2=0=30;103$groups"
+      "=(#b)${numpat}${lbuffer}(*)=2=2=0"
+      "=(#b)${numpat}*=0=2"
+      ${(M)_comp_colors:#ma=*}
+  )
+
+  local -Pi excess= index= max= list_lines=
+  if (( is_incremental )); then
+    .autocomplete:async:list-choices:max-lines
+    (( list_lines = _autocomplete__max_lines ))
+    (( max = 16 * list_lines ))  # Buffer for bubbling up more relevant results.
+  else
+    zstyle -s ":autocomplete:${curcontext}:" list-lines list_lines ||
+        (( list_lines = $LINES / 2 ))
+    (( max = $list_lines ))
+  fi
+
+
+  if [[ -o histfindnodups ]]; then
+    local -PaU uniques=()
+    local -Pa lines=()
+    local -Pi size=0
+    for index in {$#displays[@]..1}; do
+      uniques+=( ${displays[index]##$~numpat} )
+      (( $#uniques[@] > size )) &&
+          lines+=( "$displays[index]" )
+      (( size = $#uniques ))
+      (( size < max )) ||
+          break
+    done
+    displays=( "${(aO)lines[@]}" )
+  else
+    (( excess = $#displays[@] - max ))
+    (( excess > 0 )) &&
+        shift $excess displays
+  fi
+
+  local -P pop=
+  if (( is_incremental )); then
+    pop=-p
+
+    if [[ -z $words[CURRENT] ]]; then
+      displays=( ${(@aO)displays} )
+
+    else
+      local -a match=() mbegin=() mend=()
+      local -Pi num=0
+
+      # Fuzzy sort
+      for index in {1..$#displays[@]}; do
+        num=${(SM)${(M)displays[index]##$~numpat}##<->}
+        displays[index]=${history[$num]:/(#b)$~lbuffer($~query)$~rbuffer/$((
+            HISTNO - num + 64 * $#match[3] + 16 * mbegin[3] + 4 * $#match[1]
+        ))}$'\0'$displays[index]
+      done
+      displays=( ${${(@n)displays}[@]##<->$'\0'} )
+    fi
+  fi
+
+  (( excess = $#displays[@] - list_lines ))
+  (( excess > 0 )) &&
+      shift $pop $excess displays
+
+  # To avoid wrapping, each completion should be one char less than terminal width.
+  displays=( ${(@r:COLUMNS-1:)displays} )
+
+  local -Pa matches=()
+  for index in "${(MS)displays[@]##<->}"; do
+    matches+=( "${${history[$index]##$~lbuffer}%%$~rbuffer}" )
+  done
+
+  local -Pa suf=()
+  if (( $#words[@] == 1 )); then
+    if [[ $WIDGETSTYLE == *-select* ]]; then
+      # Enable mult-select.
+      suf=( -S ';' -R _autocomplete__history_lines_suffix )
+    else
+      suf=( -qS ' ' )
+    fi
+  fi
+
+  local tag=history-lines
+  _comp_tags=" $tag"
+  local _comp_no_ignore=1
+  local -a expl=()
+  _description -2V $tag expl ''
+  builtin compadd $suf -QU -ld displays "$expl[@]" -a matches
+}
+
+_autocomplete__history_lines_suffix() {
+  [[ $KEYS[-1] != $'\C-@' ]] &&
+      LBUFFER=$LBUFFER[1,-1-$1]
+}
+
+_autocomplete__history_lines "$@"

@@ -1,0 +1,182 @@
+#!/bin/zsh
+zmodload -Fa zsh/zutil b:zstyle
+
+typeset -g ZLE_REMOVE_SUFFIX_CHARS=$' /;\n\r\t'
+typeset -g ZLE_SPACE_SUFFIX_CHARS='|&<>-+'
+
+builtin zstyle ':completion:*' use-cache yes
+builtin zstyle -e ':completion:*' cache-path autocomplete:config:cache-path
+autocomplete:config:cache-path() {
+  typeset -ga reply=( "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache" )
+}
+
+builtin zstyle ':completion:*' completer \
+    _expand _complete _complete:-fuzzy _correct _approximate _ignored
+
+builtin zstyle -e ':completion:*' max-errors autocomplete:config:max-errors
+autocomplete:config:max-errors() {
+  typeset -ga reply=( $(( min( 2, ( $#PREFIX + $#SUFFIX ) / 3 ) )) )
+}
+
+# Order of matchers matters: m should come before r, which should come before l.
+# Otherwise, the results are not as expected.
+local lower_to_upper='m:{[:lower:]-}={[:upper:]_}'
+local any_before_dot='r:|[.]=**'
+local any_before_any='r:|?=**'
+local nonseparators_after_any_before_separator='r:?||[-_ \]=*'
+local any_before_word='l:|=*'
+local separator_after_any='l:?|=[-_ \]'
+builtin zstyle ':completion:*' matcher-list \
+    "$lower_to_upper $any_before_dot"
+builtin zstyle ':completion:*-fuzzy:*' matcher-list \
+    "$lower_to_upper $any_before_dot $any_before_word" \
+    "+$nonseparators_after_any_before_separator $separator_after_any" \
+    "$lower_to_upper $any_before_any"
+
+local minus_at_beginning_to_plus='b:-=+'
+builtin zstyle ':completion:*:options' matcher $minus_at_beginning_to_plus
+
+builtin zstyle ':completion:*' prefix-needed yes
+builtin zstyle ':completion:*:functions'  ignored-patterns '*.*' '*:*' '+*'
+builtin zstyle ':completion:*:users'      ignored-patterns '_*'
+builtin zstyle ':completion:*:widgets'    ignored-patterns '*.*' '*:*'
+builtin zstyle ':completion:*' single-ignored ''
+
+builtin zstyle ':completion:*:expand-alias:*' complete yes
+
+builtin zstyle    ':completion:*:expand:*' tag-order '! expansions original' -
+builtin zstyle    ':completion:*:expand:*' accept-exact continue
+
+builtin zstyle -e ':completion:*:expand:*' glob autocomplete:config:glob:expand
+autocomplete:config:glob:expand() {
+  if [[ -z $QIPREFIX && "$exp" == $word ]]; then
+    # Glob only when the string isn't quoted and no substitution has occured.
+    reply=( yes )
+  else
+    reply=( no )
+  fi
+}
+
+builtin zstyle    ':completion:*:expand:*' keep-prefix no  # Needed for file type highlighting
+builtin zstyle    ':completion:*:expand:*' add-space subst
+
+builtin zstyle -e ':completion:*:expand:*' substitute autocomplete:config:substitute:expand
+autocomplete:config:substitute:expand() {
+  local -P __word__=$PREFIX$SUFFIX
+  if [[ ${(Q)__word__} == *(\`*\`|\$\(*\))* ]]; then
+    typeset -ga reply=( no )
+  else
+    typeset -ga reply=( yes )
+  fi
+}
+builtin zstyle -e ':completion:*:-command-:*' tag-order autocomplete:config:tag-order:command
+autocomplete:config:tag-order:command() {
+  if [[ $PREFIX == (|.|*/*) ]]; then
+    typeset -ga reply=( 'suffix-aliases (|*-)directories executables (|*-)files' - )
+  else
+    typeset -ga reply=( 'aliases suffix-aliases functions reserved-words builtins' )
+    if (( path[(I).] )); then
+      reply[1]+=' (|*-)directories executables (|*-)files commands'
+    else
+      reply[1]+=' commands (|*-)directories executables (|*-)files'
+    fi
+  fi
+}
+builtin zstyle ':completion:*:-tilde-:*' tag-order directory-stack named-directories
+
+builtin zstyle ':completion:*:(approximate|correct):*' tag-order '! original' -
+
+# Complete options rather than directory stack. You can get directory stack by typing `~-` (tilde plus dash).
+builtin zstyle ':completion:*:cd:*' complete-options yes
+builtin zstyle ':completion:*:cd:*' tag-order '! directory-stack' -
+
+# Don't show the giant list of history lines.
+builtin zstyle ':completion:*:fc:*' tag-order options -
+
+builtin zstyle -e ':completion:*:git-*:*' tag-order 'autocomplete:config:tag-order:git "$@"'
+autocomplete:config:tag-order:git() {
+  reply=()
+  (( compstate[nmatches] )) &&
+      reply=(
+          '! heads(|-*) *-remote remote-* blob-*'
+          -
+      )
+}
+
+# Complete only the tail of a path.
+builtin zstyle ':completion:*' ignore-parents 'parent pwd directory'
+builtin zstyle ':completion:*:paths' expand suffix
+builtin zstyle ':completion:*:paths' list-suffixes yes
+builtin zstyle ':completion:*:paths' special-dirs no
+
+builtin zstyle ':completion:*'             group-name ''
+builtin zstyle ':completion:*:-command-:*' group-name commands
+
+builtin zstyle ':completion:*' group-order \
+    all-expansions expansions options \
+    aliases suffix-aliases functions reserved-words builtins commands \
+    remotes hosts recent-branches commits \
+    local-directories directories executables
+
+builtin zstyle    ':completion:*'               file-patterns '*(-/):directories:directory %p(#q^-/):globbed-files'
+builtin zstyle -e ':completion:*:-command-:*'   file-patterns autocomplete:config:file-patterns:command
+autocomplete:config:file-patterns:command() {
+  [[ $PREFIX$SUFFIX != */* ]] &&
+      typeset -ga reply=( '*(-/):directories:directory ./*(-*^/):executables:"executable file"' )
+}
+builtin zstyle    ':completion:*:(.|source):*'  file-patterns \
+    '%p(#q-/):directories:directory %p~*.zwc(-.^*):globbed-files' '%p~*.zwc(-^/):globbed-files'
+
+# Don't combine parameters with same values.
+builtin zstyle ':completion:*:parameters' list-grouped no
+
+builtin zstyle -e ':completion:*:-command-:*'    format autocomplete:config:format command
+builtin zstyle -e ':completion:*:descriptions'   format autocomplete:config:format %d
+builtin zstyle -e ':completion:*:all-expansions' format autocomplete:config:format expansion
+autocomplete:config:format() {
+  reply=( $'%{\e[0;1;2m%}'$1$'%{\e[0m%}' )
+}
+
+builtin zstyle -e ':completion:*:expansions'     format autocomplete:config:format:expansions
+autocomplete:config:format:expansions() {
+  if (( $#exp[@] > 1 )); then
+    autocomplete:config:format 'globbed files'
+  else
+    autocomplete:config:format expansion
+  fi
+}
+
+builtin zstyle -e ':completion:*:warnings'    format autocomplete:config:format:warnings
+autocomplete:config:format:warnings() {
+  [[ $CURRENT == 1 && -z $PREFIX$SUFFIX ]] ||
+      autocomplete:config:format 'no matching %d completions'
+}
+
+builtin zstyle ':completion:*:messages'       format '%F{9}%d%f'
+builtin zstyle ':completion:*:history-lines'  format ''
+
+builtin zstyle ':completion:*' auto-description '%d'
+builtin zstyle ':completion:*:parameters' extra-verbose yes
+builtin zstyle ':completion:*:default' select-prompt '%F{black}%K{12}line %l %p%f%k'
+
+builtin zstyle ':completion:*' insert-sections yes
+builtin zstyle ':completion:*' separate-sections yes
+
+# Needed for _gnu_generic to prevent descriptions from getting cropped.
+is-at-least 5.9 ||
+    builtin zstyle ':completion:*' command '- COLUMNS=999'
+
+${0}:precmd() {
+  typeset -g _comp_setup="$_comp_setup"';
+      [[ $_comp_caller_options[globdots] == yes ]] && setopt globdots'
+
+  # Remove incompatible settings.
+  local -P key= setting=
+  for key in menu list-prompt; do
+    for setting in ${(f)"$( zstyle -L '*' $key )"}; do
+      eval "${setting/zstyle(| -e)/zstyle -d}"
+    done
+  done
+  builtin zstyle ':completion:*:*:*:*:default' menu no no-select
+  unset LISTPROMPT
+}

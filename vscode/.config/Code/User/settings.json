@@ -1,0 +1,23 @@
+{
+    "vim.vimrc.path": "$HOME/.config/ideavimrc",
+    "vim.vimrc.enable": true,
+    "vim.useSystemClipboard": true,
+    "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/bin/fcitx5-remote",
+    "vim.autoSwitchInputMethod.switchIMCmd": "/usr/bin/fcitx5-remote -t {im}",
+    "vim.autoSwitchInputMethod.enable": true,
+    "vim.autoSwitchInputMethod.defaultIM": "1",
+    "files.autoSave": "afterDelay",
+    "C_Cpp.default.systemIncludePath": [
+			//c语言添加自定义库
+			//"C:\\Keil_v5\\C51\\Inc\\**"
+    ],
+    "git.openRepositoryInParentFolders": "always",
+    "editor.fontSize": 18,
+    "vscode-office.editorLanguage": "zh_CN",
+    "vscode-office.pasterImgPath": "${fileName}.assets/${now}.png",
+    "workbench.colorTheme": "One Dark Pro Flat",
+    "editor.fontFamily": "ComicShannsMono Nerd Font",
+    "workbench.activityBar.location": "top",
+    // 在vscode中切换escape和caps,在keybindings中设置所以这里注释
+    // "keyboard.dispatch": "keyCode"
+}

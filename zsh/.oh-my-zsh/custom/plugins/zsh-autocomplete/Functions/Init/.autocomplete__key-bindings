@@ -1,0 +1,66 @@
+#!/bin/zsh
+zmodload zsh/complist
+zmodload -F zsh/terminfo p:terminfo
+
+local -Pa prefix=( '\e'{\[,O} )
+local -Pa key_up=(   ${^prefix}A )
+local -Pa key_down=( ${^prefix}B )
+local -Pa key_alt_up=(   '\e'$^key_up   '\e[1;3A' )
+local -Pa key_alt_down=( '\e'$^key_down '\e[1;3B' )
+
+local -A main=() emacs=() vicmd=() menukeys=()
+
+${0}:bind() {
+  local -P key= widget=$1 menuwidget=$2
+
+     emacs[$3]=$widget
+  menukeys[$3]=$menuwidget
+
+  vicmd[$4]=$widget
+  key="^[$4"
+  menukeys[$key]=$menuwidget
+
+  shift 4
+  for key; do
+        main[$key]=$widget
+    menukeys[$key]=$menuwidget
+  done
+}
+
+${0}:bind   up-line-or-search   up-history '^P' 'k' $key_up[@]
+${0}:bind down-line-or-select down-history '^N' 'j' $key_down[@]
+
+local backtab=$terminfo[kcbt]
+
+menukeys+=(
+                '\t' accept-line
+                '^@' accept-and-hold
+               '^[v' accept-and-hold
+                '^_' undo
+               '^[u' undo
+    "$terminfo[kpp]" backward-word
+    "$terminfo[knp]"  forward-word
+)
+bindkey -M menuselect -s "$backtab" "^_$backtab"
+
+
+main+=(
+          '\t' complete-word
+    "$backtab" insert-unambiguous-or-complete
+)
+emacs+=(
+    '^X/' recent-paths
+)
+
+${0}:bind history-search-backward vi-backward-blank-word '\ep' '^P' $key_alt_up[@]
+${0}:bind history-search-forward   vi-forward-blank-word '\en' '^N' $key_alt_down[@]
+
+${0}:bind history-incremental-search-backward history-incremental-search-backward '^R' '/'
+${0}:bind                         menu-search history-incremental-search-forward  '^S' '?'
+
+bindkey -M       main "${(kv@)main}"
+bindkey -M      emacs "${(kv@)emacs}"
+bindkey -M      vicmd "${(kv@)vicmd}"
+bindkey -M menuselect "${(kv@)menukeys}"
+
+unfunction ${0}:bind

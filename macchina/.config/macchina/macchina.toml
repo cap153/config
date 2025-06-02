@@ -1,0 +1,26 @@
+theme = "lf" 
+# Specifies the network interface to use for the LocalIP readout
+interface = "wlp0s20f3"
+# Displays only the specified readouts.
+# Accepted values (case-sensitive):
+#   - Host
+#   - Machine
+#   - Kernel
+#   - Distribution
+#   - OperatingSystem
+#   - DesktopEnvironment
+#   - WindowManager
+#   - Resolution
+#   - Backlight
+#   - Packages
+#   - LocalIP
+#   - Terminal
+#   - Shell
+#   - Uptime
+#   - Processor
+#   - ProcessorLoad
+#   - Memory
+#   - Battery
+#   - GPU
+#   - DiskSpace
+show = ["Host", "Kernel", "Distribution", "OperatingSystem","WindowManager","Resolution","Backlight","Packages","LocalIP","Terminal","Shell","Uptime","Processor","ProcessorLoad","Memory","Battery","GPU","DiskSpace"]

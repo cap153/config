@@ -1,0 +1,29 @@
+spacing   = 4
+padding   = 2
+key_color = "#50fa7b"
+separator = ""
+
+[custom_ascii]
+path  = "~/.config/macchina/ascii/mac.txt"
+color = "#bd93f9"
+
+[keys]
+host = " Host"
+machine = "󰷵 Machine"
+de = " Desktop"
+wm = " Window Manager"
+kernel = " Kernel"
+distro = "󰌽 Distro"
+backlight = " Brightness"
+local_ip = " Local IP"
+packages = " Packages"
+terminal = " Terminal"
+shell = " Shell"
+cpu = " CPU"
+cpu_load = " CPU Load"
+memory = "󰍛 Memory"
+battery = " Battery"
+uptime = " Uptime"
+resolution = "󱡶 Resolution"
+gpu = " GPU"
+disk_space = " Disk"

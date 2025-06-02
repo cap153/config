@@ -1,0 +1,34 @@
+unmap d
+unmap n
+unmap m
+unmap f
+unmap -
+map u scrollUp
+map e scrollDown
+map n scrollLeft
+map i scrollRight
+map <c-u> scrollToTop
+map <c-e> scrollToBottom
+map E scrollPageDown
+map U scrollPageUp
+
+map = performFind
+map - performBackwardsFind
+
+map l goBack
+map Q removeTab
+map N previousTab
+map I nextTab
+map k focusInput
+
+map a LinkHints.activate
+map A LinkHints.activateOpenInNewForegroundTab
+
+mapKey <N:v> <0>
+mapkey <U:v> k
+mapkey <E:v> j
+mapKey <I:v> <$>
+mapkey <n:v> h
+mapkey <u:v> k
+mapkey <e:v> j
+mapkey <i:v> l

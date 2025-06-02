@@ -1,0 +1,27 @@
+#!/bin/zsh
+emulate -L zsh
+setopt $_autocomplete__func_opts[@]
+
+typeset -g _autocomplete__last_cutbuffer
+typeset -g _autocomplete__zle_flags=
+{
+  if (( YANK_ACTIVE )); then
+    _autocomplete__zle_flags=yank
+    (( YANK_END <= CURSOR )) &&
+        _autocomplete__zle_flags+=before
+
+    return 1  # Tell caller to abort.
+  fi
+
+  [[ $_autocomplete__last_cutbuffer != $CUTBUFFER ]] &&
+      _autocomplete__zle_flags=kill
+
+  return 0
+
+} always {
+  [[ -n $_autocomplete__zle_flags ]] &&
+      builtin zle -f $_autocomplete__zle_flags
+  typeset -g _autocomplete__last_cutbuffer=$CUTBUFFER
+}
+
+return 0

@@ -1,0 +1,40 @@
+#!/bin/zsh
+zmodload -Fa zsh/files b:zf_mv b:zf_mkdir
+zmodload -F zsh/parameter p:commands p:dirstack p:functions
+
+${0}:precmd() {
+  [[ -v functions[+autocomplete:recent-directories] ]] &&
+      return
+
+  setopt autopushd pushdignoredups  # Set *global* shell options.
+  builtin autoload -RUz chpwd_recent_filehandler
+
+  local __=''
+  builtin zstyle -s :chpwd: recent-dirs-file __ ||
+      builtin zstyle ':chpwd:*' recent-dirs-file ${XDG_DATA_HOME:-$HOME/.local/share}/zsh/chpwd-recent-dirs
+  builtin zstyle -s :chpwd: recent-dirs-max __ ||
+      builtin zstyle ':chpwd:*' recent-dirs-max 0
+
+  if ! (( $#dirstack[@] )); then
+    local -aU reply=()
+    chpwd_recent_filehandler
+    dirstack=( ${^reply[@]:#$PWD}(N-/) )
+  fi
+
+  +autocomplete:recent-directories:save() {
+    chpwd_recent_filehandler $PWD $dirstack[@]
+  }
+  add-zsh-hook chpwd +autocomplete:recent-directories:save
+
+  +autocomplete:recent-directories() {
+    typeset -ga reply
+
+    # Don't complete /, ~, $PWD or its children, or nonexistent dirs.
+    reply=( ${^dirstack[@]:#([/~]|$PWD(|/[^/]#))}(N) )
+
+    [[ -n $1 ]] &&
+        reply=( ${(M)reply:#(#l)*${(~j:*:)${(s::)1}}*} )
+
+    (( $#reply[@] ))
+  }
+}

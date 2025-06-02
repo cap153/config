@@ -1,0 +1,35 @@
+#autoload
+zmodload -Fa zsh/parameter p:functions
+
+# Don't run more than once.
+(( _matcher_num > 1 )) &&
+    return 1
+
+local -aU files
+local -a expl displ
+local -iP ret i
+local -P singular plural tag
+
+ret=1
+
+.autocomplete:async:list-choices:max-lines
+
+for singular plural in directory directories file files; do
+  if [[ -v functions[+autocomplete:recent-$plural] ]] &&
+      +autocomplete:recent-$plural "$PREFIX$SUFFIX"; then
+    files=( "$reply[@]" )
+
+    tag=recent-$plural
+    _comp_tags+=" $tag"
+    _description -V "$tag" expl "recent $singular"
+
+    for (( i = 1 ; i <= $#files && compstate[list_lines] < _autocomplete__max_lines ; i++ )); do
+      displ=( "$files[i]" )
+      compadd -U "$expl[@]" -d displ -P "${${displ[1]:h}%/}/" -fW "${${files[i]:h}%/}/" \
+          -- "$files[i]:t" &&
+          ret=0
+    done
+  fi
+done
+
+return ret

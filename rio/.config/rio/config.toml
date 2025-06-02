@@ -1,0 +1,22 @@
+# 光标样式
+cursor = '|'
+# 输入时隐藏光标
+hide-cursor-when-typing = true
+# 主题
+theme = "dracula"
+# 选项作为右边 Alt
+option-as-alt = 'right'
+# 退出时不确认
+confirm-before-quit = false
+# 透明度配置，貌似没生效
+[window]
+opacity = 0.9
+
+# 字体相关配置
+[fonts]
+family = "ComicShannsMono Nerd Font"
+# 字体大小
+size = 24
+# 加载中文字体
+extras = [{ family = "LXGW WenKai Mono GB Screen" }]
+

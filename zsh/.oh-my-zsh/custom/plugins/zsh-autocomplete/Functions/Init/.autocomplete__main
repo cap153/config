@@ -1,0 +1,95 @@
+#!/bin/zsh
+zmodload -Fa zsh/files b:zf_mkdir b:zf_rm
+zmodload -F zsh/parameter p:functions
+zmodload -F zsh/system p:sysparams
+zmodload -F zsh/zleparameter p:widgets
+zmodload -Fa zsh/zutil b:zstyle
+builtin autoload +X -Uz add-zsh-hook zmathfunc
+zmathfunc
+
+typeset -ga _autocomplete__comp_opts=( localoptions NO_banghist )
+typeset -ga _autocomplete__ctxt_opts=( completealiases completeinword )
+
+typeset -ga _autocomplete__mods=( compinit config widgets key-bindings recent-dirs async )
+
+typeset -gU FPATH fpath=( ~autocomplete/Completions $fpath[@] )
+
+local -P xdg_data_home=${XDG_DATA_HOME:-$HOME/.local/share}
+
+local -P zsh_data_dir=$xdg_data_home/zsh
+[[ -d $zsh_data_dir ]] ||
+    zf_mkdir -pm 0700 $zsh_data_dir
+
+local -P old_logdir=$xdg_data_home/zsh-autocomplete/log
+[[ -d $old_logdir ]] &&
+    zf_rm -fr -- $old_logdir
+
+local -P logdir=${XDG_STATE_HOME:-$HOME/.local/state}/zsh-autocomplete/log
+
+local -P bug=
+for bug in ${logdir} ${logdir:h}; do
+  [[ -d $bug ]] ||
+      zf_rm -f $bug
+done
+
+zf_mkdir -p -- $logdir
+hash -d autocomplete-log=$logdir
+
+local -Pa older_than_a_week=( $logdir/*(Nmd+7) )
+(( $#older_than_a_week[@] )) &&
+    zf_rm -f -- $older_than_a_week[@]
+
+typeset -g _autocomplete__log=${logdir}/${(%):-%D{%F}}.log
+typeset -g _autocomplete__ps4=$'%D{%T.%.} %e\t%N\t%I\t%? %(1_,%_ ,)'
+
+local -P zsh_cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+[[ -d $zsh_cache_dir ]] ||
+    zf_mkdir -pm 0700 $zsh_cache_dir
+
+local -P mod=
+for mod in $_autocomplete__mods; do
+  builtin zstyle -T ":autocomplete:$mod" enabled &&
+      .autocomplete__$mod "$@"
+  unfunction .autocomplete__$mod
+done
+
+add-zsh-hook precmd ${0}:precmd
+
+# Make sure we always run before Autosuggest, so we don't overwrite its default ignore list.
+typeset -gaU precmd_functions=( ${0}:precmd $precmd_functions )
+
+${0}:precmd() {
+  # WORKAROUND: For hook functions in Zsh 5.8, $0 can be something else than the function name.
+  0=${(%):-%N}
+
+  add-zsh-hook -d precmd $0
+  unfunction $0
+
+  () {
+    emulate -L zsh
+    setopt $_autocomplete__func_opts[@]
+
+    # Workaround for https://www.zsh.org/mla/workers/2021/msg01310.html
+    if builtin zstyle -L zle-hook types > /dev/null; then
+      local -P hook=
+      for hook in \
+          zle-{isearch-{exit,update},line-{pre-redraw,init,finish},history-line-set,keymap-select}
+      do
+        [[ -v widgets[$hook] &&
+              $widgets[$hook] == user:_zsh_highlight_widget_orig-s*-r<->-$hook ]] &&
+            builtin zle -N $hook azhw:$hook
+      done
+    fi
+  }
+
+  local -P mod=
+  for mod in $_autocomplete__mods; do
+    mod=.autocomplete__${mod}:precmd
+    if [[ -v functions[$mod] ]]; then
+      $mod
+      unfunction $mod
+    fi
+  done
+
+  true
+}
