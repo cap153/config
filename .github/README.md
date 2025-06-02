@@ -13,8 +13,8 @@ cd ~/.dotfiles
 `stow` 可以将配置软链接到 `~/.confing` ，一些常用参数如下：
 
 ```bash
-# 链接指定配置
-stow wezterm systemd kitty
+# 链接想要使用的配置
+stow wezterm systemd kitty fonts
 # 取消链接指定配置
 stow -D wezterm kitty
 # 链接全部配置
@@ -22,3 +22,6 @@ stow *
 # 重新链接所有配置，相当于先-D再-S
 stow -R *
 ```
+
+![链接后的效果](README.assets/链接后的效果.png)
+
