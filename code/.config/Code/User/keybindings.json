@@ -1,0 +1,29 @@
+[
+	{
+		"key": "tab",
+		"command": "acceptSelectedSuggestion",
+		"when": "suggestWidgetVisible && textInputFocus"
+	},
+	{
+		"key": "shift+tab",
+		"command": "acceptSelectedSuggestion",
+		"when": "suggestWidgetVisible && textInputFocus"
+	},
+	{
+		"key": "tab",
+		"command": "selectNextSuggestion",
+		"when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+	},
+	{
+		"key": "shift+tab",
+		"command": "selectPrevSuggestion",
+		"when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+	},
+	// 分别针对vim和neovim插件的交换caps和esc的键位映射
+	// {
+	// 	"key": "capslock",
+	// 	"command": "extension.vim_escape",
+	// 	"when": "editorTextFocus && vim.active && !inDebugRepl"
+	// },
+	{"key": "capslock", "command": "vscode-neovim.escape" },
+]

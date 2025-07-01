@@ -1,0 +1,11 @@
+[Unit]
+Description=Kanata keyboard remapper
+Documentation=https://github.com/jtroo/kanata
+
+[Service]
+Type=simple
+ExecStart=kanata --cfg /home/%u/.dotfiles/kanata/.config/kanata/caps_tap_esc_hold_ctrl.kbd
+Restart=no
+
+[Install]
+WantedBy=default.target

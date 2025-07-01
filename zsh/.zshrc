@@ -1,0 +1,8 @@
+source ~/.config/zsh/env.zsh
+source ~/.config/zsh/plugins.zsh
+source ~/.config/zsh/zim.zsh
+source ~/.config/zsh/aliases.zsh
+source ~/.config/zsh/vi.zsh
+source ~/.config/zsh/mappings.zsh
+source ~/.config/zsh/fonts.zsh
+source ~/.config/zsh/skim.zsh

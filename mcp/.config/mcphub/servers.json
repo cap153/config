@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "browser-tools-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@agentdeskai/browser-tools-mcp@latest"
+      ],
+      "alwaysAllow": [
+        "getNetworkLogs",
+        "takeScreenshot",
+        "getSelectedElement"
+      ]
+    }
+  }
+}
