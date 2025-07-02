@@ -5,7 +5,7 @@
 # 英文字体(可以使用 CLI 生成有效值列表:ghostty +list-fonts)
 font-family = "ComicShannsMono Nerd Font"
 # 中文字体
-font-family = "LXGW WenKai Mono GB Screen"
+font-family = "LXGW WenKai Mono"
 # 字体大小
 font-size = 18
 # 自动复制选中文本

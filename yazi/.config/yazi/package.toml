@@ -33,5 +33,15 @@ use = "ndtoan96/ouch"
 rev = "10b4627"
 hash = "3ec6a973d506665f1570a9fe08343fd8"
 
+[[plugin.deps]]
+use = "cap153/skim"
+rev = "2e24768"
+hash = "b0365fb4387cbb2c0eaa54ee5632970c"
+
+[[plugin.deps]]
+use = "cap153/skim-rg"
+rev = "e857105"
+hash = "e8a6b33ddc0f1b9ff31ecaa171db7343"
+
 [flavor]
 deps = []
