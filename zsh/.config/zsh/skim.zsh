@@ -5,6 +5,9 @@
 
 # 需要提前安装好skim fd bat ripgrep
 
+# 可以在这里更改skim的默认命令
+export SKIM_DEFAULT_COMMAND="fd --type f -HL --exclude '.git' || git ls-tree -r --name-only HEAD || rg --files || find ."
+
 # sk共用的参数，配置移动的快捷键为^e和^u，视图翻转成从上到下
 OPTS=(
   --bind='ctrl-e:down,ctrl-u:up'
@@ -24,7 +27,7 @@ zle -N fzf-redraw-prompt
 fzf-file-widget-custom() {
   # --multi参数在使用tab键的时候可以多选文件
 	# -HL参数将会搜索隐藏文件和软链接
-  local selected=$(fd --type f -HL | sk --multi --preview='bat -n --color=always {}' "${OPTS[@]}")
+  local selected=$(fd --type f -HL --exclude '.git' | sk --multi --preview='bat -n --color=always {}' "${OPTS[@]}")
   
   # 如果有选中项
   if [[ -n "$selected" ]]; then
@@ -82,17 +85,19 @@ fzf-global-grep() {
 		start=$((line > 10 ? line - 10 : 1));
 		bat --style=numbers --color=always --line-range "$start:" --highlight-line "$line" "$file"
 	'
-	# 1. 使用 ripgrep 搜索，输出格式为 `文件路径:行号:内容`
-	#    --color-always:     高亮显示
-	#    -n, --line-number:  这是解决重复问题的关键，每匹配行只输出一次。
-	#    --no-heading:       在搜索目录时，不为每个文件添加标题。
-	#    --smart-case:       智能大小写匹配。
-	#		 --nth 4..: fzf 的一个技巧，只在前两个字段（文件名和行号）之后的内容中搜索，
-	# 	 这样搜索 'foo' 时就不会意外匹配到名为 'foo.txt' 的文件。
-	# 	 关于预览窗口--preview-window ：
-	# 	 'up,60%,border-bottom': 定义窗口在上方，占60%高度，带边框
-	# 	 '+{2}/2':              将预览内容滚动，使第 {2} 行位于窗口中央
-	# 	 'wrap':              如果一行内容太长，自动换行显示
+	# 1. 使用 ripgrep 搜索：
+	#	 --color-always:高亮显示
+	#	 --vimgrep:	    输出格式为 `文件路径:行号:列号:内容`
+	#	 --no-heading:  在搜索目录时，不为每个文件添加标题。
+	#	 --smart-case:  智能大小写匹配。
+	#	sk相关参数：
+	#	 --nth 4..: fzf 的一个技巧，只在前几个字段（文件名和行号、列号）之后的内容中搜索，
+	#	 这样搜索 'foo' 时就不会意外匹配到名为 'foo.txt' 的文件。
+	#	关于预览窗口--preview-window ：
+	#	 'up,60%,border-bottom': 定义窗口在上方，占60%高度，带边框
+	#	 '+{2}/2: 将预览内容滚动，使第 {2} 行(rg返回的行号)位于窗口中央(没有生效所以改用bat的--line-range显示指定范围)
+	#	 'wrap': 如果一行内容太长，自动换行显示
+	#	 {1}: rg返回的文件名
 	local selected
 	selected=$(sk --ansi \
 		-i \
@@ -158,4 +163,3 @@ bindkey '^f' fzf-global-grep-widget
 #     nvim "+${line}" "${file}"
 #   fi
 # }
-
