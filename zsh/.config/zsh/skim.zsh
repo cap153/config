@@ -163,3 +163,4 @@ bindkey '^f' fzf-global-grep-widget
 #     nvim "+${line}" "${file}"
 #   fi
 # }
+

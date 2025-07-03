@@ -126,6 +126,7 @@ prepend_keymap = [
 	{ on = [ "g", "s" ],       run = "cd ~/.dotfiles/sway/.config/sway", desc = "Go to the sway config" },
 	{ on = [ "g", "i" ],       run = "cd ~/.dotfiles/i3/.config/i3", desc = "Go to the i3 config" },
 	{ on = [ "g", "f", "f" ],       run = "cd ~/.dotfiles", desc = "Go to the config" },
+	{ on = [ "g", "f", "k" ],       run = "cd ~/.dotfiles/kitty/.config/kitty", desc = "Go to the config" },
 	{ on = [ "g", "f", "y" ],       run = "cd ~/.dotfiles/yazi/.config/yazi", desc = "Go to the yazi config" },
 	{ on = [ "g", "f", "z" ],       run = "cd ~/.dotfiles/zsh/.config/zsh", desc = "Go to the zsh config" },
 	{ on = [ "g", "f", "n" ],       run = "cd ~/.config/nvim", desc = "Go to the nvim config" },
