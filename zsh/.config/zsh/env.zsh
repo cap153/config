@@ -3,6 +3,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 
+# HomeBrew包管理器
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
 # export LANG=zh_CN.UTF-8
 # export LANGUAGE=zh_CN:en_US
 
