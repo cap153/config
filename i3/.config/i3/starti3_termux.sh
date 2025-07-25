@@ -1,22 +1,22 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# Kill open X11 processes
+# 杀死以前的X11进程
 kill -9 $(pgrep -f "termux.x11") 2>/dev/null
 
-# Enable PulseAudio over Network
+# 通过网络启用PulseAudio
 pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
 
-# Prepare termux-x11 session
+# 准备termux-x11会话
 export XDG_RUNTIME_DIR=${TMPDIR}
 termux-x11 :0 >/dev/null &
 
-# Wait a bit until termux-x11 gets started.
+# 等3秒termux-x11启动
 sleep 3
 
-# Launch Termux X11 main activity
+# 启动termux-x11主要活动
 am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity > /dev/null 2>&1
 sleep 1
 
-# Login in PRoot Environment and execute .xinitrc script to start the desktop session.
+# 登录proot环境并执行.xinitrc脚本以启动i3wm，这里使用的用户名tiny
 proot-distro login debian --user tiny --shared-tmp -- /bin/bash -c 'env PULSE_SERVER=127.0.0.1 MESA_LOADER_DRIVER_OVERRIDE=zink TU_DEBUG=noconform ~/.xinitrc'
 exit 0

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 链接手机目录
-ln -s /storage/emulated/0 $HOME/SD
+ln -sn /storage/emulated/0 $HOME/SD
 
 # 设置 Fcitx5 运行所需的环境变量
 export GTK_IM_MODULE=fcitx
@@ -14,9 +14,5 @@ export GLFW_IM_MODULE=ibus
 # 这一步是保险措施，确保会话内有正确的 DISPLAY
 export DISPLAY=:0
 
-# 启动 Fcitx5 守护进程
-fcitx5 -d &
-
-# 使用 dbus-launch 启动整个 i3 会-话
-# 这是解决问题的核心
+# 使用 dbus-launch 启动整个 i3 会话
 exec dbus-launch --exit-with-session i3
