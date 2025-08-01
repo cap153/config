@@ -335,7 +335,8 @@ for_window [app_id="waterfox"] resize set width 25 ppt
 for_window [app_id="deno"] resize set width 25 ppt
 # scrcpy设置浮动
 for_window [class="scrcpy"] floating enable
-
+# 我的peek默认使用火狐预览markdown启动时不聚焦可以继续专注neovim
+no_focus [app_id="firefox-esr"]
 # 使用waybar来替代i3bar
 bar {
 	swaybar_command waybar

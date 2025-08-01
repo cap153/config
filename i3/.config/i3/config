@@ -340,3 +340,5 @@ for_window [class="firefox-esr"] resize set width 25 ppt
 for_window [class="neovide"] fullscreen enable
 # scrcpy设置浮动
 for_window [class="scrcpy"] floating enable
+# 我的peek默认使用火狐预览markdown启动时不聚焦可以继续专注neovim
+no_focus [class="firefox-esr"]
