@@ -62,11 +62,15 @@ prepend_keymap = [
 	# Copy
 	{ on = [ "y", "y" ], run = [ "yank", "escape --visual --select",
 		'''
-		shell --confirm 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list'
+    shell --confirm '
+        uris=$(for path in "$@"; do echo "file://$path"; done);
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            echo -n "$uris" | wl-copy -t text/uri-list;
+        else
+            echo -n "$uris" | xclip -i -selection clipboard -t text/uri-list;
+        fi
+    '
 		'''
-		# '''
-		# shell --confirm 'echo "$@" | xclip -i -selection clipboard -t text/uri-list'
-		# ''', 
 		], desc = "Copy file and to system clipboard" },
 	{ on = [ "y", "p" ], run = "copy path",             desc = "Copy absolute path" },
 	{ on = [ "y", "d" ], run = "copy dirname",          desc = "Copy dirpath" },
