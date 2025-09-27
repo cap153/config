@@ -21,7 +21,7 @@ font pango:monospace 8
 # 多显示器
 # swaymsg -t get_outputs
 # 使用上面命令查看活跃的显示器
-output HDMI-A-3 scale 2 bg $HOME/.config/sway/default.png fill
+output HDMI-A-2 scale 2 bg $HOME/.config/sway/default.png fill
 # transform 270表示逆时针旋转90度
 output DP-1 {
 	pos 0,0
@@ -289,7 +289,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-# bindsym $mod+Shift+q exec swaymsg exit
+bindsym $mod+Shift+q exec swaymsg exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

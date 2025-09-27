@@ -1,19 +1,7 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 19px;
-}
-
-#taskbar button:hover {
-    background-color: rgba(49, 50, 68, 0.6);
-}
-
-#taskbar button.active {
-    background-color: rgba(88, 91, 112, 0.6);
-}
-
-#taskbar button.active:hover {
-    background-color: rgba(108, 112, 134, 0.6);
+    font-size: 20px;
 }
 
 window#waybar {
@@ -24,6 +12,15 @@ window#waybar {
 window#waybar.hidden {
     opacity: 0.2;
 }
+
+/*
+window#waybar.empty {
+    background-color: transparent;
+}
+window#waybar.solo {
+    background-color: #FFFFFF;
+}
+*/
 
 window#waybar.termite {
     background-color: #3F3F3F;
@@ -47,11 +44,13 @@ window#waybar.chromium {
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-    background-color: rgba(49, 50, 68, 0.6);
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.focused {
-    background-color: rgba(88, 91, 112, 0.6);
+    background-color: #64727D;
+    box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.urgent {

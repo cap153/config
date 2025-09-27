@@ -6,7 +6,7 @@
 	// "width": 1366, // Waybar width
 	// Choose the order of the modules
 	"modules-left": ["sway/workspaces", "sway/mode", "custom/spotify"],
-	"modules-right": ["pulseaudio", "disk", "cpu", "memory", "battery", "clock", "tray"],
+	"modules-right": ["wireplumber", "bluetooth", "disk", "cpu", "memory", "battery", "clock", "tray"],
 	"sway/workspaces": {
 			"disable-scroll": true,
 			"all-outputs": false,
@@ -21,7 +21,7 @@
 			}
 	},
 	"disk":{
-			"format": "  {percentage_free}%",
+			"format": "󰉉  {percentage_free}%",
 	},
 	"sway/mode": {
 			"format": "<span style=\"italic\">{}</span>"
@@ -31,13 +31,13 @@
 			"spacing": 10
 	},
 	"clock": {
-			"format": "📅 {:%Y-%m-%d  🕑 %H:%M}",
+			"format": "  {:%Y-%m-%d    󰅐  %H:%M}",
 			// "format-alt": "{:%Y-%m-%d}"
     // "exec": "date +'%d. %b %H:%M'",
     // "interval": 10
 	},
 	"cpu": {
-			"format": "  {usage}%"
+			"format": "󰍛  {usage}%"
 	},
 	"memory": {
 			"format": "  {}%"
@@ -61,6 +61,23 @@
 			"format-ethernet": "  {ifname}: {ipaddr}/{cidr}",
 			"format-disconnected": "⚠ Disconnected "
 	},
+"wireplumber": {
+		"format": "{icon}  {volume}%   ",
+		"format-muted": "  ",
+		"on-click": "pwvucontrol",
+		"format-icons": ["", " "]
+},
+"bluetooth": {
+	"format": " {status}  ",
+	// "format-connected": " {device_alias}",
+	"format-connected-battery": " {device_battery_percentage}%  ",
+	// "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+	// "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+	// "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+	// "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+	// "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+	"on-click": "blueberry"
+},
 	"pulseaudio": {
 			//"scroll-step": 1,
 			"format": "{icon}  {volume}%",
