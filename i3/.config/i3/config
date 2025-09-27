@@ -93,9 +93,6 @@ bindsym $mod+z exec VBoxManage startvm "win7" --type gui
 # 启动安卓虚拟机
 bindsym $mod+shift+z exec genymotion-player --vm-name "Custom Phone"
 
-# 启动utool
-bindsym $mod+m exec trans
-
 # $mod+Shift+减号 移动暂存器，需先聚集指定窗口
 bindsym $mod+Shift+minus move scratchpad
 
@@ -103,11 +100,11 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 # 截图软件
-bindsym Print exec shutter -s
-bindsym $mod+j exec shutter -s
-# bindsym Print exec flameshot&flameshot gui
-# bindsym $mod+j exec flameshot&flameshot gui
-# for_window [class="flameshot"] floating enable
+# bindsym Print exec shutter -s
+# bindsym $mod+j exec shutter -s
+bindsym Print exec flameshot gui
+bindsym $mod+j exec flameshot gui
+for_window [class="flameshot"] floating enable
 
 # screenkey
 bindsym $mod+k --release exec screenkey
@@ -259,6 +256,75 @@ bindsym $mod+r mode "resize"
 default_border pixel 0
 hide_edge_borders both
 
+# 卡布奇诺主题
+set $rosewater #f5e0dc
+set $flamingo #f2cdcd
+set $pink #f5c2e7
+set $mauve #cba6f7
+set $red #f38ba8
+set $maroon #eba0ac
+set $peach #fab387
+set $yellow #f9e2af
+set $green #a6e3a1
+set $teal #94e2d5
+set $sky #89dceb
+set $sapphire #74c7ec
+set $blue #89b4fa
+set $lavender #b4befe
+set $text #cdd6f4
+set $subtext1 #bac2de
+set $subtext0 #a6adc8
+set $overlay2 #9399b2
+set $overlay1 #7f849c
+set $overlay0 #6c7086
+set $surface2 #585b70
+set $surface1 #45475a
+set $surface0 #313244
+set $base #1e1e2e
+set $mantle #181825
+set $crust #11111b
+
+# target                 title     bg    text   indicator  border
+client.focused           $lavender $base $text  $rosewater $lavender
+client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
+client.unfocused         $overlay0 $base $text  $rosewater $overlay0
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base
+
+# 开关状态栏
+bindsym $mod+m bar mode toggle
+
+# 卡布奇诺主题bar
+# bar {
+# 	# -t选项可使透明
+# 	i3bar_command i3bar
+# 	# status_command i3status
+# 	# position bottom
+# 	position top
+# 	# 启动时隐藏可以使用开关状态栏显示
+# 	# mode hide
+	
+# 	# 调整i3bar的大小，可与终端字体一起调整至合适的大小
+# 	# font pango:DejaVu Sans Mono 14
+# 	# font pango:Fira Code Nerd Font Mono 14
+# 	# font pango:Source Code Pro 14
+# 	font xft:URWGothic-Book 14
+# 	strip_workspace_numbers yes
+#   colors {
+#     background         $base
+#     statusline         $text
+#     focused_statusline $text
+#     focused_separator  $base
+
+#     # target           border bg        text
+#     focused_workspace  $base  $mauve    $crust
+#     active_workspace   $base  $surface2 $text
+#     inactive_workspace $base  $base     $text
+#     urgent_workspace   $base  $red      $crust
+#   }
+# }
+
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 # bar {
 # status_command ~/cmake-apps/bumblebee-status/bumblebee-status -m cpu memory battery time pasink pasource -p time.format="%H:%M" -t iceberg-powerline
@@ -300,12 +366,12 @@ hide_edge_borders both
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
-client.focused          #556064 #556064 #80FFF9 #FDF6E3
-client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
-client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
-client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
-client.placeholder      #000000 #0c0c0c #ffffff #000000
-client.background       #2B2C2B
+# client.focused          #556064 #556064 #80FFF9 #FDF6E3
+# client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
+# client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
+# client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
+# client.placeholder      #000000 #0c0c0c #ffffff #000000
+# client.background       #2B2C2B
 
 
 # # Start i3bar to display a workspace bar (plus the system information i3status
