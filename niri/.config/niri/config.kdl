@@ -1,0 +1,323 @@
+// 键盘鼠标触摸板等输入设备相关配置
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            variant "colemak"
+        }
+
+        // 在启动上启用numlock，省略此设置会禁用它。
+        numlock
+    }
+
+    touchpad {
+        tap
+        scroll-method "two-finger"
+    }
+
+    mouse {
+        // 设置鼠标移动速度,-1到1之间由慢到快
+        accel-speed 1
+    }
+
+	// niri默认接管电源按钮的功能是sleep,这里禁用以使用关机功能
+	disable-power-key-handling
+	// 切换mod键：正常使用alt，嵌套窗口内使用Super。
+	mod-key "Alt"
+	mod-key-nested "Super"
+}
+
+// 可以在niri实例中运行`niri msg outputs`找到显示器名称。
+output "HDMI-A-2" {
+    // 取消注释以禁用此显示器。
+    // off
+
+    // 默认聚焦在这个显示器
+    focus-at-startup
+
+    // 格式为"<width>x<height>" 或者 "<width>x<height>@<refresh rate>".
+    // 如果省略了刷新率，niri将为分辨率选择最高的刷新率。
+    mode "3840x2160@60.000"
+
+    // 您可以使用整数或分数量表，例如，比例为150％。
+    scale 2
+
+    // transform允许逆时针旋转显示，有效值为:
+    // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
+    transform "normal"
+
+    // 输出在所有显示器坐标空间中的位置。未明确配置位置的显示器将放置在所有已放置的显示器右侧。
+    // position x=1280 y=0
+}
+
+// 如果 HDMI-A-2 没有连接，将会默认聚焦在这个显示器
+output "DP-1" {
+    // off
+    focus-at-startup
+    mode "1920x1080@60.000"
+    transform "90"
+    position x=0 y=0
+}
+
+// 可以使用wev来查询特定的按键对应的XKB名称
+binds {
+    // Mod-Shift-/显示重要的热键列表(通常与 Mod-? 相同)。
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.config/sway/lock.png"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "/usr/bin/ghostty"; }
+    Mod+A hotkey-overlay-title="Run an Application: fuzzel" { spawn "/usr/bin/fuzzel"; }
+    Mod+X hotkey-overlay-title="Open a browser: zen" { spawn "/usr/bin/zen"; }
+    Mod+D hotkey-overlay-title="同步切换obs和mpv状态" { spawn "/usr/bin/touch" "/tmp/obs_mpv_toggle_pause"; }
+    Mod+K hotkey-overlay-title="打开screenkey" { spawn "/usr/bin/wshowkeys" "-a" "right" "-a" "bottom" "-F" "ComicShannsMono Nerd Font 30"; }
+    Mod+Shift+K hotkey-overlay-title="关闭screenkey" { spawn "/usr/bin/killall" "wshowkeys"; }
+
+    // 音量控制 allow-when-locked=true 在锁屏时的按键也会生效。这里的wpctl是wireplumber包中附带的
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+    // 亮度控制。brightnessctl 有独立的包
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+
+    // 开关overview
+    Mod+Tab repeat=false { toggle-overview; }
+    // 关闭窗口
+    Mod+Q repeat=false { close-window; }
+
+    // 窗口焦点切换，位置移动
+    Mod+Left  { focus-column-left; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
+    Mod+Right { focus-column-right; }
+    Mod+N     { focus-column-left; }
+    Mod+i     { focus-column-right; }
+    // Mod+N     { spawn-sh "niri msg action focus-column-left && niri msg action center-column"; }
+    // Mod+i     { spawn-sh "niri msg action focus-column-right && niri msg action center-column"; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+N     { move-column-left; }
+    Mod+Shift+I     { move-column-right; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Shift+Home { move-column-to-first; }
+    Mod+Shift+End  { move-column-to-last; }
+
+    // workspace焦点切换，窗口在workspace之间移动
+    Mod+Page_Down      { focus-workspace-down; }
+    Mod+Page_Up        { focus-workspace-up; }
+    Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
+    // 上下移动整个workspace
+    Mod+Shift+Page_Down { move-workspace-down; }
+    Mod+Shift+Page_Up   { move-workspace-up; }
+
+    // 上下方向共用的窗口、工作空间的焦点切换和位置移动
+    Mod+E     { focus-window-or-workspace-down; }
+    Mod+U     { focus-window-or-workspace-up; }
+    Mod+Shift+E     { move-window-down-or-to-workspace-down; }
+    Mod+Shift+U     { move-window-up-or-to-workspace-up; }
+
+		// 显示器焦点切换
+    Mod+Ctrl+Left  { focus-monitor-left; }
+    Mod+Ctrl+Down  { focus-monitor-down; }
+    Mod+Ctrl+Up    { focus-monitor-up; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Ctrl+N     { focus-monitor-left; }
+    Mod+Ctrl+E     { focus-monitor-down; }
+    Mod+Ctrl+U     { focus-monitor-up; }
+    Mod+Ctrl+I     { focus-monitor-right; }
+
+		// 跨显示器移动窗口
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+N     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+E     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+U     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+I     { move-column-to-monitor-right; }
+
+    // 鼠标相关快捷键
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+
+    Mod+WheelScrollRight      { focus-column-right; }
+    Mod+WheelScrollLeft       { focus-column-left; }
+    Mod+Ctrl+WheelScrollRight { move-column-right; }
+    Mod+Ctrl+WheelScrollLeft  { move-column-left; }
+
+    Mod+Shift+WheelScrollDown      { focus-column-right; }
+    Mod+Shift+WheelScrollUp        { focus-column-left; }
+    Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
+    Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
+
+    Mod+TouchpadScrollDown { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+"; }
+    Mod+TouchpadScrollUp   { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-"; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+
+    // 最大化和全屏
+    Mod+W { toggle-windowed-fullscreen; }
+    Mod+F { expand-column-to-available-width; }
+    Mod+Shift+F { fullscreen-window; }
+
+    // 未最大化的窗口居中
+    Mod+C { center-column; }
+    Mod+Ctrl+C { center-visible-columns; }
+
+		// 在layout中预设的宽度之间切换
+		Mod+R { switch-preset-column-width; }
+
+		// 改变宽度单位可以有pixels、百分比
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // 改变高度
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    // 切换悬浮窗，改变平铺和悬浮窗焦点
+    Mod+Shift+Space       { toggle-window-floating; }
+    Mod+Space { switch-focus-between-floating-and-tiling; }
+
+    // 截图
+    Alt+J { screenshot show-pointer=false; }
+    Alt+Shift+J { screenshot-screen show-pointer=false; }
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window write-to-disk=false; }
+
+    // 针对虚拟机软件可能需要键盘控制权。allow-inhibiting=false 忽略当前快捷键本身
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    // 退出niri将显示一个确认对话框，以避免意外退出。
+    Mod+Shift+Q { quit; }
+
+    // 关闭显示器。移动鼠标或按下任意按键恢复
+    Mod+Shift+P { power-off-monitors; }
+}
+
+// 影响窗口的位置和尺寸的设置。
+layout {
+    // 在逻辑像素中设置Windows周围的缝隙。
+    gaps 0
+
+    // 存在多个窗口时，未最大化的窗口不自动居中，方便分屏
+    center-focused-column "never"
+    // 只有一个窗口时自动居中显示
+    always-center-single-column
+
+    // mod+r在预设之间切换的宽度。
+    preset-column-widths {
+        proportion 0.7556
+        proportion 0.2444
+        proportion 1.0
+        // 固定设置逻辑像素的宽度精确设置。（受scale影响）
+        // fixed 1920
+    }
+
+    // 默认窗口宽度和高度，留空可以窗口本身决定初始宽度
+    default-column-width { }
+
+    // 关闭聚焦框
+    focus-ring {
+        off
+    }
+
+    // 关闭边框
+    border {
+        off
+    }
+}
+
+// 覆盖由niri启动的进程的环境变量
+environment {
+    ALL_PROXY "http://127.0.0.1:7897"
+
+    // https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#Sway
+    XMODIFIERS "@im=fcitx"
+    QT_IM_MODULES "wayland;fcitx"
+    GTK_IM_MODULE null
+    SDL_IM_MODULE null
+    GLFW_IM_MODULE null
+}
+
+// 启动niri时自动启动的软件
+spawn-at-startup "/usr/bin/waybar"
+spawn-at-startup "/usr/bin/fcitx5"
+spawn-at-startup "/usr/bin/v2rayn"
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+
+// 要运行shell命令（带有变量，管道等），请使用spawn-sh-at-at-startup：
+spawn-sh-at-startup "swaybg -i $HOME/.dotfiles/sway/.config/sway/default.png -m fill"
+
+hotkey-overlay {
+    // 跳过“重要的热键”弹出窗口。
+    skip-at-startup
+}
+
+// 设置截图保存的路径，null将会禁止保存到磁盘
+screenshot-path "~/%Y-%m-%d %H-%M-%S.png"
+
+// 忽略软件自带的装饰(例如标题栏)
+prefer-no-csd
+
+// 指定光标的主题和大小，打字时隐藏光标
+cursor {
+    xcursor-theme "Dracula-cursors"
+    xcursor-size 24
+    hide-when-typing
+}
+
+// 使用`niri msg windows`查看Title和App ID等信息
+window-rule {
+    open-on-output "HDMI-A-2"
+    default-column-width { proportion 0.7556; }
+}
+window-rule {
+    open-on-output "HDMI-A-2"
+    match app-id="scrcpy"
+    match app-id=r#"firefox"#
+    default-column-width { proportion 0.2444; }
+    focus-ring {
+        on
+    }
+    shadow {
+        on
+    }
+    open-focused false
+}
+
+// 禁用鼠标左上角热脚
+gestures {
+    hot-corners {
+        off
+    }
+}
