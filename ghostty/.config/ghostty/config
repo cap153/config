@@ -7,13 +7,15 @@ font-family = "ComicShannsMono Nerd Font"
 # 中文字体
 font-family = "LXGW WenKai GB Screen"
 # 字体大小
-font-size = 18
+font-size = 14.6
 # 自动复制选中文本
 copy-on-select = true
 # 输入文本时隐藏鼠标
 mouse-hide-while-typing = true
 # 确认关闭窗口时不显示确认提示
 confirm-close-surface = false
+# 光标轨迹特效相关文件
+custom-shader = "~/.config/ghostty/shaders/cursor_smear.glsl"
 
 # ===
 # === 主题
