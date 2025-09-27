@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# 参考自：https://github.com/emersion/mako/issues/568#event-17219658303
+# busctl --user call org.freedesktop.Notifications /fr/emersion/Mako fr.emersion.Mako ListNotifications -j \
+#   | jq -r '.data[][] | select(.body.type == "s") | "\(.["app-name"].data)\n  \(.summary.data)\n  \(.body.data)\n"' 
+
+# 脚本需要一个通知 ID 作为参数
+if [ -z "$1" ]; then
+    exit 1
+fi
+
+# 使用 mako 最新的 D-Bus 接口获取 JSON 格式的通知列表
+# 然后用 jq 从中筛选出 ID 匹配的那一条，并提取其 body 内容
+BODY=$(busctl --user call org.freedesktop.Notifications /fr/emersion/Mako fr.emersion.Mako ListNotifications -j | \
+       jq --argjson id "$1" -r '.data[][] | select(.id.data == $id) | .body.data')
+
+# 如果成功提取到 body，就复制到剪贴板并发送一条确认通知
+if [ -n "$BODY" ]; then
+    echo "$BODY" | wl-copy
+    notify-send "Mako" "通知正文已复制到剪贴板。"
+fi

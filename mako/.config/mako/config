@@ -1,0 +1,8 @@
+layer=top
+background-color=#1e1e2eee
+border-size=2
+border-color=#74c7ec
+border-radius=8
+default-timeout=5000
+font=Cantarell 12
+on-button-left=exec /bin/bash ~/.config/mako/mako-msg "$id"
