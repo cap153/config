@@ -1,0 +1,12 @@
+[Unit]
+Description=Run git-repo-update.service daily
+
+[Timer]
+# 每天凌晨3点30分执行
+OnCalendar=*-*-* 03:30:00
+# OnCalendar=hourly  # 或者，也可以简单地设置为每小时一次
+# OnCalendar=daily   # 或者，每天零点
+Persistent=true
+
+[Install]
+WantedBy=timers.target

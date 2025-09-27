@@ -1,0 +1,7 @@
+[Unit]
+Description=Update all local git repositories from remotes
+
+[Service]
+Type=oneshot
+# User=secadm
+ExecStart=/home/secadm/.ugr.sh
