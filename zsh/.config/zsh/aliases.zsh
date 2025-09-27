@@ -2,7 +2,7 @@
 alias pacman="sudo pacman"
 alias pof="poweroff"
 alias c="clear"
-alias s="macchina"
+alias s="fastfetch"
 
 # tailspin,A log file highlighter,`journalctl -xfu | tspin`
 alias less="tspin"
