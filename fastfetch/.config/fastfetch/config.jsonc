@@ -42,7 +42,11 @@
             "type": "de"
         },
         {
-            "key": "│ {#31} term    {#keys}│",
+            "key": "│ {#36}󰇄 wm      {#keys}│",
+            "type": "wm"
+        },
+        {
+            "key": "│ {#31} term    {#keys}│",
             "type": "terminal"
         },
         {
@@ -55,16 +59,21 @@
             "showPeCoreCount": true
         },
         {
-            "key": "│ {#34}󰉉 disk    {#keys}│",
+            "key": "│ {#34} gpu     {#keys}│",
+            "type": "gpu",
+            "showPeCoreCount": true
+        },
+        {
+            "key": "│ {#35}󰉉 disk    {#keys}│",
             "type": "disk",
             "folders": "/"
         },
         {
-            "key": "│ {#35} memory  {#keys}│",
+            "key": "│ {#36} memory  {#keys}│",
             "type": "memory"
         },
         {
-            "key": "│ {#36}󰩟 network {#keys}│",
+            "key": "│ {#31}󰩟 network {#keys}│",
             "type": "localip",
             "format": "{ipv4} ({ifname})"
         },
