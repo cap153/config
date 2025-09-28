@@ -64,7 +64,7 @@ binds {
     // Mod-Shift-/显示重要的热键列表(通常与 Mod-? 相同)。
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.config/sway/lock.png"; }
+    Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.dotfiles/sway/.config/sway/lock.png"; }
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "/usr/bin/ghostty"; }
     Mod+A hotkey-overlay-title="Run an Application: fuzzel" { spawn "/usr/bin/fuzzel"; }
     Mod+X hotkey-overlay-title="Open a browser: zen" { spawn "/usr/bin/zen"; }
@@ -212,7 +212,7 @@ binds {
     Alt+Shift+J { screenshot-screen show-pointer=false; }
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window write-to-disk=false; }
+    Alt+Print { screenshot-window write-to-disk=true; }
 
     // 针对虚拟机软件可能需要键盘控制权。allow-inhibiting=false 忽略当前快捷键本身
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
@@ -243,9 +243,6 @@ layout {
         // fixed 1920
     }
 
-    // 默认窗口宽度和高度，留空可以窗口本身决定初始宽度
-    default-column-width { }
-
     // 关闭聚焦框
     focus-ring {
         off
@@ -270,10 +267,11 @@ environment {
 }
 
 // 启动niri时自动启动的软件
-spawn-at-startup "/usr/bin/waybar"
 spawn-at-startup "/usr/bin/fcitx5"
 spawn-at-startup "/usr/bin/v2rayn"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "/usr/bin/waybar"
+// spawn-at-startup "qs -c noctalia-shell"
 
 // 要运行shell命令（带有变量，管道等），请使用spawn-sh-at-at-startup：
 spawn-sh-at-startup "swaybg -i $HOME/.dotfiles/sway/.config/sway/default.png -m fill"
@@ -304,15 +302,24 @@ window-rule {
 window-rule {
     open-on-output "HDMI-A-2"
     match app-id="scrcpy"
+    default-column-width { proportion 0.2444; }
+}
+window-rule {
+    open-on-output "HDMI-A-2"
     match app-id=r#"firefox"#
     default-column-width { proportion 0.2444; }
-    focus-ring {
+    border {
         on
-    }
-    shadow {
-        on
+        width 2
+        active-color "#61AFEF"
     }
     open-focused false
+}
+
+// quickshell开启overview背景
+layer-rule {
+    match namespace="^quickshell-overview$"
+    place-within-backdrop true
 }
 
 // 禁用鼠标左上角热脚
