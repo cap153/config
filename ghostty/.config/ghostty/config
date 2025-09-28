@@ -8,8 +8,8 @@ font-family = "ComicShannsMono Nerd Font"
 font-family = "LXGW WenKai GB Screen"
 # 字体大小
 font-size = 14.6
-# 自动复制选中文本
-copy-on-select = true
+# 自动复制选中文本到系统剪切板
+copy-on-select = clipboard
 # 输入文本时隐藏鼠标
 mouse-hide-while-typing = true
 # 确认关闭窗口时不显示确认提示
@@ -46,13 +46,6 @@ window-decoration = false
 # === 按键绑定
 # ===
 
-# 清除所预设置的键绑定
-# keybind=clear
-# 向右新建分屏
-# keybind = ctrl+i=new_split:right
-# 向右新建分屏
-# keybind = ctrl+e=new_split:down 
-# 逆时针切换分屏
-keybind = ctrl+shift+n=goto_split:left 
-# 顺时针切换分屏
-keybind = ctrl+shift+i=goto_split:right 
+# 上下翻页
+keybind = ctrl+j=scroll_page_up
+keybind = ctrl+k=scroll_page_down
