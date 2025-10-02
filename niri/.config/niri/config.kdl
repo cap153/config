@@ -269,8 +269,8 @@ environment {
 // 启动niri时自动启动的软件
 spawn-at-startup "/usr/bin/fcitx5"
 spawn-at-startup "/usr/bin/v2rayn"
-spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "/usr/bin/waybar"
+spawn-at-startup "~/.cargo/bin/soteria"
 // spawn-at-startup "qs -c noctalia-shell"
 
 // 要运行shell命令（带有变量，管道等），请使用spawn-sh-at-at-startup：
