@@ -127,7 +127,7 @@ prepend_keymap = [
 	{ on = [ "g", "d" ],       run = "cd ~/Desktop",   desc = "Go to the Desktop directory" },
 	{ on = [ "g", "n" ],       run = "cd ~/Documents/notes", desc = "Go to the notes" },
 	{ on = [ "g", "t" ],       run = "cd ~/.local/share/Trash", desc = "Go to the Trash" },
-	{ on = [ "g", "s" ],       run = "cd ~/.dotfiles/sway/.config/sway", desc = "Go to the sway config" },
+	{ on = [ "g", "s" ],       run = "cd ~/.dotfiles/niri/.config/niri", desc = "Go to the niri config" },
 	{ on = [ "g", "i" ],       run = "cd ~/.dotfiles/i3/.config/i3", desc = "Go to the i3 config" },
 	{ on = [ "g", "f", "f" ],       run = "cd ~/.dotfiles", desc = "Go to the config" },
 	{ on = [ "g", "f", "k" ],       run = "cd ~/.dotfiles/kitty/.config/kitty", desc = "Go to the config" },
