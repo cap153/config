@@ -5,6 +5,7 @@
 	"height": 34,
 	// "width": 1366,
 	"modules-left": ["wlr/taskbar"],
+	// "modules-center": ["niri/workspaces"],
 	"modules-right": ["wireplumber", "bluetooth", "disk", "cpu", "memory", "battery", "clock", "tray"],
 	"wlr/taskbar": {
 			"format": "{icon}",
@@ -40,8 +41,9 @@
 			"format": "  {:%Y-%m-%d    󰅐  %H:%M}",
 	},
 	"cpu": {
-			"format": "󰍛  {usage}%"
+			"format": "󰻠  {usage}%"
 	},
+	// 
 	"memory": {
 			"format": "  {}%"
 	},
