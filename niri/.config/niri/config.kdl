@@ -65,12 +65,13 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.dotfiles/sway/.config/sway/lock.png"; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "/usr/bin/ghostty"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "/usr/bin/kitty"; }
     Mod+A hotkey-overlay-title="Run an Application: fuzzel" { spawn "/usr/bin/fuzzel"; }
     Mod+X hotkey-overlay-title="Open a browser: zen" { spawn "/usr/bin/zen"; }
     Mod+D hotkey-overlay-title="同步切换obs和mpv状态" { spawn "/usr/bin/touch" "/tmp/obs_mpv_toggle_pause"; }
     Mod+K hotkey-overlay-title="打开screenkey" { spawn "/usr/bin/wshowkeys" "-a" "right" "-a" "bottom" "-F" "ComicShannsMono Nerd Font 30"; }
     Mod+Shift+K hotkey-overlay-title="关闭screenkey" { spawn "/usr/bin/killall" "wshowkeys"; }
+    Mod+Shift+C hotkey-overlay-title="重启waybar" { spawn-sh "pkill waybar && waybar"; }
 
     // 音量控制 allow-when-locked=true 在锁屏时的按键也会生效。这里的wpctl是wireplumber包中附带的
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
@@ -209,7 +210,7 @@ binds {
 
     // 截图
     Alt+J { screenshot show-pointer=false; }
-    Alt+Shift+J { screenshot-screen show-pointer=false; }
+    Alt+Shift+J { spawn "flameshot" "gui"; }
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window write-to-disk=true; }
@@ -236,9 +237,9 @@ layout {
 
     // mod+r在预设之间切换的宽度。
     preset-column-widths {
-        proportion 0.7556
+        proportion 0.5
         proportion 0.2444
-        proportion 1.0
+        proportion 0.7556
         // 固定设置逻辑像素的宽度精确设置。（受scale影响）
         // fixed 1920
     }
@@ -271,6 +272,7 @@ spawn-at-startup "/usr/bin/fcitx5"
 spawn-at-startup "/usr/bin/v2rayn"
 spawn-at-startup "/usr/bin/waybar"
 spawn-at-startup "~/.cargo/bin/soteria"
+spawn-at-startup "~/Desktop/tools/update_repositories.sh"
 // spawn-at-startup "qs -c noctalia-shell"
 
 // 要运行shell命令（带有变量，管道等），请使用spawn-sh-at-at-startup：
@@ -298,6 +300,7 @@ cursor {
 window-rule {
     open-on-output "HDMI-A-2"
     default-column-width { proportion 0.7556; }
+    // opacity 0.75
 }
 window-rule {
     open-on-output "HDMI-A-2"
@@ -313,13 +316,14 @@ window-rule {
         width 2
         active-color "#61AFEF"
     }
-    open-focused false
+    // open-focused false
 }
 
-// quickshell开启overview背景
+// quickshell开启overview背景，niri msg layers显示有namespace可以在这里配置透明度 
 layer-rule {
     match namespace="^quickshell-overview$"
     place-within-backdrop true
+//     opacity 0.75
 }
 
 // 禁用鼠标左上角热脚
