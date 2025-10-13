@@ -65,8 +65,9 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.dotfiles/sway/.config/sway/lock.png"; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "/usr/bin/kitty"; }
-    Mod+A hotkey-overlay-title="Run an Application: fuzzel" { spawn "/usr/bin/fuzzel"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "/usr/bin/kitty"; }
+    // Mod+A hotkey-overlay-title="Run an Application" { spawn "/usr/bin/fuzzel"; }
+    Mod+A hotkey-overlay-title="Run an Application" { spawn "/usr/bin/vicinae" "toggle"; }
     Mod+X hotkey-overlay-title="Open a browser: zen" { spawn "/usr/bin/zen"; }
     Mod+D hotkey-overlay-title="同步切换obs和mpv状态" { spawn "/usr/bin/touch" "/tmp/obs_mpv_toggle_pause"; }
     Mod+K hotkey-overlay-title="打开screenkey" { spawn "/usr/bin/wshowkeys" "-a" "right" "-a" "bottom" "-F" "ComicShannsMono Nerd Font 30"; }
@@ -209,9 +210,9 @@ binds {
     Mod+Space { switch-focus-between-floating-and-tiling; }
 
     // 截图
-    Alt+J { screenshot show-pointer=false; }
+    Alt+J { spawn-sh "grim -g \"$(slurp)\" - | satty --filename - --output-filename ~/$(date '+%Y%m%d-%H:%M:%S').png"; }
     Alt+Shift+J { spawn "flameshot" "gui"; }
-    Print { screenshot; }
+    Print { screenshot show-pointer=false; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window write-to-disk=true; }
 
@@ -271,6 +272,7 @@ environment {
 spawn-at-startup "/usr/bin/fcitx5"
 spawn-at-startup "/usr/bin/v2rayn"
 spawn-at-startup "/usr/bin/waybar"
+spawn-at-startup "/usr/bin/vicinae" "server"
 spawn-at-startup "~/.cargo/bin/soteria"
 spawn-at-startup "~/Desktop/tools/update_repositories.sh"
 // spawn-at-startup "qs -c noctalia-shell"
@@ -318,8 +320,16 @@ window-rule {
     }
     // open-focused false
 }
+window-rule {
+    match app-id="com.gabm.satty" title="satty"
+    border {
+        on
+        width 2
+        active-color "#61AFEF"
+    }
+}
 
-// quickshell开启overview背景，niri msg layers显示有namespace可以在这里配置透明度 
+// `niri msg layers`显示有namespace可以在这里配置waybar透明度 
 layer-rule {
     match namespace="^quickshell-overview$"
     place-within-backdrop true
