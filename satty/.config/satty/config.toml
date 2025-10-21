@@ -1,0 +1,13 @@
+[general]
+# 配置命令以在复制时调用，例如 `wl-copy`
+copy-command = "wl-copy"
+# 格式说明符: https://docs.rs/chrono/latest/chrono/format/strftime/index.html
+output-filename = "~/%Y%m%d-%H:%M:%S.png"
+# 复制/保存操作后直接退出
+early-exit = true
+# [可能的值: save-to-clipboard, save-to-file, exit]
+action-on-enter = "save-to-file"
+
+[font]
+family = "Noto Serif CJK SC"
+style = "Regular"
