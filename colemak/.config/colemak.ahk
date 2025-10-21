@@ -1,32 +1,30 @@
-SetCapsLockState "AlwaysOff"
-$*CapsLock::Control
+; 建议为新脚本添加此行，以获得更好的性能和可靠性
+SendMode "Input"
 
-; --- CapsLock 增强功能 (最终版) ---
-; 使用 "$" 前缀强制使用键盘钩子, 并阻止热键被自身触发。
-; 这是阻止原生 CapsLock 功能在所有环境下(包括RDP)生效的最可靠方法。
-; 使用 "*" 前缀确保即使有修饰键(如Shift)也能触发。
-;$*CapsLock::Control
-;{
-;    ; 等待 CapsLock 键被释放, 超时设为 150 毫秒
-;    if KeyWait("CapsLock", "T0.15")
-;    {
-;        ; --- 短按 ---
-;        ; 在 150ms 内释放, 发送 Escape
-;        Send "{Escape}"
-;    }
-;    else
-;    {
-;        ; --- 长按 ---
-;        ; 按下超过 200ms, 将其变为 Ctrl 键
-;        Send "{Control Down}"
-;        ; 等待 CapsLock 最终被物理释放
-;        KeyWait "CapsLock"
-;        Send "{Control Up}"
-;    }
-;    ; 'return' 在此至关重要, 它会消费掉物理的 CapsLock 按键事件,
-;    ; 阻止操作系统执行默认的大小写切换。
-;    return
-;}
+; 禁用CapsLock键本身的切换大写功能
+SetCapsLockState "AlwaysOff"
+
+; 当CapsLock键被按下时
+*CapsLock::
+{
+    ; 发送一个“盲”模式的Ctrl按下事件。
+    ; 这使得CapsLock可以像Ctrl一样作为修饰键。
+    ; 星号通配符允许在按住其他修饰键如 Shift 时也能触发此热键。
+    Send "{Blind}{Ctrl Down}"
+}
+
+; 当CapsLock键被弹起时
+*CapsLock Up::
+{
+    Send "{Blind}{Ctrl Up}"
+    ; A_PriorKey是内置变量，记录了在此热键之前按下的键。
+    ; 如果在按下和弹起CapsLock之间没有按过其他键，A_PriorKey的值就是"CapsLock"。
+    if (A_PriorKey = "CapsLock")
+    {
+        ; 如果是单独按下并弹起，则发送Esc键。
+        Send "{Esc}"
+    }
+}
 
 ; --- 窗口切换 (Alt + 1-9) ---
 !1::Send "^#1"
