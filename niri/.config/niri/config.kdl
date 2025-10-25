@@ -66,7 +66,7 @@ binds {
 
     Mod+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "/usr/bin/swaylock" "-f" "-i" "$HOME/.dotfiles/sway/.config/sway/lock.png"; }
     Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "/usr/bin/kitty"; }
-    Mod+A hotkey-overlay-title="Run an Application" { spawn "/usr/bin/vicinae" "toggle"; }
+    Mod+A hotkey-overlay-title="Run an Application" { spawn "/usr/bin/fuzzel" "toggle"; }
     Mod+semicolon hotkey-overlay-title="open vicinae clipboard" { spawn "/usr/bin/vicinae" "vicinae://extensions/vicinae/clipboard/history"; }
     Mod+X hotkey-overlay-title="Open a browser: zen" { spawn "/usr/bin/zen"; }
     Mod+D hotkey-overlay-title="同步切换obs和mpv状态" { spawn "/usr/bin/touch" "/tmp/obs_mpv_toggle_pause"; }
