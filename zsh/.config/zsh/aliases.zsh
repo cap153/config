@@ -2,7 +2,7 @@ alias pacman="sudo pacman"
 alias pof="poweroff"
 alias c="clear"
 alias s="fastfetch"
-alias ta='tmux attach || tmux new'
+alias ta='tmux new-session -A -s main'
 # tailspin,A log file highlighter,`journalctl -xfu | tspin`
 alias less="tspin"
 
