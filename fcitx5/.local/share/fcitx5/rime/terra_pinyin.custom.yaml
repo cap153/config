@@ -1,0 +1,13 @@
+patch:
+  "recognizer/patterns/reverse_lookup": "V[a-z]*?$" # 将反查引导键从 ` 改为 V 
+  punctuator/full_shape:
+    "/": "/"      # 将 / 键映射为直接输出 /
+    "\\": "、"    # 将 \ 键映射为顿号
+    "_": "_"
+    "<": "《"
+    ">": "》"
+    ",": "，"
+    ".": "。"
+  switches:
+    - name: simplification
+      reset: 1

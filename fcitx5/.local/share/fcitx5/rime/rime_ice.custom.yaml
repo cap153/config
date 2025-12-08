@@ -1,0 +1,9 @@
+patch:
+  # 提高中文（Script Translator）的初始权重
+  "translator/initial_quality": 1.2
+  # 降低英文（Melt Eng）的初始权重
+  "melt_eng/initial_quality": 0.2
+  # 降低中英混合词典的权重 (防止 cn_en 里的词干扰)
+  "cn_en/initial_quality": 0.2
+  # 开启用户中文词频记录（默认已经开启）
+  # "translator/enable_user_dict": true

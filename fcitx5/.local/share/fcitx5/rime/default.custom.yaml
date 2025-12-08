@@ -1,0 +1,3 @@
+patch:
+  __include: rime_ice_suggestion:/
+  "ascii_composer/switch_key/Shift_L": noop
