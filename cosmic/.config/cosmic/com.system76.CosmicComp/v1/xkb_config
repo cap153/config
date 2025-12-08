@@ -1,0 +1,9 @@
+(
+    rules: "",
+    model: "",
+    layout: "us",
+    variant: "colemak",
+    options: None,
+    repeat_delay: 600,
+    repeat_rate: 25,
+)
