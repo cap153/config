@@ -84,6 +84,11 @@ binds {
     XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
 
+    // 列和tab视图
+    Mod+M hotkey-overlay-title="切换到tab视图" { toggle-column-tabbed-display; }
+    Mod+Y hotkey-overlay-title="添加右边的窗口到当前列" { consume-window-into-column; }
+    Mod+Shift+Y hotkey-overlay-title="删除当前列最下面的窗口" { expel-window-from-column; }
+
     // 开关overview
     Mod+Tab repeat=false { toggle-overview; }
     // 关闭窗口
@@ -122,8 +127,10 @@ binds {
     // 上下方向共用的窗口、工作空间的焦点切换和位置移动
     Mod+E     { focus-window-or-workspace-down; }
     Mod+U     { focus-window-or-workspace-up; }
-    Mod+Shift+E     { move-window-down-or-to-workspace-down; }
-    Mod+Shift+U     { move-window-up-or-to-workspace-up; }
+    Mod+Shift+E  { move-column-to-workspace-down; }
+    Mod+Shift+U  { move-column-to-workspace-up; }
+    // Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
+    // Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
 
 		// 显示器焦点切换
     Mod+Ctrl+Left  { focus-monitor-left; }
@@ -210,7 +217,8 @@ binds {
     Mod+Space { switch-focus-between-floating-and-tiling; }
 
     // 截图
-    Alt+J { spawn-sh "grim -g \"$(slurp)\" - | satty --filename -"; }
+    // Alt+J { spawn-sh "grim -g \"$(slurp)\" - | satty --filename -"; }
+    Alt+J { screenshot; }
     Alt+Shift+J { spawn "flameshot" "gui"; }
     Print { screenshot show-pointer=false; }
     Ctrl+Print { screenshot-screen; }
@@ -261,15 +269,17 @@ environment {
     ALL_PROXY "http://127.0.0.1:7897"
 
     // https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#Sway
+    QT_IM_MODULES "fcitx" // 针对微信，如果失效就老老实实改/etc/environment
     XMODIFIERS "@im=fcitx"
-    QT_IM_MODULES "wayland;fcitx"
-    GTK_IM_MODULE null
-    SDL_IM_MODULE null
-    GLFW_IM_MODULE null
+    // GTK_IM_MODULE null
+    // SDL_IM_MODULE null
+    // GLFW_IM_MODULE null
 
     // https://github.com/noctalia-dev/noctalia-shell/issues/437
     QT_QPA_PLATFORMTHEME "gtk3"
 
+    // https://github.com/prasanthrangan/hyprdots/issues/1406
+    XDG_MENU_PREFIX "arch- kbuildsycoca6" // 需要安装archlinux-xdg-menu解决dolphin的open with
 }
 
 // 启动niri时自动启动的软件
@@ -334,10 +344,6 @@ window-rule {
         width 2
         active-color "#61AFEF"
     }
-}
-window-rule {
-    match app-id=r#"wechat"#
-    open-focused false//解决搜索框失去焦点问题
 }
 
 // `niri msg layers`显示有namespace
