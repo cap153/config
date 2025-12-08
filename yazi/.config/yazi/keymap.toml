@@ -124,11 +124,12 @@ prepend_keymap = [
 	{ on = [ "t","q" ], run = "close",              desc = "Close the current tab, or quit if it is last tab" },
 
 	# Goto
-	{ on = [ "g", "d" ],       run = "cd ~/Desktop",   desc = "Go to the Desktop directory" },
+	{ on = [ "g", "d" ],       run = "cd ~/Desktops",   desc = "Go to the Desktop directory" },
 	{ on = [ "g", "n" ],       run = "cd ~/Documents/notes", desc = "Go to the notes" },
 	{ on = [ "g", "t" ],       run = "cd ~/.local/share/Trash", desc = "Go to the Trash" },
 	{ on = [ "g", "s" ],       run = "cd ~/.dotfiles/niri/.config/niri", desc = "Go to the niri config" },
 	{ on = [ "g", "i" ],       run = "cd ~/.dotfiles/i3/.config/i3", desc = "Go to the i3 config" },
+	{ on = [ "g", "m" ],       run = "cd /run/media/captain/laptop", desc = "Go to laptop disk" },
 	{ on = [ "g", "f", "f" ],       run = "cd ~/.dotfiles", desc = "Go to the config" },
 	{ on = [ "g", "f", "k" ],       run = "cd ~/.dotfiles/kitty/.config/kitty", desc = "Go to the config" },
 	{ on = [ "g", "f", "y" ],       run = "cd ~/.dotfiles/yazi/.config/yazi", desc = "Go to the yazi config" },

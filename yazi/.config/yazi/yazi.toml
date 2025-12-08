@@ -69,6 +69,7 @@ play = [
 	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
 ]
 document = [
+	{ run = 'onlyoffice-desktopeditors "$@"', orphan = true,  for = "unix" },
 	{ run = 'atril "$@"', orphan = true,  for = "unix" },
 ]
 sqlite = [
@@ -79,11 +80,12 @@ sqlite = [
 # 手动修改打开有问题的文件类型可以根据后缀名指定软件，有的时候要/后缀名才生效
 prepend_rules = [
 	{ mime = "*/sqlite3",  use = [ "sqlite", "reveal" ] },
-	{ mime = "*.dart",  use = [ "edit", "reveal" ] },
+	{ name = "*.dart",  use = [ "edit", "reveal" ] },
 	{ mime = "*/sql",  use = [ "edit", "reveal" ] },
-	{ mime = "*.rar",  use = [ "extract", "reveal" ] },
+	{ name = "*.rar",  use = [ "extract", "reveal" ] },
 	{ mime = "*/pdf",  use = [ "document", "reveal" ] },
 	{ mime = "*/doc",  use = [ "document", "reveal" ] },
+	{ name = "*.xls",  use = [ "document", "reveal" ] },
 ]
 rules = [
 	# Folder
@@ -154,7 +156,7 @@ preloaders = [
 ]
 # 手动定义预览
 prepend_previewers = [
-	# 在这里指定扩展名的预览，第一项name起头
+	# 在这里指定扩展名的预览
 	# { name = "*.md", run = "glow" },
 	# { mime = "*.csv", run = "mlr --csv sort -f shape"},
 	# { mime = "*.dart", run = "code"},
