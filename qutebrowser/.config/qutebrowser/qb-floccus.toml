@@ -1,0 +1,10 @@
+# 时间间隔，单位是秒。没有设置的话运行1次退出
+interval = 900
+
+[webdav]
+url = "http://192.168.1.5:8080/bookmarks.xbel"
+username_cmd = "cat ~/.config/qutebrowser/.webdav_user" 
+password_cmd = "pass show network/webdav"
+# 如果不考虑安全问题也可以直接在这里设置明文
+# username = "abc"
+# password = "123"

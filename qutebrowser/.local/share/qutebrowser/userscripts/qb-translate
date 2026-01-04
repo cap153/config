@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# =================配置区域=================
+# 设置代理地址 (优先使用config.py传过来的地址)
+# PROXY_URL="${QB_PROXY:-http://127.0.0.1:7897}"
+PROXY_CMD=""
+if [ -n "$QB_PROXY" ]; then
+    PROXY_CMD="-x $QB_PROXY"
+fi
+
+# 翻译引擎 (auto / bing / google)通过 trans -S 查看
+ENGINE="auto"
+# =========================================
+
+# 获取环境变量
+TEXT="$QUTE_SELECTED_TEXT"
+CURRENT_URL="$QUTE_URL"
+
+# --- 逻辑分支 1: 如果没有选中文字，则翻译当前网页 ---
+if [ -z "$TEXT" ]; then
+    # 构造 Google 网页翻译链接
+    # sl=auto (源语言自动), tl=zh-CN (目标语言中文)
+    TRANS_PAGE_URL="https://translate.google.com/translate?sl=auto&tl=zh-CN&u=${CURRENT_URL}"
+
+    # 检查 FIFO 管道是否存在 (确保脚本是由 qutebrowser 调用的)
+    if [ -n "$QUTE_FIFO" ]; then
+        # 发送命令给 Qutebrowser：在新标签页打开翻译页面
+        echo "open -t $TRANS_PAGE_URL" > "$QUTE_FIFO"
+    fi
+    echo "message-info \"正在跳转谷歌翻译\"" > "$QUTE_FIFO"
+
+    exit 0
+fi
+
+# --- 逻辑分支 2: 如果有选中文字，执行选词翻译 ---
+
+# 截取前 15 个字符作为标题
+# TITLE="${TEXT:0:15}"
+
+# 调用 trans 翻译
+# -x: 指定代理(PROXY_CMD中设置了)
+# -e: 引擎
+# -b: 简要模式
+# --: 结束选项，防止文本以 - 开头报错
+RESULT=$(trans $PROXY_CMD -e "$ENGINE" -b -no-ansi :zh -- "$TEXT")
+
+# 发送通知
+# notify-send -t 15000 "$TITLE" "$RESULT"
+notify-send -t 15000 "$TEXT" "$RESULT"
