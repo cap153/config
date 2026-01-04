@@ -39,10 +39,11 @@ edit = [
 	{ run = 'code -w %*', block = true,  desc = "code (block)",   for = "windows" },
 ]
 open = [
-	{ run = 'mpv "$@"',                 desc = "Open with mpv", for = "linux" },
+	{ run = 'imv "$@"',                     desc = "Open with imv", for = "linux" },
 	{ run = 'display "$@"',                 desc = "Open with ImageMagick", for = "linux" },
 	{ run = 'qimgv "$@"',                   desc = "Open with qimgv", for = "linux" },
 	{ run = 'swayimg "$@"',                 desc = "Open with swayimg", for = "linux" },
+	{ run = 'mpv "$@"',                     desc = "Open with mpv", for = "linux" },
 	{ run = 'xdg-open "$1"',                desc = "Open", for = "linux" },
 	{ run = 'open "$@"',                    desc = "Open", for = "macos" },
 	{ run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
