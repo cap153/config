@@ -57,18 +57,32 @@ KEYTIMEOUT=1
 # Cursor Shape Control (The Best Practice)
 # -----------------------------------------------------------------
 
-# This function automatically runs when the keymap changes.
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-    # Block cursor for command mode
-    echo -ne '\e[1 q'
-  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ $1 = 'beam' ]]; then
-    # Beam (I-bar) cursor for insert mode
-    echo -ne '\e[5 q'
+# 改变光标形状的辅助函数
+function _set_cursor_shape() {
+  case $1 in
+    block) echo -ne "\e[1 q" ;; # 方块
+    beam)  echo -ne "\e[5 q" ;; # 竖线
+  esac
+}
+
+# 监听模式切换
+function zle-keymap-select() {
+  if [[ ${KEYMAP} == vicmd ]]; then
+    _set_cursor_shape block
+  else
+    _set_cursor_shape beam
   fi
 }
-# Register the function to run on keymap changes
 zle -N zle-keymap-select
 
-# Set the initial cursor to beam shape on startup
-echo -ne '\e[5 q'
+# 监听行初始化（进入命令行时）
+function zle-line-init() {
+  _set_cursor_shape beam
+}
+zle -N zle-line-init
+
+# 确保在命令结束后光标恢复为竖线
+# 有些终端在运行完 ls 等命令后会重置光标，这里可以强制重置
+preexec() {
+  _set_cursor_shape beam
+}
