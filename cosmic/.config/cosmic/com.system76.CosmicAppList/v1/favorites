@@ -1,6 +1,7 @@
 [
-    "zen",
+    "org.qutebrowser.qutebrowser",
     "kitty",
-    "wechat",
     "com.obsproject.Studio",
+    "wechat",
+    "localsend",
 ]
