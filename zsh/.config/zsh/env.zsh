@@ -1,25 +1,23 @@
-# 用户的环境变量
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 
-# HomeBrew包管理器
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
+export ANDROID_HOME=$HOME/.android/Sdk
 
 # export LANG=zh_CN.UTF-8
 # export LANGUAGE=zh_CN:en_US
 
-# 配置终端代理
 # export ALL_PROXY=http://127.0.0.1:7897
 # export http_proxy=socks5://127.0.0.1:10086
 # export https_proxy=$http_proxy
 
-# 使用本的的ollama模型Set LLM_KEY to NONE
 export LLM_KEY=NONE
 export OPENROUTER_API_KEY=""
 export DEEPSEEK_API_KEY=""
 
-# skip the verification of insecure directories
+# 跳过不安全目录的验证
 export ZSH_DISABLE_COMPFIX=true
 
 # 解决cursor使用rust出现"unknown proxy name: 'Cursor'
@@ -74,18 +72,15 @@ fi
 # 连接tmux或新建会话
 # 检测 tmux 是否安装
 if command -v tmux &> /dev/null; then
-	# 1. 检测是否是交互式 Shell (防止 scp/sftp 等非交互连接被破坏)
-	# 2. 检测当前是否已经在 tmux 里面 (防止无限递归)
-	# 3. 检测是否在 VSCode 的内置终端里
-	# 4. 检测是否在 Neovim 内置终端里
+   # 非交互式 Shell，没有被 tmux 环境变量标记，不在 VSCode，不在 Neovim，未被ssh
 	if [[ $- == *i* ]] && \
 		[ -z "$TMUX" ] && \
 		[ "$TERM_PROGRAM" != "vscode" ] && \
-		[ -z "$NVIM" ]; then
-		# 尝试进入 main 会话
+		[ -z "$NVIM" ] && \
+		[ -z "$SSH_CONNECTION" ] && \
+		[[ ! "$TERM" =~ screen ]] && \
+		[[ ! "$TERM" =~ tmux ]]; then
 		# 使用 exec 可以替换当前 Shell 进程，这样退出 tmux 时会直接关闭终端，而不是退回到外层 Shell
-		exec tmux new-session -A -s main
+		tmux new-session -A -s main
 	fi
 fi
-
-  

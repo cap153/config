@@ -19,3 +19,5 @@ export XDG_MENU_PREFIX="arch- kbuildsycoca6"
 
 # xwayland-satellite :12 &
 # export DISPLAY=:12
+
+export ANDROID_HOME=$HOME/.android/Sdk
