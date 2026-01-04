@@ -4,4 +4,7 @@ Description=Update all local git repositories from remotes
 [Service]
 Type=oneshot
 # User=secadm
-ExecStart=/home/secadm/.ugr.sh
+ExecStart=%h/Desktop/tools/update_repositories.sh
+
+[Install]
+WantedBy=default.target
