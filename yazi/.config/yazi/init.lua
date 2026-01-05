@@ -12,6 +12,7 @@ Status:children_add(function(self)
 		return ""
 	end
 end, 3300, Status.LEFT)
+
 -- 在状态栏中显示用户/文件组
 Status:children_add(function()
 	local h = cx.active.current.hovered
