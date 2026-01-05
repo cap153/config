@@ -11,9 +11,7 @@ alias less="tspin"
 # sudo mount -o uid=$UID,gid=$GID,dmask=022,fmask=133 设备 路径
 # 自动挂载/dev/sda3      /media/program    ntfs    defaults,utf8,uid=1000,gid=1000,dmask=022,fmask=133     0       0 
 # mount -a刷新自动挂载,记得关闭win快速启动
-alias ma="mkdir $HOME/usb & sudo mount  -o gid=1000,uid=1000 /dev/sdb1 usb"
-alias uma="sudo umount $HOME/usb && rmdir $HOME/usb "
-# alias mount="sudo mount  -o gid=1000,uid=1000"
+
 alias ip="ip -c"
 
 # youtube-dl设置代理
