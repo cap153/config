@@ -28,7 +28,7 @@ c.colors.webpage.preferred_color_scheme = "dark"
 # 图片处理策略
 # 'smart': 智能分析图片，如果是简单的图标/二维码则反转颜色，如果是照片则保持原样
 # 'never': 永远不反转图片 (推荐，防止表情包变鬼片)
-c.colors.webpage.darkmode.policy.images = "smart"
+c.colors.webpage.darkmode.policy.images = "never"
 # 窗口化全屏
 # c.content.fullscreen.window = True
 # 设置文件选择器为外部命令
