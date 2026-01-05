@@ -31,6 +31,10 @@ c.colors.webpage.preferred_color_scheme = "dark"
 c.colors.webpage.darkmode.policy.images = "smart"
 # 窗口化全屏
 # c.content.fullscreen.window = True
+# 设置文件选择器为外部命令
+c.fileselect.handler = "external"
+c.fileselect.single_file.command = ["/usr/bin/kitty", "/usr/bin/yazi", "--chooser-file", "{}"]
+c.fileselect.multiple_files.command = ["/usr/bin/kitty", "/usr/bin/yazi", "--chooser-file", "{}"]
 
 # ==============================================================================
 # 清理与安全
