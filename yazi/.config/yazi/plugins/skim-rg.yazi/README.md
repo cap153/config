@@ -4,11 +4,14 @@ Search files by content via skim and ripgrep, open with neovim
 
 ![image](https://github.com/user-attachments/assets/675bf8d7-6ab1-4182-9402-14bdf45ece17)
 
+[yazi+skim模糊查找](https://www.bilibili.com/video/BV1St34zMEV6/?share_source=copy_web&vd_source=d34abe3786a6b85ecc07875a85795885)
+
 ## Dependencies
 
-* [`skim`](https://github.com/skim-rs/skim)
-* [`ripgrep`](https://github.com/BurntSushi/ripgrep)
-* [`bat`](https://github.com/sharkdp/bat)
+* [skim](https://github.com/skim-rs/skim)
+* [ripgrep](https://github.com/BurntSushi/ripgrep)
+* [bat](https://github.com/sharkdp/bat)
+* [neovim](https://github.com/neovim/neovim)
 
 ## Installation
 

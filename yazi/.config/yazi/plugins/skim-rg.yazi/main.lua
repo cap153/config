@@ -13,7 +13,7 @@ end)
 -- 2. 插件入口函数
 function M:entry()
 	-- 隐藏 yazi 界面，以便 skim 的 TUI 和后续的 nvim 可以显示
-	local _permit = ya.hide()
+	local _permit = ui.hide()
 
 	-- 调用之前创建的 state() 函数来获取当前目录
 	local cwd = state()

@@ -12,7 +12,7 @@ function M:entry()
 	ya.emit("escape", { visual = true })
 
 	-- 隐藏 yazi 界面，以便 skim 的 TUI 可以显示
-	local _permit = ya.hide()
+	local _permit = ui.hide()
 	local cwd = state()
 
 	-- 执行 skim 命令并获取输出
