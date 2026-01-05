@@ -85,6 +85,10 @@ document = [
 sqlite = [
 	{ run = 'sqlitestudio "$@"', orphan = true,  for = "unix" },
 ]
+executable = [
+	{ run = '"$@"', orphan = true,  for = "unix" },
+	{ run = 'sh "$@"', orphan = true,  for = "unix" },
+]
 
 [open]
 # 手动修改打开有问题的文件类型可以根据后缀名指定软件，有的时候要/后缀名才生效
@@ -96,6 +100,7 @@ prepend_rules = [
 	{ mime = "*/pdf",  use = [ "document", "reveal" ] },
 	{ mime = "*/doc",  use = [ "document", "reveal" ] },
 	{ url = "*.xls",  use = [ "document", "reveal" ] },
+	{ url = "*.{AppImage,appimage}",  use = [ "executable", "reveal" ] },
 ]
 rules = [
 	# Folder
