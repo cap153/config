@@ -1,0 +1,71 @@
+#! /bin/sh
+
+# =======================================
+# 自启动部分
+# =======================================
+
+# 杀死旧进程，防止重复启动
+killall -q sxhkd polybar nm-applet
+
+# 键盘映射与输入法
+sleep 1.5 && setxkbmap -option ctrl:nocaps &
+sleep 1.6 && xcape -e 'Control_L=Escape' &
+sleep 1.7 && setxkbmap us colemak &
+sleep 1.8 && fcitx5 -d &
+
+# 启动快捷键守护进程
+sleep 1.9 && export SHELL=/bin/sh; /usr/bin/sxhkd -c "$HOME/.dotfiles/bspwm/.config/sxhkd/sxhkdrc" > /tmp/sxhkd.log 2>&1 &
+
+# 壁纸
+$HOME/.dotfiles/i3/.config/i3/wallpic.sh &
+# polybar &
+
+# 轻量级的通知进程
+dunst &
+
+# git仓库同步、ssh转发webdav给qutebrowser同步书签
+$HOME/Desktop/tools/update_repositories.sh &
+ssh -L 8000:localhost:8080 -o ServerAliveInterval=60 -f -N nas
+qb-floccus > /tmp/qb-floccus.log &
+
+# =======================================
+# 使用yazi作为文件选择器
+# =======================================
+export GTK_USE_PORTAL=1
+# make sure dbus running
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    eval $(dbus-launch --sh-syntax --exit-with-session)
+fi
+killall xdg-desktop-portal xdg-desktop-portal-termfilechooser 2>/dev/null
+# use `find /usr -name xdg-desktop-portal-termfilechooser` make sure path
+/usr/libexec/xdg-desktop-portal-termfilechooser -r &
+
+# =======================================
+# bspwm 核心设置
+# =======================================
+
+# 只初始化第 1 个工作区
+bspc monitor -d 1
+
+# 启动动态工作区管理脚本,必须放在 monitor -d 之后
+killall dynamic_workspaces.sh 2>/dev/null # 防止重复启动
+$HOME/.config/bspwm/dynamic_workspaces.sh &
+
+# 边框宽度
+bspc config border_width         0
+# 窗口间隙 (Gaps)
+bspc config window_gap           0
+
+# 焦点跟随鼠标 (对应 focus_follows_mouse)
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# =======================================
+# 窗口规则 (对应 i3 的 for_window)
+# =======================================
+# 语法：bspc rule -a [Class] state=[floating/tiled/fullscreen]
+
+bspc rule -a flameshot state=floating manage=off
+bspc rule -a "neovide" state=fullscreen
+bspc rule -a "scrcpy" state=floating
