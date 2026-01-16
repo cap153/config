@@ -8,8 +8,8 @@ map u scrollUp
 map e scrollDown
 map n scrollLeft
 map i scrollRight
-map <c-u> scrollToTop
-map <c-e> scrollToBottom
+map <c-u> scrollPageUp
+map <c-e> scrollPageDown
 map E scrollPageDown
 map U scrollPageUp
 
@@ -28,7 +28,8 @@ map ti nextTab
 map N previousTab
 map I nextTab
 map Q removeTab
-map tq closeOtherTabs
+map tq removeTab
+map tQ closeOtherTabs
 map tN closeTabsOnLeft
 map tI closeTabsOnRight
 
