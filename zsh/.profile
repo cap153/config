@@ -11,6 +11,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
+export ANDROID_HOME=$HOME/.android/Sdk
+
 # https://github.com/noctalia-dev/noctalia-shell/issues/437
 export QT_QPA_PLATFORMTHEME="gtk3"
 # https://github.com/prasanthrangan/hyprdots/issues/1406
@@ -20,4 +22,3 @@ export XDG_MENU_PREFIX="arch- kbuildsycoca6"
 # xwayland-satellite :12 &
 # export DISPLAY=:12
 
-export ANDROID_HOME=$HOME/.android/Sdk
