@@ -1,0 +1,11 @@
+[global]
+	font = ComicShannsMono Nerd Font, Monospace 24
+# 允许高度扩展到 1000 像素，几乎能容纳任何长文本
+	height = (0, 1000)
+	width = (0, 550)
+# 设置为 yes 允许长文本换行
+	word_wrap = yes
+# 0 表示不限制通知窗口内的行数
+	line_height = 0
+# 也可以设置通知的最大高度（像素）
+	notification_limit = 0
