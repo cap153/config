@@ -1,0 +1,128 @@
+# -----------------
+# System & Apps
+# -----------------
+
+# 重新加载配置 (Alt + Shift + c)
+alt + shift + c
+    pkill -USR1 -x sxhkd
+
+# 退出 bspwm (Alt + Shift + q)
+alt + shift + q
+    bspc quit
+
+# 关闭窗口 (Alt + q) - 对应你 i3 的 bind
+alt + q
+    bspc node -c
+
+# 启动终端 (Alt + Enter)
+alt + Return
+    kitty -o "font_size 24.0"
+
+# browser
+alt + x
+    zen
+    # env QT_SCALE_FACTOR=1.5 qutebrowser
+    # 下面的 QT_SCREEN_SCALE_FACTORS 在 QT 6.9 已经弃用
+    # env QT_SCREEN_SCALE_FACTORS=1.5 qutebrowser
+
+# 启动 Launcher/Rofi (Alt + a)
+alt + a
+    rofi -show drun -theme solarized
+
+# 启动/关闭 screenkey
+alt + k
+    screenkey
+alt + K
+    pkill screenkey
+
+# 截图
+Print
+    flameshot gui
+alt + j
+    flameshot gui
+
+# -----------------
+# Cosmic 风格：无限流转
+# -----------------
+
+# ---------------------------------
+# 向左 (Left / n) -> West / Prev
+# ---------------------------------
+alt + {Left,n}
+    bspc node -f west || bspc desktop -f prev
+
+alt + shift + {Left,n}
+    bspc node -s west || bspc node -d prev --follow
+
+
+# ---------------------------------
+# 向右 (Right / i) -> East / Next
+# ---------------------------------
+alt + {Right,i}
+    bspc node -f east || bspc desktop -f next
+
+alt + shift + {Right,i}
+    bspc node -s east || bspc node -d next --follow
+
+
+# ---------------------------------
+# 向上 (Up / u) -> North (不跨工作区)
+# ---------------------------------
+alt + {Up,u}
+    bspc node -f north
+
+alt + shift + {Up,u}
+    bspc node -s north
+
+
+# ---------------------------------
+# 向下 (Down / e) -> South (不跨工作区)
+# ---------------------------------
+alt + {Down,e}
+    bspc node -f south
+
+alt + shift + {Down,e}
+    bspc node -s south
+
+# -----------------
+# 工作区 (1-9, 0)
+# -----------------
+
+alt + {1-9,0}
+    bspc desktop -f '^{1-9,10}'
+
+# 把窗口扔到别的组(平铺 + 取消粘滞)
+alt + shift + {1-9,0}
+    bspc node -g sticky=off; \
+    bspc node -t tiled; \
+    bspc node -d '^{1-9,10}'
+
+# -----------------
+# 状态控制
+# -----------------
+
+# 切换平铺/浮动 (Alt + Shift + Space)
+alt + shift + space
+    bspc query -N -n focused.floating > /dev/null \
+    && bspc node -t tiled \
+    || bspc node -t floating
+
+# 全屏切换 (Alt + f)
+alt + f
+    bspc query -N -n focused.fullscreen > /dev/null \
+    && bspc node -t tiled \
+    || bspc node -t fullscreen
+
+# -----------------
+# Scratchpad (暂存器) - 对应 Alt + (-)
+# -----------------
+alt + minus
+    bspc node -t floating; \
+    bspc node -g sticky=on -g hidden=on
+
+alt + shift + minus
+    bspc node .focused.sticky -g hidden=on || \
+    bspc node $(bspc query -N -n .hidden.sticky.window | tail -n1) -g hidden=off -f
+
+alt + s
+    bspc node -g sticky=off -t tiled
