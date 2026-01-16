@@ -128,7 +128,7 @@ prepend_keymap = [
 	{ on = [ "g", "n" ],       run = "cd ~/Documents/notes", desc = "Go to the notes" },
 	{ on = [ "g", "t" ],       run = "cd ~/.local/share/Trash", desc = "Go to the Trash" },
 	{ on = [ "g", "s" ],       run = "cd sftp://nas", desc = "Go to nas" },
-	{ on = [ "g", "i" ],       run = "cd ~/.dotfiles/i3/.config/i3", desc = "Go to the i3 config" },
+	{ on = [ "g", "i" ],       run = "cd ~/.dotfiles/bspwm/.config/bspwm/", desc = "Go to the i3 config" },
 	{ on = [ "g", "m" ],       run = "cd /run/media/captain/laptop", desc = "Go to laptop disk" },
 	{ on = [ "g", "f", "f" ],       run = "cd ~/.dotfiles", desc = "Go to the config" },
 	{ on = [ "g", "f", "k" ],       run = "cd ~/.dotfiles/kitty/.config/kitty", desc = "Go to the config" },
@@ -389,6 +389,17 @@ keymap = [
 ]
 
 [input]
+
+# 重命名相关键位
+prepend_keymap = [
+	{ on = [ "n" ], run = "move -1", desc = "Move back a character" },
+	{ on = [ "i" ], run = "move 1", desc = "Move forward a character" },
+	{ on = [ "N" ], run = "move bol", desc = "Move to the BOL" },
+	{ on = [ "I" ], run = "move eol", desc = "Move to the EOL" },
+	{ on = [ "k" ], run = "insert", desc = "Enter insert mode" },
+	{ on = [ "K" ], run = [ "move first-char", "insert" ], desc = "Move to the BOL, and enter insert mode" },
+	{ on = [ "?" ], run = "help", desc = "Open help" }
+]
 
 keymap = [
 	{ on = "<C-c>",   run = "close",          desc = "Cancel input" },
