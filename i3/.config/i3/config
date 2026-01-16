@@ -88,10 +88,10 @@ bindsym $mod+w exec zen
 # bindsym $mod+w exec google-chrome-stable %U --proxy-server="socks5://127.0.0.1:7890" & xkbcomp $HOME/.config/sway/map.xkb $DISPLAY
 
 # 启动win7虚拟机
-bindsym $mod+z exec VBoxManage startvm "win7" --type gui
+# bindsym $mod+z exec VBoxManage startvm "win7" --type gui
 
 # 启动安卓虚拟机
-bindsym $mod+shift+z exec genymotion-player --vm-name "Custom Phone"
+# bindsym $mod+shift+z exec genymotion-player --vm-name "Custom Phone"
 
 # $mod+Shift+减号 移动暂存器，需先聚集指定窗口
 bindsym $mod+Shift+minus move scratchpad
