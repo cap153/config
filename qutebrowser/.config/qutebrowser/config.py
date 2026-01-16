@@ -1,5 +1,19 @@
 import os
 import shlex
+import socket
+
+# ==============================================================================
+# 代理
+# ==============================================================================
+my_proxy_url = "http://127.0.0.1:7897"
+port = int(my_proxy_url.split(":")[-1])
+host = my_proxy_url.split(":")[-2].strip("/")
+try:
+    with socket.create_connection((host, port), timeout=0.1):
+        os.environ["QB_PROXY"] = my_proxy_url
+        c.content.proxy = my_proxy_url
+except Exception:
+    c.content.proxy = "none"
 
 # ==============================================================================
 # 基础配置
@@ -7,10 +21,7 @@ import shlex
 # qute://version 可以查看版本信息
 # 忽略自动生成的配置
 config.load_autoconfig(False)
-my_proxy_url = "http://127.0.0.1:7897"
-os.environ["QB_PROXY"] = my_proxy_url  # 作为环境变量传递给脚本
-c.content.proxy = my_proxy_url
-c.url.start_pages = ["https://aistudio.google.com/prompts/new_chat"]
+c.url.start_pages = ["https://gemini.google.com/app"]
 c.url.default_page = "about:blank"
 # 新建标签页时使用的搜索引擎
 c.url.searchengines = {
@@ -33,8 +44,18 @@ c.colors.webpage.darkmode.policy.images = "never"
 # c.content.fullscreen.window = True
 # 设置文件选择器为外部命令
 c.fileselect.handler = "external"
-c.fileselect.single_file.command = ["/usr/bin/kitty", "/usr/bin/yazi", "--chooser-file", "{}"]
-c.fileselect.multiple_files.command = ["/usr/bin/kitty", "/usr/bin/yazi", "--chooser-file", "{}"]
+c.fileselect.single_file.command = [
+    "kitty",
+    "yazi",
+    "--chooser-file",
+    "{}",
+]
+c.fileselect.multiple_files.command = [
+    "kitty",
+    "yazi",
+    "--chooser-file",
+    "{}",
+]
 
 # ==============================================================================
 # 清理与安全
@@ -46,12 +67,17 @@ c.fileselect.multiple_files.command = ["/usr/bin/kitty", "/usr/bin/yazi", "--cho
 # ==============================================================================
 # 历史与输入
 # ==============================================================================
-config.bind("l", "back")  # 后退
-config.bind("k", "hint inputs")  # 聚焦输入框 (类似 focusInput)
+config.bind("l", "back")
+config.bind("k", "hint inputs --first")
+config.bind("K", "hint inputs")
 # 外部编辑器 (Edit Text)
-my_terminal_editor = ["/usr/bin/kitty", "nvim"]
-# 在 Insert 模式下按 Ctrl+space 呼出编辑器输入
-c.editor.command = my_terminal_editor + ["{file}"]
+my_terminal_editor = ["kitty", "nvim"]
+# 在 Insert 模式下按 Ctrl+space 呼出编辑器输入，默认使用markdown类型
+c.editor.command = my_terminal_editor + [
+    "-c",
+    "if &ft == '' | set ft=markdown | endif",
+    "{file}",
+]
 config.bind("<Ctrl-space>", "edit-text", mode="insert")
 # 绑定 r 重载配置
 config.bind("r", 'config-source ;; reload ;; message-info "配置已重载 & 页面已刷新"')
@@ -70,6 +96,8 @@ config.bind("i", "scroll right")
 # 大幅度滚动
 config.bind("U", "fake-key <PgUp>")
 config.bind("E", "fake-key <PgDown>")
+config.bind("<Ctrl-u>", "fake-key <PgUp>")  # 上一个标签页
+config.bind("<Ctrl-e>", "fake-key <PgDown>")  # 下一个标签页
 config.bind("gg", "fake-key <Home>")
 config.bind("G", "fake-key <End>")
 
@@ -144,8 +172,6 @@ config.bind("tn", "tab-prev")  # 上一个标签页
 config.bind("ti", "tab-next")  # 下一个标签页
 config.bind("N", "tab-prev")  # 上一个标签页
 config.bind("I", "tab-next")  # 下一个标签页
-config.bind("<Ctrl-u>", "tab-prev")  # 上一个标签页
-config.bind("<Ctrl-e>", "tab-next")  # 下一个标签页
 config.bind("tmn", "tab-move -")  # 标签页向左移动
 config.bind("tmi", "tab-move +")  # 标签页向右移动
 
@@ -214,7 +240,8 @@ cmd_escape_fcitx = "mode-leave ;; jseval -q document.activeElement.blur() ;; spa
 
 # 将 Esc 绑定到这个复合命令 (仅针对 insert 模式，之前的退出穿透模式和这里不冲突)
 config.bind("<Escape>", cmd_escape_fcitx, mode="insert")
-
+# 防止鼠标点击导致偷偷切换模式而不触发清理命令
+c.input.insert_mode.auto_leave = False
 
 # ==============================================================================
 # 油猴插件自动更新列表 (Greasemonkey Auto-Updater)
@@ -229,8 +256,7 @@ enabled_scripts = [
 ]
 
 # 禁用的插件 (暂时不想用，但不想删文件，下次启用不用重新下载)
-disabled_scripts = [
-]
+disabled_scripts = []
 
 # 注入环境变量
 os.environ["QB_GM_LIST"] = " ".join(enabled_scripts)
