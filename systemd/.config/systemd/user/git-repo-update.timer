@@ -1,5 +1,6 @@
 [Unit]
 Description=Run git-repo-update.service daily
+After=network-online.target
 
 [Timer]
 # 每天凌晨3点30分执行

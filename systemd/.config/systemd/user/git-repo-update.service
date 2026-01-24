@@ -1,9 +1,14 @@
 [Unit]
 Description=Update all local git repositories from remotes
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot
-# User=secadm
+Restart=on-failure
+RestartSec=30s
+StartLimitBurst=5
+
 ExecStart=%h/Desktop/tools/update_repositories.sh
 
 [Install]
