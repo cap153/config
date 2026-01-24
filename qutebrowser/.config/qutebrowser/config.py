@@ -19,6 +19,11 @@ except Exception:
 # 基础配置
 # ==============================================================================
 # qute://version 可以查看版本信息
+# 设置网页默认字体 (Web Content)
+c.fonts.web.family.standard = "LXGW WenKai GB Screen"
+c.fonts.web.family.fixed = "LXGW WenKai GB Screen"
+c.fonts.web.family.serif = "LXGW WenKai GB Screen"
+c.fonts.web.family.sans_serif = "LXGW WenKai GB Screen"
 # 忽略自动生成的配置
 config.load_autoconfig(False)
 c.url.start_pages = ["https://gemini.google.com/app"]
@@ -63,6 +68,15 @@ c.fileselect.multiple_files.command = [
 # 防止触发默认危险操作
 # config.bind("m", "nop")  # 默认是 quickmark
 # config.bind("b", "nop")  # 默认是 quickmark-load
+
+
+# ==============================================================================
+# 保存和加载会话
+# ==============================================================================
+config.bind('S', 'session-save')
+config.bind('ss', 'set-cmd-text -s :session-save ')
+config.bind('sl', 'session-load default')
+config.bind('sL', 'set-cmd-text -s :session-load ')
 
 # ==============================================================================
 # 历史与输入
@@ -179,8 +193,8 @@ config.bind("x", "tab-close")  # 关闭当前标签
 config.bind("Q", "tab-close")  # 关闭当前标签
 config.bind("tq", "tab-close")  # 关闭当前标签
 config.bind("tQ", "tab-only")  # 关闭其他标签 (closeOtherTabs)
-# config.bind('tN', '...') # 暂不支持原生 CloseTabsOnLeft
-# config.bind('tI', '...') # 暂不支持原生 CloseTabsOnRight
+config.bind('tN', 'tab-only --next')  # tN: 关闭左侧所有标签页 (只保留当前和右侧)
+config.bind('tI', 'tab-only --prev')  # tI: 关闭右侧所有标签页 (只保留当前和左侧)
 
 config.bind("<Ctrl-t>", "cmd-set-text -s :tab-select")  # 搜索已经打开的标签页
 
