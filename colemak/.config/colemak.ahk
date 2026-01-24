@@ -1,4 +1,5 @@
-; 建议为新脚本添加此行，以获得更好的性能和可靠性
+#Requires AutoHotkey v2.0
+; 添加此行，以获得更好的性能和可靠性
 SendMode "Input"
 
 ; 禁用CapsLock键本身的切换大写功能
@@ -42,17 +43,15 @@ LAlt & l::AltTab
 LAlt & j::ShiftAltTab
 LAlt & q::Send "!{F4}"
 
-; Alt + d 创建信号文件切换obs录屏状态
-!d::
-{
-	; 获取系统临时文件夹的路径。
-	TempPath := EnvGet("TEMP")
+; 创建信号文件切换obs/mpv状态
+; Alt + D: 切换 暂停/恢复
+!d:: {
+    FileAppend("", EnvGet("TEMP") . "\obs_mpv_toggle_pause")
+}
 
-	; 构建触发文件的完整路径。
-	TriggerFilePath := TempPath . "\obs_mpv_toggle_pause"
-	
-	; 创建触发文件。
-	FileAppend("", TriggerFilePath)
+; Alt + S: 下一曲 (切换文件并恢复录制)
+!S:: {
+    FileAppend("", EnvGet("TEMP") . "\mpv_toggle_next")
 }
 
 ; --- 键盘布局重映射 (类似 Colemak 布局) ---
