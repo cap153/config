@@ -3,6 +3,8 @@ alias pof="poweroff"
 alias c="clear"
 alias s="fastfetch"
 alias ta='tmux new-session -A -s main'
+# 小写 i 每删除一个文件，系统都会询问你是否确认删除，大写 I 要删除的文件数量超过 3 个或者使用了 -f 时会询问
+alias rm='rm -I'
 # tailspin,A log file highlighter,`journalctl -xfu | tspin`
 alias less="tspin"
 
