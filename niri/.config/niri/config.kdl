@@ -345,6 +345,18 @@ window-rule {
         active-color "#61AFEF"
     }
 }
+window-rule {
+    match app-id="flameshot" title="flameshot-pin"
+    focus-ring {
+        off
+    }
+    border {
+        off
+    }
+    shadow {
+        off
+    }
+}
 
 // `niri msg layers`显示有namespace
 layer-rule {
