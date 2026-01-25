@@ -1,21 +1,15 @@
 [mgr]
 cwd = { fg = "#50fa7b" }
+
+[filetype]
+rules = [
+	# Fallback
+	{ url = "*", fg = "#f8f8f2" },
+	{ url = "*/", fg = "#bd93f9" },
+]
+
 [icon]
 dirs = [
-	{ name = ".config", text = "", fg = "#bd93f9" },
-	{ name = ".git", text = "", fg = "#bd93f9" },
-	{ name = ".github", text = "", fg = "#bd93f9" },
-	{ name = ".npm", text = "", fg = "#bd93f9" },
-	{ name = "Desktop", text = "", fg = "#bd93f9" },
-	{ name = "Development", text = "", fg = "#bd93f9" },
-	{ name = "Documents", text = "", fg = "#bd93f9" },
-	{ name = "Downloads", text = "", fg = "#bd93f9" },
-	{ name = "Library", text = "", fg = "#bd93f9" },
-	{ name = "Movies", text = "", fg = "#bd93f9" },
-	{ name = "Music", text = "", fg = "#bd93f9" },
-	{ name = "Pictures", text = "", fg = "#bd93f9" },
-	{ name = "Public", text = "", fg = "#bd93f9" },
-	{ name = "Videos", text = "", fg = "#bd93f9" },
 ]
 conds = [
 	# Fallback
