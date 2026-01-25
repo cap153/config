@@ -22,5 +22,5 @@ PIC_DIR="$HOME/github/pic"
 if [[ ! -d "$PIC_DIR" ]]; then
 	echo "Geting pictures. If the download fails, you can try deleting the directory $PIC_DIR and restarting zsh."
 	mkdir -p $PIC_DIR
-	git clone --depth 1 https://github.com/cap153/pic.git $PIC_DIR
+	git clone --depth 1 git@github.com:cap153/pic.git $PIC_DIR
 fi
