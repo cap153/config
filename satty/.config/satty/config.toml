@@ -7,6 +7,8 @@ output-filename = "~/%Y%m%d-%H:%M:%S.png"
 early-exit = true
 # [可能的值: save-to-clipboard, save-to-file, exit]
 action-on-enter = "save-to-file"
+# 隐藏标题栏
+no-window-decoration = true
 
 [font]
 family = "Noto Serif CJK SC"
