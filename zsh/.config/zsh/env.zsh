@@ -1,6 +1,7 @@
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
+export PATH="$HOME/.zvm/bin:$PATH"
 
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
