@@ -135,6 +135,7 @@ prepend_keymap = [
 	{ on = [ "g", "f", "y" ],       run = "cd ~/.dotfiles/yazi/.config/yazi", desc = "Go to the yazi config" },
 	{ on = [ "g", "f", "z" ],       run = "cd ~/.dotfiles/zsh/.config/zsh", desc = "Go to the zsh config" },
 	{ on = [ "g", "f", "n" ],       run = "cd ~/.config/nvim", desc = "Go to the nvim config" },
+	{ on = [ "g", "f", "r" ],       run = "cd ~/.dotfiles/river/.config/river", desc = "Go to the river config" },
 
 	# Help
 	{ on = [ "?" ], run = "help", desc = "Open help" },
