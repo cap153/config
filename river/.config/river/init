@@ -2,7 +2,7 @@
 
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
-# export GTK_IM_MODULE=wayland
+export GTK_IM_MODULE=fcitx
 # export INPUT_METHOD=fcitx
 # export SDL_IM_MODULE=fcitx
 
@@ -17,10 +17,10 @@ sleep 2
 /usr/bin/waybar &
 /usr/bin/v2rayn &
 /usr/lib/xdg-desktop-portal-termfilechooser -r &
-/usr/bin/mako &
 /usr/bin/xwayland-satellite :12 &
 ~/.cargo/bin/soteria &
 /usr/bin/fcitx5 &
+sleep 3
+/usr/bin/mako &
 swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/wallhaven-yqqyjx.jpg" &
-# swww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &
-# ~/Desktop/tools/update_repositories.sh
+swww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &

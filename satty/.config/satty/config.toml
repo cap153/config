@@ -11,5 +11,5 @@ action-on-enter = "save-to-file"
 no-window-decoration = true
 
 [font]
-family = "Noto Serif CJK SC"
+family = "LXGW WenKai GB Screen"
 style = "Regular"
