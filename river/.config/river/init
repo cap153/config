@@ -22,5 +22,5 @@ sleep 2
 /usr/bin/fcitx5 &
 sleep 3
 /usr/bin/mako &
-swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/wallhaven-yqqyjx.jpg" &
+swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/鸣潮/wallhaven-jewlxp.png" &
 swww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &
