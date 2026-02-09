@@ -45,6 +45,7 @@ export EDITOR=nvim
 
 # 在tmux中启用fzf-tab弹窗
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' fzf-bindings 'ctrl-e:down' 'ctrl-u:up'
 
 # 使用 shell 提示的 Yazi 用户可能希望显示一个指示器，以便轻松知道他们位于 yazi 子 shell 内。
 YAZI_TERM=""
