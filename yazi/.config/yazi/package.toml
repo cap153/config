@@ -34,14 +34,9 @@ rev = "cfb9140"
 hash = "b5067143415bd2d46c0dfa57319ddcef"
 
 [[plugin.deps]]
-use = "cap153/skim"
-rev = "65ec42e"
-hash = "715abb2d9172a39bac2b23b3749ed792"
-
-[[plugin.deps]]
-use = "cap153/skim-rg"
-rev = "7ac81ad"
-hash = "684e3ea9e8ef2c520ca1ca199b275ee8"
+use = "cap153/tv"
+rev = "aefdb0a"
+hash = "264a6f0f102d17a27f7ec28087a0c172"
 
 [flavor]
 deps = []

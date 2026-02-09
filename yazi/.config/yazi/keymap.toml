@@ -110,8 +110,8 @@ prepend_keymap = [
 	{ on = [ "z", "h" ],    run = "hidden toggle",                                        desc = "Toggle the visibility of hidden files" },
 
 	# Search
-	{ on = [ "<C-f>" ],         run = "plugin skim-rg", desc = "Search files by content via ripgrep and skim, open with neovim" },
-	{ on = [ "<C-t>" ],         run = "plugin skim",    desc = "Jump to a file via skim" },
+	{ on = [ "<C-f>" ],			run = "plugin tv text", desc = "Open files using neovim and jump to where the string is located" },
+	{ on = [ "<C-t>" ],     run = "plugin tv",      desc = "Jump to a file via tv" },
 
 	# Find
 	{ on = [ "=" ], run = "find_arrow",              desc = "Go to next found file" },
