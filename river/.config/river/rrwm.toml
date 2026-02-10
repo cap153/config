@@ -124,3 +124,10 @@ gaps = "2" # 窗口间隙
 [window.active]
 border = { width = "2", color = "#bd93f9" }
 
+[window.rule]
+match = [
+	{ appid="kitty", icon="" },
+	{ appid="neovide", icon="" },
+	{ appid="wechat", icon="" },
+]
+
