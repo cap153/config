@@ -28,7 +28,7 @@ $HOME/Desktop/tools/update_repositories.sh &
 # ssh -L 8000:localhost:8080 -o ServerAliveInterval=60 -f -N nas
 # autossh 是专门为解决 SSH 隧道掉线而生的工具。它会监控连接状态，并在隧道断开时自动尝试重连
 autossh -M 0 -L 8000:localhost:8080 -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -N -f nas
-sleep 30 && qb-floccus > /tmp/qb-floccus.log &
+# sleep 30 && qb-floccus > /tmp/qb-floccus.log &
 
 # =======================================
 # 使用yazi作为文件选择器
