@@ -12,15 +12,16 @@ rrwm &
 # RUST_LOG=info rrwm &
 
 # launch software
-sleep 2
 /usr/bin/swww-daemon --namespace river &
 /usr/bin/waybar &
 /usr/bin/v2rayn &
 /usr/lib/xdg-desktop-portal-termfilechooser -r &
 /usr/bin/xwayland-satellite :12 &
 ~/.cargo/bin/soteria &
-/usr/bin/fcitx5 &
 sleep 3
-/usr/bin/mako &
+/usr/bin/fcitx5 &
 swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/鸣潮/wallhaven-jewlxp.png" &
 swww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &
+
+sleep 5
+/usr/bin/mako &
