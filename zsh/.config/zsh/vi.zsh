@@ -53,6 +53,66 @@ bindkey -M vicmd "=" vi-repeat-search
 # Set a short timeout for ambiguous key sequences
 KEYTIMEOUT=1
 
+# 解绑 visual 和 viopp 模式下的 k
+bindkey -M visual -r "k"
+bindkey -M viopp -r "k"
+
+# 加载选择引号的函数
+autoload -U select-quoted
+zle -N select-quoted
+
+# 加载选择括号的函数
+autoload -U select-bracketed
+zle -N select-bracketed
+
+# “选择内部单词”的函数 (Inner Word)
+vi-select-inner-word() {
+  # 记录原始位置，防止在行首/行尾越界
+  local save_cursor=$CURSOR
+  # 先向后移一个字符再执行结尾跳转，确保光标在单词开头时也能准确选中当前单词
+  zle vi-backward-char
+  zle vi-forward-word-end
+  local end=$CURSOR
+  # 先向前移一个字符再执行开头跳转，确保光标在单词结尾时不会跳到下一个单词
+  zle vi-forward-char
+  zle vi-backward-word
+  local start=$CURSOR
+  # 设置选区
+  CURSOR=$start
+  MARK=$end
+  # 关键：只有当可视模式未开启时才开启它，防止 Toggle 导致退出
+  if (( ! REGION_ACTIVE )); then
+    zle visual-mode
+  fi
+}
+zle -N vi-select-inner-word
+
+# “选择整个单词”的函数 (Around Word - 包含空格)
+vi-select-around-word() {
+  zle vi-forward-word
+  local end=$((CURSOR - 1))
+  zle vi-backward-word
+  MARK=$end
+  if (( ! REGION_ACTIVE )); then
+    zle visual-mode
+  fi
+}
+zle -N vi-select-around-word
+
+for m in visual viopp; do
+# 涵盖引号: k" , k' , k`
+  for c in {k,a}{\',\",\`}; do
+    bindkey -M $m "$c" select-quoted
+  done
+# 涵盖括号: k( , k[ , k{ , k< 等
+  for c in {k,a}{\(,\),\[,\],\{,\},\<,\>}; do
+    bindkey -M $m "$c" select-bracketed
+  done
+  bindkey -M $m "kw" vi-select-inner-word
+  bindkey -M $m "aw" vi-select-around-word
+done
+
+
 # -----------------------------------------------------------------
 # Cursor Shape Control (The Best Practice)
 # -----------------------------------------------------------------

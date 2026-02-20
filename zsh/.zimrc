@@ -16,5 +16,3 @@ zmodule pabloariasal/zfm
 zmodule agkozak/zsh-z
 zmodule Aloxaf/fzf-tab
 zmodule zsh-users/zsh-autosuggestions
-# zmodule zsh-users/zsh-completions
-# zmodule marlonrichert/zsh-autocomplete
