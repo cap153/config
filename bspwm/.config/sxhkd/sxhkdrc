@@ -18,6 +18,9 @@ alt + q
 alt + Return
     kitty -o "font_size 24.0"
 
+alt +shift + Return
+    neovide --frame none
+
 # browser
 alt + x
     zen
