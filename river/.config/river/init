@@ -6,6 +6,9 @@ export GTK_IM_MODULE=fcitx
 # export INPUT_METHOD=fcitx
 # export SDL_IM_MODULE=fcitx
 
+# Make sure D-Bus is aware of Wayland's existence
+/usr/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
+
 # launch rrwm
 rrwm &
 # Want to see detailed logs: 
@@ -20,8 +23,6 @@ rrwm &
 ~/.cargo/bin/soteria &
 sleep 3
 /usr/bin/fcitx5 &
-swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/鸣潮/wallhaven-jewlxp.png" &
+/usr/bin/dunst -conf $HOME/.dotfiles/dunst/.config/dunst/dunstrc &
+swww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/崩铁/wallhaven-qz12x7.jpg" &
 swww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &
-
-sleep 5
-/usr/bin/mako &

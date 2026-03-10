@@ -1,0 +1,82 @@
+[global]
+    # --- 位置设置 ---
+    # 显示在右上角
+    origin = top-right
+    # 距离屏幕右侧和顶部的间距 (X轴20，Y轴20)
+    offset = (20, 20)
+
+    # --- 尺寸与边距 ---
+    # 宽度范围
+    width = (0, 500)
+    # 内部边距
+    padding = 16
+    horizontal_padding = 16
+    
+    # --- 边框与圆角 ---
+    # 边框宽度
+    frame_width = 2
+    # 圆角 (需混成器支持)
+    corner_radius = 8
+
+    # --- 字体与排版 ---
+    # 日常通知使用系统无衬线字体即可，大小适中
+    font = Sans 11
+    # 靠左对齐，方便阅读
+    alignment = left
+    vertical_alignment = center
+
+    # --- 格式与图标 ---
+    # 恢复图标显示，放在左侧
+    icon_position = left
+    # 限制图标最大尺寸
+    max_icon_size = 48
+    # 标题加粗，换行显示正文
+    format = "<b>%s</b>\n%b"
+    # 通知之间添加一点间距
+    separator_height = 2
+
+    # --- Dracula 基础颜色 ---
+    # 背景：Dracula 暗紫灰色
+    background = "#282a36"
+    # 前景文字：Dracula 亮白色
+    foreground = "#f8f8f2"
+    # 分割线颜色与边框一致
+    separator_color = frame
+
+# --- 优先级与 Dracula 强调色 ---
+[urgency_low]
+    # 低优先级：使用 Dracula 的 Comment 颜色 (灰蓝色) 作为边框
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#6272a4"
+    timeout = 3
+
+[urgency_normal]
+    # 正常优先级：使用 Dracula 标志性的 Purple (紫色) 或 Cyan (青色)
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#bd93f9"
+    timeout = 5
+
+[urgency_critical]
+    # 严重警告：使用 Dracula 的 Red (红色) 作为边框和文字，背景也可以改
+    background = "#282a36"
+    foreground = "#ff5555"
+    frame_color = "#ff5555"
+    timeout = 0
+
+[showkeys_style]
+    appname = showkeys
+
+    # 文本居中对齐
+    alignment = center
+
+    # --- 格式与图标 ---
+    # 彻底关闭图标显示
+    icon_position = off
+    # 自定义文本格式：标题加粗，正文字体稍微缩小
+    # 如果不需要正文，可以改成 format = "<b>%s</b>"
+    format = "%b"
+    
+    # 文本换行
+    word_wrap = yes

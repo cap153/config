@@ -1,0 +1,50 @@
+[global]
+    # --- 位置设置 ---
+    # 顶部居中
+    origin = bottom-center
+    # X轴偏移0，Y轴向下偏移50像素（可根据你的屏幕适当调整距离顶部的留白）
+    offset = (0, 50)
+
+    # --- 尺寸与边距 ---
+    # 固定宽度，或者使用类似 `width = 0...600` 来允许动态宽度
+    width = 1000
+    # 增加内边距，使其看起来更像一个 OSD 气泡
+    padding = 20
+    horizontal_padding = 24
+
+    # --- 边框与圆角 ---
+    # 去除边框
+    frame_width = 0
+    # 圆角大小 (需要你的混成器如 picom/hyprland 支持)
+    corner_radius = 12
+
+    # --- 字体与排版 ---
+    # 使用等宽大字体，这是 screenkey 的灵魂
+    font = Monospace 24
+    # 文本居中对齐
+    alignment = center
+    vertical_alignment = center
+
+    # --- 格式与图标 ---
+    # 彻底关闭图标显示
+    icon_position = off
+    # 隐藏进度条等指示器
+    show_indicators = no
+    # 自定义文本格式：标题加粗，正文字体稍微缩小
+    # 如果不需要正文，可以改成 format = "<b>%s</b>"
+    format = "%b"
+    
+    # 文本换行
+    word_wrap = yes
+    ignore_newline = no
+
+    # --- 基础颜色 (使用 #RRGGBBAA 格式，CC 代表 80% 的不透明度) ---
+    background = "#1A1A1ACC"
+    foreground = "#FFFFFF"
+
+# --- 优先级设置 ---
+# Screenkey 的特点是显示完很快就消失，所以把 timeout 设置得很短
+[urgency_low]
+    background = "#1A1A1ACC"
+    foreground = "#FFFFFF"
+    timeout = 2

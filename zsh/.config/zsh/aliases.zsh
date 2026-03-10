@@ -9,10 +9,8 @@ alias rm='rm -I'
 alias less="tspin"
 
 # 挂载相关
-# id [用户名]查看uid和gid,blkid查看UUID
-# sudo mount -o uid=$UID,gid=$GID,dmask=022,fmask=133 设备 路径
-# 自动挂载/dev/sda3      /media/program    ntfs    defaults,utf8,uid=1000,gid=1000,dmask=022,fmask=133     0       0 
-# mount -a刷新自动挂载,记得关闭win快速启动
+alias mount="sudo mount -o uid=$UID,gid=$GID,dmask=022,fmask=133"
+alias umount="sudo umount"
 
 alias ip="ip -c"
 

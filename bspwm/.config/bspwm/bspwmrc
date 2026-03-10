@@ -21,7 +21,7 @@ $HOME/.dotfiles/i3/.config/i3/wallpic.sh &
 # polybar &
 
 # 轻量级的通知进程
-dunst &
+dunst -conf $HOME/.dotfiles/dunst/.config/dunst/dunstrc-bspwm &
 
 # git仓库同步、ssh转发webdav给qutebrowser同步书签
 $HOME/Desktop/tools/update_repositories.sh &

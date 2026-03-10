@@ -1,0 +1,149 @@
+#!/bin/sh
+
+KBD=/dev/input/event19 # `sudo evtest` List all optional equipment
+# DUNST_CONF="$HOME"/.dotfiles/dunst/.config/dunst/dunstrc-showkeys
+DUNST_CONF="$HOME"/.dotfiles/dunst/.config/dunst/dunstrc
+CHAR_LEN=50
+# sudo usermod -aG input $USER
+deps="evtest dunst"
+
+deps_check() {
+	for i in $deps; do
+		command -v "$i" >/dev/null || {
+			printf "$i not found!\n"
+			exit 1
+		}
+	done
+}
+
+trap "pkill dunst" TERM
+dunst_change() {
+	pkill dunst
+	dunst -conf "$DUNST_CONF" &
+}
+
+raw_keys() {
+	line="$1"
+	keycode="${line##*_}"
+	keycode="${keycode%%)*}"
+	action="${line##* }"
+}
+
+convert_key() {
+	key=""
+
+	if [ "$2" = "1" ]; then
+		case "$1" in
+		*SHIFT)
+			sticky_key="SHIFT+"
+			;;
+		*CTRL)
+			sticky_key="CTRL+"
+			;;
+		*META)
+			sticky_key="󰴈 +"
+			;;
+		*ALT)
+			sticky_key="ALT+"
+			;;
+		esac
+	elif [ "$2" = "0" ]; then
+		case "$1" in
+		*SHIFT | *CTRL | *META | *ALT)
+			sticky_key=""
+			;;
+		APOSTROPHE)
+			key="'"
+			;;
+		# SEMICOLON)
+		#     key=":";;
+		RIGHTBRACE)
+			key="}"
+			;;
+		LEFTBRACE)
+			key="{"
+			;;
+		GRAVE)
+			key="\`"
+			;;
+		COMMA)
+			key=","
+			;;
+		DOT)
+			key="."
+			;;
+		BACKSPACE)
+			key="󰁮 "
+			;;
+		ENTER)
+			key="󰌑 "
+			;;
+		ESC)
+			key="󱊷 "
+			;;
+		SPACE)
+			key="󱁐 "
+			;;
+		UP)
+			key=" "
+			;;
+		DOWN)
+			key=" "
+			;;
+		LEFT)
+			key=" "
+			;;
+		RIGHT)
+			key=" "
+			;;
+		SLASH)
+			key="󰿟"
+			;;
+		EQUAL)
+			key="󰇼"
+			;;
+		MINUS)
+			key="󰍴"
+			;;
+		BACKSLASH)
+			key=""
+			;;
+		E) key="f" ;; R) key="p" ;; T) key="g" ;; Y) key="j" ;;
+		U) key="l" ;; I) key="u" ;; O) key="y" ;; P) key=";" ;;
+		S) key="r" ;; D) key="s" ;; F) key="t" ;; G) key="d" ;;
+		J) key="n" ;; K) key="e" ;; L) key="i" ;; SEMICOLON) key="o" ;;
+		N) key="k" ;; # for colemak
+		*)
+			# key="$1";;
+			key=$(echo "$1" | tr 'A-Z' 'a-z')
+			;;
+		esac
+	fi
+}
+
+display_keys() {
+	if [ "$2" != "" ]; then
+		count="$count $1$2 "
+		# key_list="$key_list<span background='#bd93f9cc'> $1$2 </span> "
+		key_list="$key_list $1$2"
+		dunstify -a "showkeys" -h string:x-dunst-stack-tag:display "" "$key_list"
+	fi
+
+	[ ${#count} -gt $CHAR_LEN ] && key_list="" && count=""
+}
+
+main() {
+	evtest "$KBD" | while read -r line; do
+		case "$line" in
+		*"type 1"*"value"*)
+			raw_keys "$line"
+			convert_key "$keycode" "$action"
+			display_keys "$sticky_key" "$key"
+			;;
+		esac
+	done
+}
+
+deps_check
+dunst_change
+main

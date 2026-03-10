@@ -43,6 +43,10 @@ Return = { action = "spawn", args = ["kitty"] }
 x = { action="spawn", args=["zen"] }
 j = { action="shell", cmd='/usr/bin/grim -t ppm - | /usr/bin/satty --filename - --fullscreen' }
 a = { action="spawn", args=["/usr/bin/fuzzel", "toggle"] }
+k = [
+	{ action="shell", cmd='showkeys' },
+	{ action="shell", cmd='systemctl --user stop notify-reg' },
+]
 
 # 允许不同的修饰符
 [keybindings.super]
@@ -76,6 +80,10 @@ u = { action = "move", args = ["up"] }
 e = { action = "move", args = ["down"] }
 j = { action="shell", cmd='/usr/bin/grim -g "$(/usr/bin/slurp < /dev/null)" - | /usr/bin/satty --filename -' }
 Return = { action = "spawn", args = ["neovide", "--frame", "none"] }
+k = [
+	{ action = "spawn", args = ["pkill", "showkeys"] },
+	{ action="shell", cmd='systemctl --user start notify-reg' },
+]
 
 # 如果想使用加号连接多重修饰符，需要加引号
 [keybindings."super+shift"]
@@ -83,9 +91,7 @@ space = { action = "spawn", args = ["wezterm"] }
 
 # 没有修饰符的按键
 [keybindings]
-F1 = { action = "shell", cmd = "pactl set-sink-volume @DEFAULT_SINK@ -5%" }
-[keybindings.none]
-F2 = { action = "shell", cmd = "pactl set-sink-volume @DEFAULT_SINK@ +5%" }
+# [keybindings.none]
 # 音量控制，这里的wpctl是wireplumber附带的
 XF86AudioRaiseVolume = { action = "shell", cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+" }
 XF86AudioLowerVolume = { action = "shell", cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-" }
@@ -136,6 +142,7 @@ match = [
 	{ appid="kitty", icon="󰆍" },
 	{ appid="neovide", icon="" },
 	{ appid="wechat", icon="" },
+	{ appid="lanchat", icon="" },
 	{ appid="mpv", icon="󰐋" },
 	{ appid="com.obsproject.Studio", icon="󰃽" },
 	{ appid="com.mitchellh.ghostty", icon="" },
@@ -149,22 +156,25 @@ match = [
 n = { action = "shrink_width", unit = "10" }
 e = { action = "grow_height", unit = "10" }
 u = { action = "shrink_height", unit = "10" }
-i = { action = "grow_widh", unit = "10" }
+i = { action = "grow_width", unit = "10" }
 # 退出resize模式
 Return = { action = "exit_resize_mode" }
-space = { action = "exit_resize_mode" }
+Escape = { action = "exit_resize_mode" }
 
 [resize.shift] # 组合快捷键 shift+n/e/iu 小幅度调整窗口大小
 # 调整窗口大小，单位5px
 n = { action = "shrink_width", unit = "5"}
 e = { action = "grow_height", unit = "5"}
 u = { action = "shrink_height", unit = "5"}
-i = { action = "grow_widh", unit = "5"}
+i = { action = "grow_width", unit = "5"}
 
 [resize.alt_shift]
 # 移动窗口坐标，单位5px
 n = { action = "move", args = ["left"], unit = "5" }
-i = { action = "move", args = ["right"], uint = "5" }
+i = { action = "move", args = ["right"], unit = "5" }
 u = { action = "move", args = ["up"], unit = "5" }
-e = { action = "move", args = ["down"], uint = "5" }
+e = { action = "move", args = ["down"], unit = "5" }
 
+[pointer_bindings.alt]
+# Alt+BTN_LEFT (左键) 用于拖拽移动
+BTN_LEFT = { action = "move_interactive" }
