@@ -9,3 +9,7 @@ patch:
   "cn_en/initial_quality": 0.2
   # 开启用户中文词频记录（默认已经开启）
   "translator/enable_user_dict": true
+  # 强制覆盖 key_binder 中的 search 设置，将其设为空
+  "key_binder/search": ""
+  # 修改标点映射，让 ` 键在半角状态下直接输出 ` 而不是 ·
+  "punctuator/half_shape/`": "`"
