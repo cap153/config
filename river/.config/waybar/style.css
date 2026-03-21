@@ -1,7 +1,12 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family:  ComicShannsMono Nerd Font, LXGW WenKai GB Screen, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
     font-size: 19px;
+}
+
+#wireplumber, #bluetooth, #disk, #cpu, #memory, #battery, #clock, #tray {
+    padding: 0 8px; /* 统一控制所有右侧模块的左右内边距 */
+    margin: 0;
 }
 
 #taskbar button:hover {
