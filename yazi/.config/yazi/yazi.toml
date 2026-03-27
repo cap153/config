@@ -95,6 +95,7 @@ executable = [
 prepend_rules = [
 	{ mime = "*/sqlite3",  use = [ "sqlite", "reveal" ] },
 	{ url = "*.dart",  use = [ "edit", "reveal" ] },
+	{ url = "*.toml",  use = [ "edit", "reveal" ] },
 	{ mime = "*/sql",  use = [ "edit", "reveal" ] },
 	{ url = "*.rar",  use = [ "extract", "reveal" ] },
 	{ mime = "*/pdf",  use = [ "document", "reveal" ] },
