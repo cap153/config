@@ -24,5 +24,5 @@ sleep 3
 /usr/bin/fcitx5 &
 /usr/bin/dunst -conf $HOME/.dotfiles/dunst/.config/dunst/dunstrc &
 /usr/bin/awww-daemon --namespace river &
-awww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/崩铁/wallhaven-qz12x7.jpg" &
+awww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/wallhaven-ml1m38.jpg" &
 awww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &
