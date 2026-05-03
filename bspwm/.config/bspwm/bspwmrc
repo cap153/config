@@ -66,8 +66,10 @@ bspc config gapless_monocle      true
 # =======================================
 # 窗口规则 (对应 i3 的 for_window)
 # =======================================
+# `xprop | grep WM_CLASS` 选择窗口查看class
 # 语法：bspc rule -a [Class] state=[floating/tiled/fullscreen]
 
 bspc rule -a flameshot state=floating manage=off
 bspc rule -a "neovide" state=fullscreen
 bspc rule -a "scrcpy" state=floating
+bspc rule -a Chromium split_ratio=0.73
