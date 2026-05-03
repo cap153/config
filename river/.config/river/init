@@ -13,6 +13,8 @@ export GTK_IM_MODULE=fcitx
 rrwm &
 # Want to see detailed logs: 
 # RUST_LOG=info rrwm &
+# or save to file
+# RUST_LOG=info rrwm > ~/rrwm.log 2>&1 &
 
 # launch software
 /usr/bin/waybar &
@@ -24,5 +26,6 @@ sleep 3
 /usr/bin/fcitx5 &
 /usr/bin/dunst -conf $HOME/.dotfiles/dunst/.config/dunst/dunstrc &
 /usr/bin/awww-daemon --namespace river &
-awww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/wallhaven-ml1m38.jpg" &
+sleep 1
+awww img --namespace river -o HDMI-A-1 "/home/captain/github/pic/genshin/wallhaven-85xg61.jpg" &
 awww img --namespace river -o DP-1 "/home/captain/github/pic/风景/wallhaven-vpzkgm.jpg" &

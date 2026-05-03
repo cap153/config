@@ -1,5 +1,5 @@
-source ~/.dotfiles/zsh/.config/zsh/zim.zsh
 source ~/.dotfiles/zsh/.config/zsh/env.zsh
+source ~/.dotfiles/zsh/.config/zsh/zim.zsh
 source ~/.dotfiles/zsh/.config/zsh/aliases.zsh
 source ~/.dotfiles/zsh/.config/zsh/vi.zsh
 source ~/.dotfiles/zsh/.config/zsh/mappings.zsh

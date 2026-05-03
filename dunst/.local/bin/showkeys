@@ -1,6 +1,6 @@
 #!/bin/sh
 
-KBD=/dev/input/event19 # `sudo evtest` List all optional equipment
+KBD=/dev/input/event20 # `sudo evtest` List all optional equipment
 # DUNST_CONF="$HOME"/.dotfiles/dunst/.config/dunst/dunstrc-showkeys
 DUNST_CONF="$HOME"/.dotfiles/dunst/.config/dunst/dunstrc
 CHAR_LEN=50

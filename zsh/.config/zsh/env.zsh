@@ -2,9 +2,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.zvm/bin:$PATH"
-
+export PATH="$HOME/.local/share/zvm/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-
 export ANDROID_HOME=$HOME/.android/Sdk
 
 # export LANG=zh_CN.UTF-8

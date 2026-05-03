@@ -17,7 +17,8 @@
     "vscode-office.pasterImgPath": "${fileName}.assets/${now}.png",
     "workbench.colorTheme": "One Dark Pro Flat",
     "editor.fontFamily": "ComicShannsMono Nerd Font",
-    "workbench.activityBar.location": "top",
+    "http.proxy": "http://127.0.0.1:7897",
+    "workbench.editor.showTabs": "single",
     // 在vscode中切换escape和caps,在keybindings中设置所以这里注释
     // "keyboard.dispatch": "keyCode"
 }

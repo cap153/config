@@ -1,6 +1,6 @@
 [global]
     # --- 位置设置 ---
-    # 显示在右上角
+    # 显示在右上角top、bottom、left、right
     origin = top-right
     # 距离屏幕右侧和顶部的间距 (X轴20，Y轴20)
     offset = (20, 20)
@@ -80,3 +80,14 @@
     
     # 文本换行
     word_wrap = yes
+
+[fcitx5_wayland_warn_filter]
+    # 匹配通知标题
+    summary = "*Wayland Diagnose*"
+    # 匹配通知正文中的关键内容（可选，增加匹配准确度）
+    body = "*Detect GTK_IM_MODULE being set*"
+    # 设置为 skip 意味着这条通知将不会被显示
+    format = ""
+    # 或者直接设为最高优先级并丢弃
+    history_ignore = yes
+    skip_display = yes

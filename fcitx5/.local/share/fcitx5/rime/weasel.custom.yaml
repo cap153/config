@@ -1,0 +1,3 @@
+patch:
+  # 使用长条输入框
+  "style/horizontal": true
