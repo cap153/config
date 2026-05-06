@@ -80,11 +80,15 @@ pof() {
 	echo "🛠️  正在执行多重同步并启动安全关机程序..."
 	sync
 	if [[ "$(uname -r | tr '[:upper:]' '[:lower:]')" == *microsoft* ]]; then
-		echo "🏠 环境：WSL (Windows Subsystem for Linux)"
+		echo "🏠 环境：WSL (当前发行版: $WSL_DISTRO_NAME)"
+		local ps_cmd="while ((wsl.exe -l -q --running) -match ''${WSL_DISTRO_NAME}'') { Start-Sleep -Seconds 1 }; wsl.exe --shutdown; Start-Sleep -Seconds 2; shutdown.exe /s /t 0"
+		echo "⏳ 正在宿主机拉起 Windows 后台智能监测进程..."
 		/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command \
-			"Start-Process powershell.exe -ArgumentList '-Command \"wsl.exe --shutdown; shutdown.exe /s /t 0\"' -WindowStyle Minimized"
+			"Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command', '$ps_cmd'"
+		echo "🛑 正在触发 Linux 内部优雅关机..."
+		poweroff
 	else
 		echo "💻 环境：物理机"
-		sudo poweroff
+		poweroff
 	fi
 }

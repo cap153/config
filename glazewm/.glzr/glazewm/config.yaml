@@ -1,0 +1,152 @@
+general:
+  startup_commands: ['shell-exec zebar']
+  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+
+gaps:
+  scale_with_dpi: true
+  inner_gap: '2px' # 窗口之间
+  outer_gap: # 窗口和边缘
+    top: '30px'
+    right: '2px'
+    bottom: '2px'
+    left: '2px'
+
+window_effects:
+  focused_window:
+    border:
+      enabled: true
+      color: '#8dbcff'
+  # Visual effects to apply to non-focused windows.
+  other_windows:
+    transparency:
+      enabled: true
+      opacity: '75%'
+
+window_behavior:
+  state_defaults:
+    fullscreen:
+      shown_on_top: true
+
+workspaces:
+  - name: '1'
+  - name: '2'
+  - name: '3'
+  - name: '4'
+  - name: '5'
+  - name: '6'
+  - name: '7'
+  - name: '8'
+  - name: '9'
+  - name: '10'
+
+# 可以根据进程、类和标题来定位窗口。
+# 可以同时使用多个匹配条件来更精确地定位窗口。
+window_rules:
+  - commands: ['resize --width -23%']
+    match:
+      - window_title: { equals: "Peek preview" }
+  - commands: ['ignore']
+    match:
+      - window_process: { equals: 'zebar' }
+
+
+binding_modes:
+  - name: 'resize'
+    keybindings:
+      - commands: ['resize --width -2%']
+        bindings: ['n', 'left']
+      - commands: ['resize --width +2%']
+        bindings: ['i', 'right']
+      - commands: ['resize --height +2%']
+        bindings: ['u', 'up']
+      - commands: ['resize --height -2%']
+        bindings: ['e', 'down']
+      - commands: ['wm-disable-binding-mode --name resize']
+        bindings: ['escape', 'enter']
+
+keybindings:
+  - commands: ["focus --direction-workspace-wrap left"]
+    bindings: ["alt+n", "alt+left"]
+  - commands: ["focus --direction-workspace-wrap right"]
+    bindings: ["alt+i", "alt+right"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+u", "alt+up"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+e", "alt+down"]
+
+  # - commands: ["move --direction-workspace-wrap left"]
+  - commands: ["move --direction-workspace-wrap-focus left"]
+    bindings: ["alt+shift+n", "alt+shift+left"]
+  - commands: ["move --direction-workspace-wrap-focus right"]
+    bindings: ["alt+shift+i", "alt+shift+right"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+shift+u", "alt+shift+up"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+shift+e", "alt+shift+down"]
+
+  - commands: ['toggle-fullscreen']
+    bindings: ['alt+f']
+
+  - commands: ['close']
+    bindings: ['alt+q']
+
+  - commands: ['wm-toggle-pause']
+    bindings: ['alt+shift+p']
+
+  - commands: ['wm-enable-binding-mode --name resize']
+    bindings: ['alt+r']
+
+  # Change focus from tiling windows -> floating -> fullscreen.
+  - commands: ['wm-cycle-focus']
+    bindings: ['alt+space']
+
+  - commands: ['toggle-floating --centered']
+    bindings: ['alt+shift+space']
+
+  - commands: ['wm-exit']
+    bindings: ['alt+shift+q']
+
+  - commands: ['wm-reload-config']
+    bindings: ['alt+shift+c']
+
+  - commands: ["focus --workspace 1"]
+    bindings: ["alt+1"]
+  - commands: ["focus --workspace 2"]
+    bindings: ["alt+2"]
+  - commands: ["focus --workspace 3"]
+    bindings: ["alt+3"]
+  - commands: ["focus --workspace 4"]
+    bindings: ["alt+4"]
+  - commands: ["focus --workspace 5"]
+    bindings: ["alt+5"]
+  - commands: ["focus --workspace 6"]
+    bindings: ["alt+6"]
+  - commands: ["focus --workspace 7"]
+    bindings: ["alt+7"]
+  - commands: ["focus --workspace 8"]
+    bindings: ["alt+8"]
+  - commands: ["focus --workspace 9"]
+    bindings: ["alt+9"]
+  - commands: ["focus --workspace 10"]
+    bindings: ["alt+0"]
+
+  - commands: ['move --workspace 1', 'focus --workspace 1']
+    bindings: ['alt+shift+1']
+  - commands: ['move --workspace 2', 'focus --workspace 2']
+    bindings: ['alt+shift+2']
+  - commands: ['move --workspace 3', 'focus --workspace 3']
+    bindings: ['alt+shift+3']
+  - commands: ['move --workspace 4', 'focus --workspace 4']
+    bindings: ['alt+shift+4']
+  - commands: ['move --workspace 5', 'focus --workspace 5']
+    bindings: ['alt+shift+5']
+  - commands: ['move --workspace 6', 'focus --workspace 6']
+    bindings: ['alt+shift+6']
+  - commands: ['move --workspace 7', 'focus --workspace 7']
+    bindings: ['alt+shift+7']
+  - commands: ['move --workspace 8', 'focus --workspace 8']
+    bindings: ['alt+shift+8']
+  - commands: ['move --workspace 9', 'focus --workspace 9']
+    bindings: ['alt+shift+9']
+  - commands: ['move --workspace 9', 'focus --workspace 10']
+    bindings: ['alt+shift+0']
