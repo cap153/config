@@ -15,8 +15,6 @@ export ANDROID_HOME=$HOME/.android/Sdk
 # export https_proxy=$http_proxy
 
 export LLM_KEY=NONE
-export OPENROUTER_API_KEY=""
-export DEEPSEEK_API_KEY=""
 
 # 跳过不安全目录的验证
 export ZSH_DISABLE_COMPFIX=true
@@ -86,3 +84,10 @@ if command -v tmux &> /dev/null; then
 		tmux new-session -A -s main
 	fi
 fi
+
+# 同时加载家目录和当前目录下的 .env（如果存在）
+for env_file in "$HOME/.env" "./.env"; do
+    if [ -f "$env_file" ]; then
+        export $(grep -v '^#' "$env_file" | xargs)
+    fi
+done

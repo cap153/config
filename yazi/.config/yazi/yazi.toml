@@ -1,6 +1,7 @@
 # A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
-"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+#:schema https://yazi-rs.github.io/schemas/yazi.json
 
 [mgr]
 ratio          = [ 1, 4, 3 ]
@@ -9,12 +10,12 @@ sort_sensitive = false
 sort_reverse 	 = false
 sort_dir_first = true
 sort_translit  = false
+sort_fallback  = "alphabetical"
 linemode       = "none"
 show_hidden    = false
 show_symlink   = true
 scrolloff      = 5
-mouse_events   = [ "click", "scroll" ]
-title_format   = "Yazi: {cwd}"
+mouse_events   = [ "click", "scroll", "drag" ]
 
 [preview]
 wrap            = "no"
@@ -41,10 +42,10 @@ play = [
 	{ run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
 	{ run = 'mpv --force-window %*', orphan = true, for = "windows" },
 	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
-	{ run = "xdg-open %s1",                desc = "Play", for = "linux" },
-	{ run = "open %s",                     desc = "Play", for = "macos" },
-	{ run = 'start "" %s1', orphan = true, desc = "Play", for = "windows" },
-	{ run = "termux-open %s1",             desc = "Play", for = "android" },
+	{ run = "xdg-open %s1",    desc = "Play", for = "linux", orphan = true },
+	{ run = "open %s",         desc = "Play", for = "macos" },
+	{ run = 'start "" %s1',    desc = "Play", for = "windows", orphan = true },
+	{ run = "termux-open %s1", desc = "Play", for = "android" },
 	{ run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
 	{ run = "mediainfo %s1 & pause", block = true, desc = "Show media info", for = "windows" },
 ]
@@ -91,17 +92,13 @@ executable = [
 ]
 
 [open]
-# 手动修改打开有问题的文件类型可以根据后缀名指定软件，有的时候要/后缀名才生效
+# 手动修改打开有问题的文件类型可以根据后缀名指定软件
 prepend_rules = [
-	{ mime = "*/sqlite3",  use = [ "sqlite", "reveal" ] },
-	{ url = "*.dart",  use = [ "edit", "reveal" ] },
-	{ url = "*.toml",  use = [ "edit", "reveal" ] },
-	{ mime = "*/sql",  use = [ "edit", "reveal" ] },
-	{ url = "*.rar",  use = [ "extract", "reveal" ] },
-	{ mime = "*/pdf",  use = [ "document", "reveal" ] },
-	{ mime = "*/doc",  use = [ "document", "reveal" ] },
-	{ url = "*.xls",  use = [ "document", "reveal" ] },
-	{ url = "*.{AppImage,appimage}",  use = [ "executable", "reveal" ] },
+	{ mime = "application/{dart,toml,sql}", use = [ "edit", "reveal" ] },
+	{ mime = "application/{pdf,doc,xls}",  use = [ "document", "reveal" ] },
+	{ mime = "application/{AppImage,appimage}",  use = [ "executable", "reveal" ] },
+	{ mime = "application/rar",  use = [ "extract", "reveal" ] },
+	{ mime = "application/sqlite3",  use = [ "sqlite", "reveal" ] },
 ]
 rules = [
 	# Folder
@@ -112,11 +109,10 @@ rules = [
 	{ mime = "image/*", use = [ "open", "reveal" ] },
 	# Media
 	{ mime = "{audio,video}/*", use = [ "play", "reveal" ] },
+	# Code
+	{ mime = "application/{json,ndjson,javascript,wine-extension-ini}", use = [ "edit", "reveal" ] },
 	# Archive
 	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "extract", "reveal" ] },
-	# JSON
-	{ mime = "application/{json,ndjson}", use = [ "edit", "reveal" ] },
-	{ mime = "*/javascript", use = [ "edit", "reveal" ] },
 	# Empty file
 	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
 	# Virtual file system
@@ -126,32 +122,37 @@ rules = [
 ]
 
 [tasks]
-micro_workers    = 10
-macro_workers    = 10
+file_workers     = 3
+plugin_workers   = 5
+fetch_workers    = 5
+preload_workers  = 2
+process_workers  = 5
 bizarre_retry    = 3
 image_alloc      = 536870912  # 512MB
 image_bound      = [ 10000, 10000 ]
 suppress_preload = false
 
-# git状态插件必备的配置
 [[plugin.prepend_fetchers]]
-id   = "git"
-url = "*"
-run  = "git"
+url   = "*"
+run   = "git"
+group = "git"
 
 [[plugin.prepend_fetchers]]
-id   = "git"
-url = "*/"
-run  = "git"
+url   = "*/"
+run   = "git"
+group = "git"
 
 [plugin]
 fetchers = [
-	# Mimetype
-	{ id = "mime", url = "*/",         run = "mime.dir", prio = "high" },
-	{ id = "mime", url = "local://*",  run = "mime.local", prio = "high" },
-	{ id = "mime", url = "remote://*", run = "mime.remote", prio = "high" },
+	# MIME-type
+	{ url = "*/",         run = "mime.dir",    prio = "high", group = "mime" },
+	{ url = "local://*",  run = "mime.local",  prio = "high", group = "mime" },
+	{ url = "remote://*", run = "mime.remote", prio = "high", group = "mime" },
 ]
 spotters = [
+	# Multi-file
+	{ mime = "multi/*", run = "multi" },
+	# Folder
 	{ url = "*/", run = "folder" },
 	# Code
 	{ mime = "text/*", run = "code" },
@@ -288,7 +289,7 @@ overwrite_offset = [ 0, 0, 50, 15 ]
 
 # quit
 quit_title  = "Quit?"
-quit_body   = "The following tasks are still running, are you sure you want to quit?"
+quit_body   = "There are unfinished tasks, quit anyway?\n(Open task manager with default key 'w')"
 quit_origin = "center"
 quit_offset = [ 0, 0, 50, 15 ]
 

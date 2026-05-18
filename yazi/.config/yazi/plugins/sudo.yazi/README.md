@@ -5,7 +5,7 @@ Call `sudo` in yazi.
 ## Installation
 
 ```bash
-$ ya pack -a TD-Sky/sudo
+$ ya pkg add TD-Sky/sudo
 ```
 
 ## Requirements

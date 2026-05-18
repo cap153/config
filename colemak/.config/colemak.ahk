@@ -2,6 +2,8 @@
 ; 添加此行，以获得更好的性能和可靠性
 SendMode "Input"
 
+Esc::Capslock
+
 ; 禁用CapsLock键本身的切换大写功能
 SetCapsLockState "AlwaysOff"
 

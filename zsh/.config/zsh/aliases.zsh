@@ -19,12 +19,12 @@ alias yd="yt-dlp --external-downloader aria2c --external-downloader-args '-x 16 
 # 终端代理
 #alias setpxy='export ALL_PROXY=http://127.0.0.1:7897'
 #alias unsetpxy='unset ALL_PROXY'
-setpxy() {
+opxy() {
 	export http_proxy="http://127.0.0.1:7897"
 	export https_proxy="http://127.0.0.1:7897"
 	echo "HTTP Proxy on"
 }
-unsetpxy() {
+cpxy() {
 	unset http_proxy
 	unset https_proxy
 	echo "HTTP Proxy off"
@@ -76,14 +76,34 @@ alias wifioff="nmcli radio wifi off"
 # 解决kitty终端ssh问题，只有使用kitty终端时才会alias
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
+# 可以在 /etc/sudoers 尝试添加下面内容以免密(使用当前用户名)：
+# captain ALL=(ALL) NOPASSWD: /usr/sbin/fstrim -v /
 pof() {
-	echo "🛠️  正在执行多重同步并启动安全关机程序..."
+	local VHD_WIN_PATH="D:\\archlinux\\ext4.vhdx"
+	echo "🛠️  正在执行多重同步..."
 	sync && sleep 1 && sync
-	sync
 	if [[ "$(uname -r | tr '[:upper:]' '[:lower:]')" == *microsoft* ]]; then
 		echo "🏠 环境：WSL (Windows Subsystem for Linux)"
-		/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command \
-			"Start-Process powershell.exe -ArgumentList '-Command \"wsl.exe --shutdown; Start-Sleep 2; shutdown.exe /s /t 0\"' -WindowStyle Minimized"
+		echo "🧹 正在标记回收空间 (fstrim)..."
+		sudo fstrim -v /
+		echo "🚀 启动独立监护进程并请求管理员权限..."
+		/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command "
+            \$script = {
+                Start-Sleep 1;
+                Write-Host '正在关闭 WSL 虚拟机...' -ForegroundColor Yellow;
+                wsl.exe --shutdown;
+                Write-Host '正在压缩 VHDX...' -ForegroundColor Cyan;
+                \$tmp = [System.IO.Path]::GetTempFileName();
+                'select vdisk file=\"$VHD_WIN_PATH\"', 'compact vdisk' | Out-File -FilePath \$tmp -Encoding ASCII;
+                diskpart.exe /s \$tmp;
+                Remove-Item \$tmp;
+                Write-Host '任务完成，即将关机...' -ForegroundColor Green;
+                Start-Sleep 1;
+                shutdown.exe /s /t 0
+            };
+            Start-Process powershell.exe -ArgumentList \"-NoProfile\", \"-Command\", \$script -Verb RunAs
+        "
+		echo "✅ 监护进程已接管，本窗口即将随 WSL 关闭。"
 	else
 		echo "💻 环境：物理机"
 		poweroff

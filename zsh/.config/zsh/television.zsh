@@ -7,11 +7,18 @@ eval "$(tv init zsh)"
 # │              Ctrl-F查找文本内容                          │
 # ╰──────────────────────────────────────────────────────────╯
 _tv_text_widget() {
-	# 临时接管终端执行交互命令
-	zle -I
-	# 直接运行命令，从而允许调用编辑器
-	tv text
-	zle reset-prompt
+    # 1. 使 ZLE 失效
+    zle -I
+    # 2. 显式关闭括号粘贴模式 (防止转义码干扰)
+    # \e[?2004l 是关闭，\e[?2004h 是开启
+    printf '\e[?2004l'
+    # 3. 运行 tv 并确保标准输入输出指向当前 TTY
+    # 使用 < /dev/tty 是解决 ZLE 交互问题的万金油
+    tv text < /dev/tty
+    # 4. 恢复括号粘贴模式 (还给 Zsh)
+    printf '\e[?2004h'
+    # 5. 重绘提示符
+    zle reset-prompt
 }
 zle -N _tv_text_widget
 bindkey '^F' _tv_text_widget
