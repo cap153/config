@@ -73,6 +73,7 @@ SetCapsLockState "AlwaysOff"
 ; $`;::o
 ; $n::k
 
-!Enter::Run("wsl.exe -d archlinux")
+!Enter::Run("D:\my_program\terminal\WindowsTerminal.exe wsl.exe -d archlinux")
 !+Enter::Run("D:\my_program\neovide.exe --frame none --wsl")
 !x::Run("D:\my_program\zen-browser\zen.exe")
+; !a::Send("#s")

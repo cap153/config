@@ -1,0 +1,23 @@
+{
+  "lastChangelogVersion": "0.78.1",
+  "defaultProvider": "9Router",
+  "defaultModel": "oc/deepseek-v4-flash-free",
+  "treeFilterMode": "default",
+  "theme": "dark",
+  "defaultThinkingLevel": "high",
+  "quietStartup": true,
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-mcp-adapter",
+    "npm:pi-cache-optimizer",
+    "npm:pi-powerline-footer"
+  ],
+  "skills": [
+    "~/.claude/skills",
+    "~/.codex/skills"
+  ],
+  "powerline": {
+    "preset": "default",
+    "fixedEditor": false
+  }
+}

@@ -7,4 +7,5 @@ source ~/.dotfiles/zsh/.config/zsh/themes.zsh
 source ~/.dotfiles/zsh/.config/zsh/television.zsh
 source ~/.dotfiles/zsh/.config/zsh/completion.zsh
 source ~/.dotfiles/zsh/.config/zsh/fonts.zsh
+source ~/.dotfiles/zsh/.config/zsh/pi.zsh
 source ~/.dotfiles/zsh/.config/zsh/plugins.zsh

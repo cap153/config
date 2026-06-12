@@ -1,8 +1,7 @@
 patch:
-  # 禁用左边shift切换英文
+  # 禁用shift切换rime英文
   "ascii_composer/switch_key/Shift_L": noop
-  # 右边shift切换英文并提交
-  "ascii_composer/switch_key/Shift_R": commit_code
+  "ascii_composer/switch_key/Shift_R": noop
   # 提高中文（Script Translator）的初始权重
   "translator/initial_quality": 1.2
   # 降低英文（Melt Eng）的初始权重
@@ -17,3 +16,5 @@ patch:
   "punctuator/half_shape/`": "`"
   # 1 代表默认英文，0 代表默认中文
   # "switches/@0/reset": 1 
+  # 右边shift切换英文并提交
+  # "ascii_composer/switch_key/Shift_R": commit_code

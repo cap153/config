@@ -37,6 +37,9 @@ prepend_keymap = [
 	# sudo delete
 	{ on = [ "R", "d", "D" ], run = [ "plugin sudo --args='remove'" ], desc = "sudo move the files to the trash" },
 	{ on = [ "R", "D" ], run = [ "plugin sudo --args='remove -P'" ], desc = "Permanently delete the files" },
+	# Integrates yazi copy/paste with system clipboard
+	# { on = ["y", "y"], run = "plugin ucp copy", desc = "Copy" },
+	# { on = ["p", "p"], run = "plugin ucp paste", desc = "Paste" },
 
 	# Esc
 	{ on = [ "<Esc>" ], run = ["escape","quit --no-cwd-file"],             desc = "Exit visual mode, clear selected, or cancel search" },
@@ -63,14 +66,14 @@ prepend_keymap = [
 	# Copy
 	{ on = [ "y", "y" ], run = [ "yank", "escape --visual --select",
 		'''
-    shell --confirm '
-        uris=$(for path in "$@"; do echo "file://$path"; done);
-        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-            echo -n "$uris" | wl-copy -t text/uri-list;
-        else
-            echo -n "$uris" | xclip -i -selection clipboard -t text/uri-list;
-        fi
-    '
+		 shell --confirm '
+				 uris=$(for path in "$@"; do echo "file://$path"; done);
+				 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+						 echo -n "$uris" | wl-copy -t text/uri-list;
+				 else
+						 echo -n "$uris" | xclip -i -selection clipboard -t text/uri-list;
+				 fi
+		 '
 		'''
 		], desc = "Copy file and to system clipboard" },
 	{ on = [ "y", "p" ], run = "copy path",             desc = "Copy absolute path" },
@@ -83,6 +86,61 @@ prepend_keymap = [
 	{ on = [ "d", "d" ],         run = [ "yank --cut", "escape --visual --select" ],           desc = "Cut the selected files" },
 
 	# Paste
+	{ on = [ "<C-v>" ], run = [
+		'''
+    shell --confirm '
+        # 1. 获取系统剪切板中的 URI 列表
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            uris=$(wl-paste -t text/uri-list 2>/dev/null)
+        else
+            uris=$(xclip -o -selection clipboard -t text/uri-list 2>/dev/null)
+        fi
+
+        # 2. 如果 URI 列表为空，尝试以普通文本形式读取（兼容直接复制路径文本）
+        if [ -z "$uris" ]; then
+            if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+                uris=$(wl-paste -t text/plain 2>/dev/null)
+            else
+                uris=$(xclip -o -selection clipboard -t text/plain 2>/dev/null)
+            fi
+        fi
+
+        # 3. 剪切板无内容则退出
+        [ -z "$uris" ] && exit 0
+
+        # 4. 逐行解析并复制到当前目录
+        echo "$uris" | while IFS= read -r line; do
+            # 移除可能存在的 \r 回车符
+            line=$(echo "$line" | tr -d "\r")
+            
+            case "$line" in
+                file://*)
+                    path="${line#file://}"
+                    ;;
+                /*)
+                    path="$line"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+
+            # 5. URL 解码（处理空格、中文等特殊字符）
+            if command -v python3 >/dev/null 2>&1; then
+                decoded_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))" "$path")
+            else
+                # 简单备用方案（若无 python3，使用 sed 替换）
+                decoded_path=$(printf "$(echo "$path" | sed "s/%\([0-9A-F][0-9A-F]\)/\\\\x\1/g")")
+            fi
+
+            # 6. 执行复制
+            if [ -e "$decoded_path" ]; then
+                cp -a "$decoded_path" .
+            fi
+        done
+    '
+		'''
+		], desc = "Paste files from system clipboard" },
 	{ on = [ "p", "p" ],         run = "paste",                                           desc = "Paste the files" },
 	{ on = [ "p", "o" ],         run = "paste --force",                                   desc = "Paste the files (overwrite if the destination exists)" },
 	{ on = [ "p", "l" ],         run = "link",                                            desc = "Symlink the absolute path of files" },

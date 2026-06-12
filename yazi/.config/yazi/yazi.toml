@@ -85,6 +85,7 @@ document = [
 ]
 sqlite = [
 	{ run = 'sqlitestudio "$@"', orphan = true,  for = "unix" },
+	{ run = 'dbx "$@"', orphan = true,  for = "unix" },
 ]
 executable = [
 	{ run = '"$@"', orphan = true,  for = "unix" },

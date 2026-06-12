@@ -32,7 +32,6 @@
         date: { type: 'date', formatting: 'EEE d MMM t' },
         battery: { type: 'battery' },
         memory: { type: 'memory' },
-        weather: { type: 'weather' },
       });
 
       createRoot(document.getElementById('root')).render(<App />);
@@ -87,36 +86,6 @@
           if (batteryOutput.chargePercent > 20)
             return <i className="nf nf-fa-battery_1"></i>;
           return <i className="nf nf-fa-battery_0"></i>;
-        }
-
-        // Get icon to show for current weather status.
-        function getWeatherIcon(weatherOutput) {
-          switch (weatherOutput.status) {
-            case 'clear_day':
-              return <i className="nf nf-weather-day_sunny"></i>;
-            case 'clear_night':
-              return <i className="nf nf-weather-night_clear"></i>;
-            case 'cloudy_day':
-              return <i className="nf nf-weather-day_cloudy"></i>;
-            case 'cloudy_night':
-              return <i className="nf nf-weather-night_alt_cloudy"></i>;
-            case 'light_rain_day':
-              return <i className="nf nf-weather-day_sprinkle"></i>;
-            case 'light_rain_night':
-              return <i className="nf nf-weather-night_alt_sprinkle"></i>;
-            case 'heavy_rain_day':
-              return <i className="nf nf-weather-day_rain"></i>;
-            case 'heavy_rain_night':
-              return <i className="nf nf-weather-night_alt_rain"></i>;
-            case 'snow_day':
-              return <i className="nf nf-weather-day_snow"></i>;
-            case 'snow_night':
-              return <i className="nf nf-weather-night_alt_snow"></i>;
-            case 'thunder_day':
-              return <i className="nf nf-weather-day_lightning"></i>;
-            case 'thunder_night':
-              return <i className="nf nf-weather-night_alt_lightning"></i>;
-          }
         }
 
         return (
@@ -219,13 +188,6 @@
                   )}
                   {getBatteryIcon(output.battery)}
                   {Math.round(output.battery.chargePercent)}%
-                </div>
-              )}
-
-              {output.weather && (
-                <div className="weather">
-                  {getWeatherIcon(output.weather)}
-                  {Math.round(output.weather.celsiusTemp)}°C
                 </div>
               )}
             </div>

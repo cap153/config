@@ -55,7 +55,7 @@ i {
 }
 
 body {
-  font-family: ui-monospace, monospace;
+  font-family: 'Consolas', 'Maple_Mono_NF_CN', 'Maple Mono NF CN', 'Ioskeley_Mono', 'Ioskeley Mono', ui-monospace, monospace;
   font-size: var(--text-size);
   overflow: hidden;
 }
@@ -106,9 +106,17 @@ body,
 .paused-button,
 .network,
 .memory,
-.cpu,
+.cpu {
+  margin-right: 20px;
+}
+
 .battery {
   margin-right: 20px;
+  position: relative;
+}
+
+.right > :last-child {
+  margin-right: 0 !important;
 }
 
 .workspaces {
@@ -153,10 +161,6 @@ body,
 
 .cpu .high-usage {
   color: #900029;
-}
-
-.battery {
-  position: relative;
 }
 
 .battery .charging-icon {

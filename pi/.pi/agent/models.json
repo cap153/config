@@ -4,13 +4,19 @@
       "baseUrl": "https://api.deepseek.com",
       "api": "openai-completions",
       "apiKey": "$DEEPSEEK_API_KEY",
+      "compat": {
+        "supportsLongCacheRetention": true,
+        "sendSessionAffinityHeaders": true
+      },
       "models": [
         {
           "id": "deepseek-v4-pro",
           "name": "DeepSeek V4 Pro",
           "contextWindow": 1000000,
           "maxTokens": 384000,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "reasoning": true,
           "cost": {
             "input": 1.74,
@@ -35,7 +41,9 @@
           "name": "DeepSeek V4 Flash",
           "contextWindow": 1000000,
           "maxTokens": 384000,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "reasoning": true,
           "cost": {
             "input": 0.14,
@@ -56,6 +64,173 @@
           }
         }
       ]
+    },
+    "9Router": { //deno install -g --name 9router npm:9router -A
+      "baseUrl": "http://localhost:20128/v1",
+      "api": "openai-completions",
+      "apiKey": "$ROUTER_API",
+      "compat": {
+        "supportsReasoningEffort": false,
+        "sendSessionAffinityHeaders": true,
+        "supportsLongCacheRetention": true
+      },
+      "models": [
+        {
+          "id": "oc/deepseek-v4-flash-free",
+          "name": "DeepSeek V4 Flash Free",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true,
+            "thinkingFormat": "deepseek"
+          }
+        },
+        {
+          "id": "oc/nemotron-3-super-free",
+          "name": "Nemotron 3 Super Free",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 200000,
+          "maxTokens": 128000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "oc/nemotron-3-ultra-free",
+          "name": "Nemotron 3 Ultra Free",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 200000,
+          "maxTokens": 128000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "llama.cpp": {
+      "baseUrl": "http://127.0.0.1:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "not-needed",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "sendSessionAffinityHeaders": true,
+        "supportsLongCacheRetention": false
+      },
+      "models": [
+        {
+          "id": "Qwopus3.6-27B-v2-IQ4_XS.gguf",
+          "name": "Qwopus3.6 27B (Local)",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 131072,
+          "maxTokens": 65536,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          }
+        }
+      ]
     }
   }
 }
+
+    // "ds-free": {
+    //   "baseUrl": "http://127.0.0.1:22217/v1",
+    //   "api": "openai-completions",
+    //   "apiKey": "$DS_FREE_API",
+    //   "compat": {
+    //     "supportsReasoningEffort": false,
+    //     "supportsLongCacheRetention": true,
+    //     "sendSessionAffinityHeaders": true,
+    //     "requiresReasoningContentOnAssistantMessages": true,
+    //     "thinkingFormat": "deepseek"
+    //   },
+    //   "models": [
+    //     {
+    //       "id": "deepseek-default",
+    //       "name": "DeepSeek Free (快速)",
+    //       "input": [
+    //         "text"
+    //       ],
+    //       "contextWindow": 1048576,
+    //       "maxTokens": 384000,
+    //       "reasoning": true,
+    //       "cost": {
+    //         "input": 0,
+    //         "output": 0,
+    //         "cacheRead": 0,
+    //         "cacheWrite": 0
+    //       }
+    //     },
+    //     {
+    //       "id": "deepseek-expert",
+    //       "name": "DeepSeek Free (专家)",
+    //       "input": [
+    //         "text"
+    //       ],
+    //       "contextWindow": 1048576,
+    //       "maxTokens": 384000,
+    //       "reasoning": true,
+    //       "cost": {
+    //         "input": 0,
+    //         "output": 0,
+    //         "cacheRead": 0,
+    //         "cacheWrite": 0
+    //       }
+    //     },
+    //     {
+    //       "id": "gemini-3.5-flash",
+    //       "name": "Gemini 3.5 Flash (Fast)",
+    //       "input": [
+    //         "text"
+    //       ],
+    //       "contextWindow": 1048576,
+    //       "maxTokens": 12288,
+    //       "reasoning": false,
+    //       "cost": {
+    //         "input": 0,
+    //         "output": 0,
+    //         "cacheRead": 0,
+    //         "cacheWrite": 0
+    //       }
+    //     },
+    //     {
+    //       "id": "gemini-3.5-flash-thinking",
+    //       "name": "Gemini 3.5 Flash Thinking",
+    //       "input": [
+    //         "text"
+    //       ],
+    //       "contextWindow": 1048576,
+    //       "maxTokens": 20480,
+    //       "reasoning": true,
+    //       "cost": {
+    //         "input": 0,
+    //         "output": 0,
+    //         "cacheRead": 0,
+    //         "cacheWrite": 0
+    //       }
+    //     }
+    //   ]
+    // },

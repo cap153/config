@@ -1,0 +1,13 @@
+[Unit]
+Description=9Router Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.deno/bin/9router -t --no-browser
+Restart=no
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

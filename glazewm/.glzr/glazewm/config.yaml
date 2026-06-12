@@ -4,12 +4,12 @@ general:
 
 gaps:
   scale_with_dpi: true
-  inner_gap: '2px' # 窗口之间
+  inner_gap: '0px' # 窗口之间
   outer_gap: # 窗口和边缘
     top: '30px'
-    right: '2px'
-    bottom: '2px'
-    left: '2px'
+    right: '0px'
+    bottom: '0px'
+    left: '0px'
 
 window_effects:
   focused_window:

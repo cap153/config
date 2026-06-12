@@ -5,6 +5,10 @@ export GTK_IM_MODULE=fcitx
 # export INPUT_METHOD=fcitx
 # export SDL_IM_MODULE=fcitx
 
+export ROCM_HOME=/opt/rocm
+export ROCM_HOME=/opt/rocm
+export PATH=$ROCM_PATH/bin:$PATH
+
 # executable files
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"

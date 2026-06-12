@@ -1,0 +1,14 @@
+[Unit]
+Description=DS Free API Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/opt/ds-free-api/ds-free-api
+WorkingDirectory=%h/.local/opt/ds-free-api
+Restart=no
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

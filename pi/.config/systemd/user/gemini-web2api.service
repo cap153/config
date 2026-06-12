@@ -1,0 +1,16 @@
+[Unit]
+Description=Convert Google Gemini web into OpenAI-compatible API.
+After=network.target
+
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:7897"
+Environment="HTTPS_PROXY=http://127.0.0.1:7897"
+Type=simple
+ExecStart=/usr/bin/uv run %h/.local/opt/gemini-web2api/gemini_web2api.py
+WorkingDirectory=%h/.local/opt/gemini-web2api
+Restart=no
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

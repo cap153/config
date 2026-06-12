@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# ==================== 配置区 ====================
+# 模型路径
+MODEL_PATH="/run/media/captain/laptop/models/Qwopus3.6-27B-v2-IQ4_XS.gguf"
+# Llama Server 的运行端口
+PORT=8080
+# 日志临时存放路径（方便出错时排查）
+LOG_FILE="/tmp/llama-server.log"
+# ===============================================
+
+# llama-server -ngl all -mg 0 -c 1048576 -ts 1 -sm none -np 1 -ctk q8_0 -ctv q8_0 -t 12 -tb 12 -b 2048 -ub 512 --temp 0.6 --top-p 0.95 --top-k 20 --repeat-penalty 1.07 -s -1 -n -1 --perf --no-mmap -fa on --fit-target 0 -cmoe -m Carnice-Qwen3.6-MoE-35B-A3B-APEX-I-Quality.gguf --no-webui
+
+# KV Cache 全部分配到你的系统内存（RAM）和 CPU 中，而不占用显卡的 VRAM。
+# llama-server -m "Qwopus3.6-27B-v2-IQ4_XS.gguf" \
+#   -ngl all \
+#   -nkvo \ 
+#   -mg 0 \
+#   -c 1048576 \
+#   -ts 1 \
+#   -sm none \
+#   -np 1 \
+#   -ctk q4_0 \
+#   -ctv q4_0 \
+#   -t 12 \
+#   -tb 12 \
+#   -b 2048 \
+#   -ub 512 \
+#   --temp 0.6 \
+#   --top-p 0.95 \
+#   --top-k 20 \
+#   --repeat-penalty 1.07 \
+#   -s -1 \
+#   -n -1 \
+#   --perf \
+#   --no-mmap \
+#   -fa on \
+#   --fit-target 0
+
+# 1. 在后台拉起 llama-server
+echo "=== 正在后台启动 llama-server ==="
+llama-server -m "$MODEL_PATH" \
+  -ngl all \
+  -mg 0 \
+  -c 131072 \
+  -ts 1 \
+  -sm none \
+  -np 1 \
+  -ctk q8_0 \
+  -ctv q8_0 \
+  -t 12 \
+  -tb 12 \
+  -b 2048 \
+  -ub 512 \
+  --temp 0.6 \
+  --top-p 0.95 \
+  --top-k 20 \
+  --repeat-penalty 1.07 \
+  -s -1 \
+  -n -1 \
+  --perf \
+  --no-mmap \
+  -fa on \
+  --no-webui \
+  --fit-target 0 > "$LOG_FILE" 2>&1 &
+
+LLAMA_PID=$!
+
+# 2. 注册清理机制 (Trap)
+# 无论脚本是正常结束、还是被 Ctrl+C 中断，都会执行这里的清理命令
+cleanup() {
+    echo ""
+    if kill -0 $LLAMA_PID 2>/dev/null; then
+        echo "=== 正在安全关闭 llama-server (PID: $LLAMA_PID) ==="
+        kill $LLAMA_PID
+        wait $LLAMA_PID 2>/dev/null
+    fi
+    echo "=== llama-server 已退出，清理完毕 ==="
+}
+trap cleanup EXIT
+
+# 3. 循环检测接口，等待模型完全加载完毕
+echo "等待模型加载并就绪 (端口: $PORT)..."
+while ! curl -s "http://127.0.0.1:$PORT/health" > /dev/null; do
+    # 如果后台的 llama-server 提前崩溃了，直接退出脚本并报错
+    if ! kill -0 $LLAMA_PID 2>/dev/null; then
+        echo "错误：llama-server 启动失败！请检查日志文件: $LOG_FILE"
+        exit 1
+    fi
+    sleep 0.5
+done
+echo "=== 模型加载完毕，llama-server 已就绪 ==="
+
+# 4. 运行 Pi Coding Agent
+echo "=== 启动 Pi Agent ==="
+# 使用 command 关键字确保调用的是系统 PATH 中的真实 pi 进程
+command $HOME/.local/bin/pi --model 'Qwopus3.6 27B (Local)' "$@"

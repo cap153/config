@@ -1,3 +1,5 @@
+export ROCM_HOME=/opt/rocm
+export PATH=$ROCM_PATH/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
@@ -53,17 +55,33 @@ fi
 PS1="$PS1$YAZI_TERM"
 
 # 检测并设置代理
-zmodload zsh/net/tcp
-if ztcp 127.0.0.1 7897 2>/dev/null; then
-    local fd=$REPLY
-    ztcp -c $fd
-    export ALL_PROXY="http://127.0.0.1:7897"
-    export http_proxy="http://127.0.0.1:7897"
-    export https_proxy="http://127.0.0.1:7897"
-    # 设置一个变量供 Prompt 使用
-    export PROXY_STATE="🌐" 
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+	# 优先获取物理局域网 IP (使用纯 awk 处理，杜绝 grep 带来的 ANSI 颜色)
+	host_ip=$(ipconfig.exe 2>/dev/null | tr -d '\r' | awk -F: '/IPv4/ && !/172\./ {print $2; exit}' | tr -d ' ')
+
+	# 若获取失败（例如平板没连 Wi-Fi 断网），自动回退到 WSL2 虚拟网卡网关 IP
+	if [[ -z "$host_ip" ]]; then
+		host_ip=$(ip -color=never route show 2>/dev/null | awk '/default/ {print $3}')
+	fi
+
+	# 若还是为空，最后兜底回退到 127.0.0.1
+	[[ -z "$host_ip" ]] && host_ip="127.0.0.1"
 else
-    export PROXY_STATE=""
+	# 物理机环境下，直接使用本地回环地址
+	host_ip="127.0.0.1"
+fi
+
+zmodload zsh/net/tcp
+if ztcp $host_ip 7897 2>/dev/null; then
+	local fd=$REPLY
+	ztcp -c $fd
+	export ALL_PROXY="http://${host_ip}:7897"
+	export http_proxy="http://${host_ip}:7897"
+	export https_proxy="http://${host_ip}:7897"
+	# 设置一个变量供 Prompt 使用
+	export PROXY_STATE="🌐"
+else
+	export PROXY_STATE=""
 fi
 
 # 将图标添加到右侧提示符
@@ -71,15 +89,21 @@ fi
 
 # 连接tmux或新建会话
 # 检测 tmux 是否安装
-if command -v tmux &> /dev/null; then
-   # 非交互式 Shell，没有被 tmux 环境变量标记，不在 VSCode，不在 Neovim，未被ssh
-	if [[ $- == *i* ]] && \
-		[ -z "$TMUX" ] && \
-		[ "$TERM_PROGRAM" != "vscode" ] && \
-		[ -z "$NVIM" ] && \
-		[ -z "$SSH_CONNECTION" ] && \
-		[[ ! "$TERM" =~ screen ]] && \
+if command -v tmux &>/dev/null; then
+	# 非交互式 Shell，没有被 tmux 环境变量标记，不在 VSCode，不在 Neovim，未被ssh
+	if [[ $- == *i* ]] &&
+		[ -z "$TMUX" ] &&
+		[ "$TERM_PROGRAM" != "vscode" ] &&
+		[ -z "$NVIM" ] &&
+		[ -z "$SSH_CONNECTION" ] &&
+		[[ ! "$TERM" =~ screen ]] &&
 		[[ ! "$TERM" =~ tmux ]]; then
+
+		# 在新建或附加会话前，强制将当前客户端健康的全局环境变量刷新写入 tmux server
+		tmux set-environment -g PATH "$PATH"
+		[[ -n "$WSL_INTEROP" ]] && tmux set-environment -g WSL_INTEROP "$WSL_INTEROP"
+		[[ -n "$WSL_DISTRO_NAME" ]] && tmux set-environment -g WSL_DISTRO_NAME "$WSL_DISTRO_NAME"
+
 		# 使用 exec 可以替换当前 Shell 进程，这样退出 tmux 时会直接关闭终端，而不是退回到外层 Shell
 		tmux new-session -A -s main
 	fi
@@ -87,7 +111,7 @@ fi
 
 # 同时加载家目录和当前目录下的 .env（如果存在）
 for env_file in "$HOME/.env" "./.env"; do
-    if [ -f "$env_file" ]; then
-        export $(grep -v '^#' "$env_file" | xargs)
-    fi
+	if [ -f "$env_file" ]; then
+		export $(grep -v '^#' "$env_file" | xargs)
+	fi
 done
