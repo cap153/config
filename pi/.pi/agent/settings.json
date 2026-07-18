@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.78.1",
+  "lastChangelogVersion": "0.80.10",
   "defaultProvider": "9Router",
   "defaultModel": "oc/deepseek-v4-flash-free",
   "treeFilterMode": "default",
@@ -19,5 +19,6 @@
   "powerline": {
     "preset": "default",
     "fixedEditor": false
-  }
+  },
+  "hideThinkingBlock": false
 }

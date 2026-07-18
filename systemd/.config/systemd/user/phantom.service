@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Phantom Main Script Daily
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/secadm/phantom
+ExecStartPre=-/bin/sh -c 'rm -f /home/secadm/phantom/*.png /home/secadm/phantom/cron.log'
+ExecStart=/home/linuxbrew/.linuxbrew/bin/uv run main.py
+# StandardOutput=append:/home/secadm/phantom/cron.log
+StandardOutput=file:/home/secadm/phantom/cron.log
+StandardError=inherit

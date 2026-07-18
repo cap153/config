@@ -4,5 +4,6 @@
   "tui.select.down": ["down", "ctrl+e"],
   "tui.input.newLine": ["shift+enter"],
   "app.tree.foldOrUp": ["ctrl+n", "ctrl+left"],
-  "app.tree.unfoldOrDown": ["ctrl+i", "ctrl+right"]
+  "app.tree.unfoldOrDown": ["ctrl+i", "ctrl+right"],
+	"app.tools.expand": ["ctrl+o", "ctrl+y"]
 }

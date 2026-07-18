@@ -71,14 +71,35 @@ else
 	host_ip="127.0.0.1"
 fi
 
-zmodload zsh/net/tcp
-if ztcp $host_ip 7897 2>/dev/null; then
-	local fd=$REPLY
-	ztcp -c $fd
+# >>> sivtr shell integration >>>
+export SIVTR_TERMINAL_ID="$$"
+_sivtr_precmd() {
+  local exit_status=$?
+  export SIVTR_LAST_COMMAND="$(fc -ln -1)"
+  export SIVTR_LAST_COMMAND_ID="$HISTCMD"
+  if [[ -n "${SIVTR_NEXT_COMMAND_CWD:-}" ]]; then
+    export SIVTR_COMMAND_CWD="$SIVTR_NEXT_COMMAND_CWD"
+  else
+    unset SIVTR_COMMAND_CWD
+  fi
+  export SIVTR_LAST_EXIT_CODE="$exit_status"
+  export SIVTR_COMMAND_ENDED_AT="$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
+  unset SIVTR_COMMAND_DURATION_MS
+  export SIVTR_LAST_PROMPT="$(print -P "$PROMPT")"
+  sivtr flush >/dev/null 2>&1 || true
+  export SIVTR_NEXT_COMMAND_CWD="$PWD"
+  return $exit_status
+}
+if [[ " ${precmd_functions[*]:-} " != *" _sivtr_precmd "* ]]; then
+  precmd_functions=(_sivtr_precmd $precmd_functions)
+fi
+# <<< sivtr shell integration <<<
+
+# 探测端口（硬性限制 0.1 秒超时，避免黑洞网络卡死终端）
+if timeout 0.1 bash -c "true &>/dev/null > /dev/tcp/${host_ip}/7897" 2>/dev/null; then
 	export ALL_PROXY="http://${host_ip}:7897"
 	export http_proxy="http://${host_ip}:7897"
 	export https_proxy="http://${host_ip}:7897"
-	# 设置一个变量供 Prompt 使用
 	export PROXY_STATE="🌐"
 else
 	export PROXY_STATE=""
@@ -88,7 +109,6 @@ fi
 # RPROMPT="$RPROMPT $PROXY_STATE"
 
 # 连接tmux或新建会话
-# 检测 tmux 是否安装
 if command -v tmux &>/dev/null; then
 	# 非交互式 Shell，没有被 tmux 环境变量标记，不在 VSCode，不在 Neovim，未被ssh
 	if [[ $- == *i* ]] &&

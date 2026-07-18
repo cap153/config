@@ -29,8 +29,6 @@ if [[ ! -d "$PM_DIR" ]]; then
 	git init "$TMP_DIR" &>/dev/null
 	cd "$TMP_DIR"
 	git remote add origin https://github.com/earendil-works/pi.git
-	git config core.sparseCheckout true
-	echo "packages/coding-agent/examples/extensions/plan-mode/*" >>.git/info/sparse-checkout
 	git pull --depth 1 origin main &>/dev/null
 	mkdir -p "$HOME/.pi/agent/extensions"
 	cp -r "$TMP_DIR/packages/coding-agent/examples/extensions/plan-mode" "$PM_DIR"

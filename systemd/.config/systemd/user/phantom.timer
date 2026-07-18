@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger Phantom Script Daily at Midnight
+
+[Timer]
+# 每天午夜 00:00:00 运行
+OnCalendar=*-*-* 00:00:00
+# 开启持久化，如果电脑在零点时关机了，开机后会立刻补上错过的任务
+Persistent=true
+
+[Install]
+WantedBy=timers.target

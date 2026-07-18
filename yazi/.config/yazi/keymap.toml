@@ -459,7 +459,9 @@ prepend_keymap = [
 	{ on = [ "I" ], run = "move eol", desc = "Move to the EOL" },
 	{ on = [ "k" ], run = "insert", desc = "Enter insert mode" },
 	{ on = [ "K" ], run = [ "move first-char", "insert" ], desc = "Move to the BOL, and enter insert mode" },
-	{ on = [ "?" ], run = "help", desc = "Open help" }
+	{ on = [ "?" ], run = "help", desc = "Open help" },
+	{ on = [ "l" ], run = "undo", desc = "Undo" },
+	{ on = [ "L" ], run = "redo", desc = "Redo the last operation" }
 ]
 
 keymap = [
