@@ -4,7 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=%h/.deno/bin/9router -t --no-browser --host 127.0.0.1
+Environment="PATH=%h/.deno/bin:/usr/bin"
+ExecStart=%h/.deno/bin/9router -t --no-browser
 Restart=no
 StandardOutput=journal
 StandardError=journal

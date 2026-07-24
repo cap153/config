@@ -10,7 +10,8 @@
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
     "npm:pi-cache-optimizer",
-    "npm:pi-powerline-footer"
+    "npm:pi-powerline-footer",
+    "git:github.com/cap153/pi-ocr-tool"
   ],
   "skills": [
     "~/.claude/skills",

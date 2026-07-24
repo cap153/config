@@ -1,0 +1,12 @@
+[Unit]
+Description=LANClaw Bot
+After=network.target
+
+[Service]
+Type=simple
+Environment="PATH=%h/.local/bin:/home/linuxbrew/.linuxbrew/bin:/usr/bin"
+EnvironmentFile=-%h/.env
+ExecStart=%h/.local/bin/lanclaw
+
+[Install]
+WantedBy=default.target
