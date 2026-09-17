@@ -73,7 +73,9 @@ SetCapsLockState "AlwaysOff"
 ; $`;::o
 ; $n::k
 
-!Enter::Run("D:\my_program\terminal\WindowsTerminal.exe wsl.exe -d archlinux")
+; 在 WindowsTerminal.exe（或 wt.exe）同级目录下，新建一个空白文件，重命名为 .portable，
+; 启动一次该目录下的终端，它会在当前目录下自动生成一个 settings 文件夹以及独立的 settings.json
+!Enter::Run("D:\my_program\terminal\WindowsTerminal.exe --focus wsl.exe -d archlinux")
 !+Enter::Run("D:\my_program\neovide.exe --frame none --wsl")
 !x::Run("D:\my_program\zen-browser\zen.exe")
 ; !a::Send("#s")

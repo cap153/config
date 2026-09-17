@@ -18,12 +18,11 @@ rrwm &
 
 # launch software
 /usr/bin/waybar &
-/usr/bin/v2rayn &
 /usr/lib/xdg-desktop-portal-termfilechooser -r &
 /usr/bin/xwayland-satellite :12 &
 sleep 3
+/usr/bin/dex -a
 /usr/lib/soteria-polkit/soteria &
-/usr/bin/fcitx5 &
 /usr/bin/dunst -conf $HOME/.dotfiles/dunst/.config/dunst/dunstrc &
 /usr/bin/awww-daemon --namespace river &
 sleep 1

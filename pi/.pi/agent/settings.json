@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.80.10",
+  "lastChangelogVersion": "0.84.4",
   "defaultProvider": "9Router",
-  "defaultModel": "oc/deepseek-v4-flash-free",
+  "defaultModel": "oc/big-pickle",
   "treeFilterMode": "default",
   "theme": "dark",
   "defaultThinkingLevel": "high",

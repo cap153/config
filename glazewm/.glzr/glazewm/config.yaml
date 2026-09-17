@@ -48,7 +48,13 @@ window_rules:
   - commands: ['ignore']
     match:
       - window_process: { equals: 'zebar' }
-
+      - window_process: { equals: "Flow.Launcher" }
+      - window_process: { equals: "ZTools" }
+      - window_process: { equals: "StartMenuExperienceHost" }
+      - window_process: { equals: "SearchHost" }
+      - window_process: { equals: "SearchApp" }
+      - window_process: { equals: "SearchUI" }
+      - window_process: { equals: "ShellExperienceHost" }
 
 binding_modes:
   - name: 'resize'

@@ -1,3 +1,4 @@
+alias cbr='cargo zigbuild --release --target x86_64-unknown-linux-gnu.2.31'
 alias pacman="sudo pacman"
 alias c="clear"
 alias s="fastfetch"
